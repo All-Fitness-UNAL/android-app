@@ -8,6 +8,16 @@
 
 **Input**: User description: "MVP de All Fitness: registro e inicio de sesión, onboarding, rutina semanal generada por IA, dieta y recetas, alternativas y feedback a la IA, progreso, perfil de usuario y comportamiento transversal (estados, sin conexión, errores). Fuente completa: `instruccionSpecify.txt`."
 
+## Clarifications
+
+### Session 2026-10-28
+
+- Q: ¿El usuario debe aceptar explícitamente términos y política de tratamiento de datos (incluye datos de salud) al registrarse? → A: Sí, casilla obligatoria en el registro con enlaces a ambos textos; sin marcarla no se crea la cuenta.
+- Q: ¿Registrar peso en Progreso actualiza el peso del Perfil y viceversa? → A: Una sola fuente, el historial de peso: el onboarding crea el primer registro, el peso actual del Perfil es el registro más reciente y editarlo en el Perfil crea o actualiza el registro de hoy.
+- Q: ¿La alternativa de un ejercicio o receta se previsualiza o reemplaza de inmediato? → A: Ejercicio y receta se previsualizan con "Usar esta" / "Mantener la actual" y solo se guardan si el usuario acepta; rutina o dieta completa reemplazan directo (ya hubo confirmación antes de pedirla).
+- Q: Al regenerar la rutina a mitad de semana, ¿cuándo aplica el nuevo plan y qué pasa con lo registrado? → A: Aplica desde hoy; las sesiones ya terminadas esa semana se conservan en el Progreso; las marcas de ejercicios de hoy se reinician si el contenido del día cambió.
+- Q: ¿El plan semanal se repite igual o el servidor puede actualizarlo por su cuenta? → A: El servidor puede actualizar el plan activo sin acción del usuario (ej. progresión semanal de cargas); la app muestra siempre la última versión recibida y usa la guardada solo sin conexión.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Registro, inicio de sesión y onboarding (Priority: P1)
@@ -20,15 +30,16 @@ Una persona nueva crea su cuenta con nombre, correo y contraseña, completa un o
 
 **Acceptance Scenarios**:
 
-1. **Given** una persona sin cuenta, **When** se registra con nombre, correo válido y contraseña de 8+ caracteres, **Then** la cuenta se crea y la app la lleva al primer paso del onboarding.
-2. **Given** el formulario de registro, **When** el correo ya está registrado, **Then** la app muestra un mensaje claro en español (ej. "Este correo ya tiene una cuenta") y no avanza.
-3. **Given** el formulario de login, **When** las credenciales son incorrectas, **Then** la app muestra "Correo o contraseña incorrectos" sin detalles técnicos.
-4. **Given** un campo con formato inválido (correo mal escrito, contraseña de menos de 8 caracteres, campo vacío), **When** el usuario intenta enviar, **Then** la app marca el campo con el error y no envía nada.
-5. **Given** un paso del onboarding con un valor fuera de rango (ej. estatura 90 cm), **When** el usuario intenta avanzar, **Then** la app indica el rango permitido y no avanza.
-6. **Given** un usuario que abandonó el onboarding en el paso 3, **When** vuelve a entrar a la app, **Then** retoma el onboarding en el paso 3 con lo que ya había llenado.
-7. **Given** el último paso del onboarding completo, **When** el usuario confirma, **Then** la app envía el perfil, muestra un estado de carga mientras se generan la rutina y la dieta, y al terminar muestra la pantalla principal.
-8. **Given** un usuario con sesión iniciada, **When** cierra y reabre la app, **Then** entra directo a la pantalla principal sin volver a iniciar sesión.
-9. **Given** un usuario con sesión iniciada, **When** el servidor indica que la sesión ya no es válida, **Then** la app borra la sesión y lo devuelve al Login con un mensaje de que debe iniciar sesión de nuevo.
+1. **Given** una persona sin cuenta, **When** se registra con nombre, correo válido, contraseña de 8+ caracteres y marca la casilla de aceptación de términos y política de datos, **Then** la cuenta se crea y la app la lleva al primer paso del onboarding.
+2. **Given** el formulario de registro completo, **When** la casilla de aceptación no está marcada, **Then** la app no permite crear la cuenta e indica que debe aceptar los términos y la política de datos.
+3. **Given** el formulario de registro, **When** el correo ya está registrado, **Then** la app muestra un mensaje claro en español (ej. "Este correo ya tiene una cuenta") y no avanza.
+4. **Given** el formulario de login, **When** las credenciales son incorrectas, **Then** la app muestra "Correo o contraseña incorrectos" sin detalles técnicos.
+5. **Given** un campo con formato inválido (correo mal escrito, contraseña de menos de 8 caracteres, campo vacío), **When** el usuario intenta enviar, **Then** la app marca el campo con el error y no envía nada.
+6. **Given** un paso del onboarding con un valor fuera de rango (ej. estatura 90 cm), **When** el usuario intenta avanzar, **Then** la app indica el rango permitido y no avanza.
+7. **Given** un usuario que abandonó el onboarding en el paso 3, **When** vuelve a entrar a la app, **Then** retoma el onboarding en el paso 3 con lo que ya había llenado.
+8. **Given** el último paso del onboarding completo, **When** el usuario confirma, **Then** la app envía el perfil, muestra un estado de carga mientras se generan la rutina y la dieta, y al terminar muestra la pantalla principal.
+9. **Given** un usuario con sesión iniciada, **When** cierra y reabre la app, **Then** entra directo a la pantalla principal sin volver a iniciar sesión.
+10. **Given** un usuario con sesión iniciada, **When** el servidor indica que la sesión ya no es válida, **Then** la app borra la sesión y lo devuelve al Login con un mensaje de que debe iniciar sesión de nuevo.
 
 ---
 
@@ -83,8 +94,9 @@ Si al usuario no le gusta un ejercicio, una receta, la rutina o la dieta complet
 3. **Given** la rutina o la dieta completa, **When** el usuario pide regenerarla, **Then** la app solo pide el texto libre opcional y una confirmación de que el plan actual será reemplazado.
 4. **Given** el motivo "Me causa molestia o dolor", **When** el usuario lo selecciona, **Then** la app muestra además una recomendación de consultar a un profesional de salud.
 5. **Given** una solicitud enviada, **When** la IA está generando, **Then** el contenido actual sigue visible, se muestra un estado de carga y la acción queda deshabilitada (no se pueden enviar solicitudes duplicadas).
-6. **Given** una solicitud en curso, **When** la alternativa llega correctamente (en hasta 60 s), **Then** reemplaza al contenido anterior y la app lo confirma.
-7. **Given** una solicitud en curso, **When** falla o supera el tiempo de espera, **Then** el contenido actual se conserva intacto y se muestra un mensaje amigable con opción de reintentar.
+6. **Given** una solicitud de alternativa para un ejercicio o una receta, **When** la alternativa llega correctamente (en hasta 60 s), **Then** la app la muestra junto a la opción "Usar esta" o "Mantener la actual"; solo si elige "Usar esta" reemplaza al contenido anterior.
+7. **Given** una solicitud para regenerar la rutina o la dieta completa, **When** el nuevo plan llega correctamente, **Then** reemplaza al plan activo y la app lo confirma.
+8. **Given** una solicitud en curso, **When** falla o supera el tiempo de espera, **Then** el contenido actual se conserva intacto y se muestra un mensaje amigable con opción de reintentar.
 
 ---
 
@@ -119,7 +131,8 @@ El usuario registra su peso corporal y ve cómo evoluciona en una lista y una gr
 2. **Given** el selector de fecha, **When** el usuario intenta elegir una fecha futura, **Then** no puede seleccionarla.
 3. **Given** ya existe un registro para una fecha, **When** el usuario registra otro peso en esa fecha, **Then** la app avisa que se actualizará el existente y, al confirmar, queda un solo registro con el nuevo valor.
 4. **Given** el resumen de entrenamiento, **When** se muestra, **Then** indica sesiones completadas frente a programadas en la semana actual y la racha de semanas cumplidas, tal como las entrega el servidor.
-5. **Given** un usuario sin registros de peso ni sesiones, **When** abre Progreso, **Then** ve un estado vacío que lo invita a registrar su primer peso o completar su primera sesión.
+5. **Given** un usuario recién salido del onboarding, **When** abre Progreso, **Then** ve el peso del onboarding como primer registro y un estado vacío en el resumen de entrenamiento que lo invita a completar su primera sesión.
+6. **Given** un usuario que registra un peso en Progreso, **When** abre su Perfil, **Then** el peso actual mostrado es el del registro más reciente.
 
 ---
 
@@ -157,6 +170,9 @@ El usuario revisa y modifica sus datos y preferencias desde la pestaña Perfil, 
 - **Doble toque en "Guardar", "Terminar sesión" o "Pedir alternativa"**: solo se envía una solicitud.
 - **Sesión invalidada mientras el usuario edita su perfil**: se pierde la edición no guardada y la app vuelve al Login con un mensaje.
 - **Otro usuario inicia sesión en el mismo dispositivo**: no ve datos del usuario anterior (se borraron al cerrar sesión).
+- **Regenerar la rutina después de terminar la sesión de hoy**: la sesión terminada sigue contando en el Progreso; el contenido nuevo de hoy se muestra sin marcas y no se puede terminar una segunda sesión el mismo día.
+- **El servidor actualiza el plan mientras el usuario entrena**: los ejercicios de hoy ya marcados conservan su marca si siguen en el plan; los que cambiaron aparecen sin marca, igual que al regenerar (FR-023a).
+- **El usuario sale de la pantalla sin decidir sobre una propuesta de alternativa**: la propuesta se descarta y se mantiene el ejercicio o receta actual.
 - **Sesión del día marcada sin completar todos los ejercicios**: se permite; el registro lo interpreta el servidor.
 
 ## Requirements *(mandatory)*
@@ -167,6 +183,7 @@ El usuario revisa y modifica sus datos y preferencias desde la pestaña Perfil, 
 
 - **FR-001**: La app MUST permitir registrarse con nombre, correo y contraseña, e iniciar sesión con correo y contraseña.
 - **FR-002**: La app MUST validar antes de enviar: campos obligatorios no vacíos, correo con formato válido y contraseña de mínimo 8 caracteres. La creación de la cuenta y la verificación de credenciales las hace el servidor.
+- **FR-002a**: El registro MUST incluir una casilla obligatoria, desmarcada por defecto, "Acepto los términos y la política de tratamiento de datos (incluye datos de salud)", con enlaces para leer ambos textos; sin marcarla no se puede crear la cuenta. La aceptación se envía al servidor junto con el registro.
 - **FR-003**: La app MUST mostrar mensajes claros en español cuando el correo ya está registrado o las credenciales son incorrectas, sin detalles técnicos.
 - **FR-004**: La app MUST mantener la sesión al cerrar y reabrir la app hasta que el usuario cierre sesión o el servidor la invalide; si el servidor la invalida, MUST borrar la sesión y volver al Login.
 - **FR-005**: Todas las pantallas excepto Login y Registro MUST requerir sesión activa.
@@ -177,11 +194,12 @@ El usuario revisa y modifica sus datos y preferencias desde la pestaña Perfil, 
 - **FR-007**: El onboarding MUST recoger: edad (16–100 años), sexo (masculino o femenino), estatura (100–250 cm), peso actual (30–300 kg); objetivo (perder grasa, ganar masa muscular, mejorar condición física general); nivel (principiante, intermedio, avanzado), días disponibles por semana (1–7), duración por sesión (15–120 minutos), lugar (casa o gimnasio), equipo disponible (selección múltiple) y lesiones o limitaciones (texto libre opcional, máx. 300 caracteres); tipo de dieta (omnívora, vegetariana, vegana), alergias o intolerancias (selección múltiple más "otra" en texto), alimentos que no le gustan (texto libre opcional, máx. 300 caracteres) y comidas al día (3–5).
 - **FR-008**: Cada paso MUST validar sus campos y no permitir avanzar con valores fuera de rango, indicando el rango permitido.
 - **FR-009**: Si el usuario abandona el onboarding, la app MUST retomarlo en el paso donde quedó con los datos ya llenados en ese dispositivo.
-- **FR-010**: Al terminar, la app MUST enviar el perfil y solicitar la primera rutina y la primera dieta, mostrando un estado de carga hasta que lleguen o fallen.
+- **FR-010**: Al terminar, la app MUST enviar el perfil y solicitar la primera rutina y la primera dieta, mostrando un estado de carga hasta que lleguen o fallen. El peso del onboarding queda como primer registro del historial de peso con la fecha de ese día.
 
 **Rutina**
 
 - **FR-011**: La app MUST mostrar la rutina activa como un plan de 7 días con los días de entrenamiento y los demás como descanso, destacando el día de hoy.
+- **FR-011a**: El servidor puede actualizar la rutina o la dieta activa sin acción del usuario (ej. progresión de cargas). Con conexión, la app MUST mostrar siempre la última versión del servidor; la versión guardada en el dispositivo MUST usarse solo sin conexión.
 - **FR-012**: Cada ejercicio MUST mostrar nombre, grupo muscular, series, repeticiones o duración, descanso entre series, peso sugerido (si existe) e instrucciones breves; e imagen si el servidor la envía.
 - **FR-013**: La app MUST permitir marcar ejercicios como completados y la sesión como terminada solo en el día actual según la fecha del dispositivo, y enviar estos cambios al servidor.
 - **FR-014**: La app MUST permitir terminar la sesión del día aunque no todos los ejercicios estén marcados.
@@ -199,19 +217,22 @@ El usuario revisa y modifica sus datos y preferencias desde la pestaña Perfil, 
 - **FR-020**: Mientras una solicitud a la IA está en curso, la app MUST mantener visible el contenido actual, mostrar un estado de carga y deshabilitar la acción para impedir duplicados.
 - **FR-021**: La app MUST esperar la respuesta de la IA al menos 60 segundos antes de considerarla fallida.
 - **FR-022**: El contenido anterior MUST reemplazarse solo cuando la alternativa llega correctamente; si falla, MUST conservarse intacto y ofrecerse reintentar.
+- **FR-022a**: Para un ejercicio o una receta, la app MUST mostrar la alternativa recibida como propuesta con las opciones "Usar esta" y "Mantener la actual"; el reemplazo MUST ocurrir solo si el usuario elige "Usar esta". Para la rutina o la dieta completa, el plan nuevo reemplaza al activo en cuanto llega.
 - **FR-023**: Regenerar la rutina o la dieta completa MUST pedir confirmación, ya que reemplaza al plan activo.
+- **FR-023a**: Una rutina regenerada MUST aplicar desde el día actual. Las sesiones ya terminadas en la semana MUST conservarse en el Progreso; las marcas de ejercicios del día actual MUST reiniciarse si el contenido de ese día cambió.
 
 **Progreso**
 
 - **FR-024**: La app MUST permitir registrar el peso corporal (30–300 kg) con fecha, por defecto hoy, sin permitir fechas futuras.
 - **FR-025**: Si ya existe un registro para la fecha elegida, la app MUST avisar y, al confirmar, actualizarlo (un solo registro por día).
 - **FR-026**: La app MUST mostrar el historial de peso como lista (más reciente primero) y como gráfica de evolución en el tiempo.
+- **FR-026a**: El historial de peso MUST ser la única fuente del peso del usuario: el "peso actual" que muestra el Perfil MUST ser el registro más reciente.
 - **FR-027**: La app MUST mostrar las sesiones completadas frente a las programadas en la semana actual y la racha de semanas cumplidas, tal como las entrega el servidor.
 
 **Perfil y cuenta**
 
 - **FR-028**: La pestaña Perfil MUST mostrar nombre, correo (solo lectura) y un resumen de datos y preferencias.
-- **FR-029**: La app MUST permitir editar, por secciones, los mismos datos del onboarding con las mismas validaciones.
+- **FR-029**: La app MUST permitir editar, por secciones, los mismos datos del onboarding con las mismas validaciones. Editar el peso en el Perfil MUST crear o actualizar el registro de peso de hoy.
 - **FR-030**: Tras guardar el perfil, la app MUST preguntar si regenerar la rutina, la dieta, ambas o ninguna; MUST NOT regenerar automáticamente.
 - **FR-031**: Si el guardado falla, la app MUST conservar los datos editados en pantalla y ofrecer reintentar.
 - **FR-032**: Al salir de una sección con cambios sin guardar, la app MUST pedir confirmación antes de descartarlos.
@@ -233,14 +254,14 @@ El usuario revisa y modifica sus datos y preferencias desde la pestaña Perfil, 
 ### Key Entities *(include if feature involves data)*
 
 - **Usuario**: cuenta de la persona; nombre, correo. Tiene un Perfil, una Rutina activa, una Dieta activa y su Progreso.
-- **Perfil**: datos físicos (edad, sexo, estatura, peso), objetivo, preferencias de entrenamiento (nivel, días, duración, lugar, equipo, lesiones) y de alimentación (tipo de dieta, alergias, alimentos rechazados, comidas al día).
+- **Perfil**: datos físicos (edad, sexo, estatura y peso actual, que es el Registro de peso más reciente), objetivo, preferencias de entrenamiento (nivel, días, duración, lugar, equipo, lesiones) y de alimentación (tipo de dieta, alergias, alimentos rechazados, comidas al día).
 - **Rutina**: plan semanal activo generado por IA; contiene 7 Días de rutina.
 - **Día de rutina**: día de la semana, tipo (entrenamiento o descanso) y su lista de Ejercicios.
 - **Ejercicio**: nombre, grupo muscular, series, repeticiones o duración, descanso, peso sugerido opcional, instrucciones, imagen opcional.
 - **Registro de entrenamiento**: para una fecha concreta, qué ejercicios se completaron y si la sesión se terminó.
 - **Dieta**: plan semanal activo generado por IA; contiene 7 Días de dieta con sus totales de calorías y macros.
 - **Comida / Receta**: tipo de comida (desayuno, almuerzo, cena, snack), nombre, ingredientes con cantidades, pasos, tiempo aproximado, calorías y macros por porción.
-- **Solicitud de alternativa**: objetivo (ejercicio, receta, rutina o dieta), motivo, texto libre opcional y estado (en curso, completada, fallida).
+- **Solicitud de alternativa**: objetivo (ejercicio, receta, rutina o dieta), motivo, texto libre opcional y estado (en curso, propuesta pendiente, aceptada, descartada, fallida). Las de rutina o dieta completa pasan de en curso a aceptada sin propuesta pendiente.
 - **Registro de peso**: fecha y peso en kg; único por fecha.
 - **Resumen de entrenamiento**: sesiones completadas y programadas en la semana actual y racha de semanas cumplidas (calculadas por el servidor).
 
@@ -259,8 +280,8 @@ El usuario revisa y modifica sus datos y preferencias desde la pestaña Perfil, 
 
 ## Assumptions
 
-- **Plan semanal que se repite**: la rutina y la dieta son una plantilla de 7 días que se repite cada semana hasta que el usuario la regenera; el registro de ejercicios completados es por fecha, así que cada semana empieza sin marcas.
-- **Alternativa de un elemento**: la alternativa de un ejercicio o receta reemplaza ese elemento en el plan activo (para todas las semanas), no solo en la fecha actual.
+- **Plan semanal vivo**: la rutina y la dieta son un plan de 7 días que se repite cada semana; el servidor puede actualizarlo (ej. progresión de cargas) y el usuario puede regenerarlo. El registro de ejercicios completados es por fecha, así que cada semana empieza sin marcas.
+- **Alternativa de un elemento**: la alternativa aceptada de un ejercicio o receta reemplaza ese elemento en el plan activo (para todas las semanas), no solo en la fecha actual.
 - **Onboarding parcial**: el avance del onboarding no terminado se guarda solo en el dispositivo; si el usuario entra desde otro dispositivo, empieza de nuevo.
 - **Sexo**: se pide como masculino o femenino porque el servidor lo usa para los cálculos nutricionales.
 - **Opciones predefinidas**: el equipo disponible (peso corporal, mancuernas, barra y discos, kettlebell, bandas elásticas, banco, barra de dominadas, máquinas de gimnasio) y las alergias (gluten, lactosa, frutos secos, maní, mariscos, huevo, soya) son listas cerradas más "otra"; el equipo final lo puede ajustar el equipo de producto.
@@ -268,6 +289,7 @@ El usuario revisa y modifica sus datos y preferencias desde la pestaña Perfil, 
 - **Fecha de referencia**: "hoy" se toma de la fecha del dispositivo.
 - **Sin escrituras offline**: las acciones sin conexión se bloquean; no se guardan para enviarse después (decisión de la constitución).
 - **Contrato con backend**: el contrato (endpoints, ejemplos de petición/respuesta y errores) se documenta pantalla por pantalla en `specs/001-allfitness-mvp/contracts/` durante la fase de plan; backend lo implementa en paralelo.
+- **Textos legales**: el contenido de los términos y de la política de tratamiento de datos (Ley 1581 de 2012) lo redacta y aloja el equipo del proyecto o backend; la app solo los enlaza y registra la aceptación.
 - **Servidor responsable**: autenticación, almacenamiento, generación con IA, calorías, macros, rachas y progresiones son responsabilidad del servidor.
 - **Fuera de alcance**: pagos y suscripciones; login social, recuperación y cambio de contraseña; cambio de correo; notificaciones push, recordatorios y su ajuste en el Perfil; wearables, Google Fit y Health Connect; funciones sociales; chat libre con la IA; edición manual de rutina o dieta; historial de planes anteriores; registro de lo comido, conteo de calorías y escáner de alimentos; lista de compras; videos de ejercicios, temporizador de descanso y registro de peso por serie; medidas corporales distintas al peso; modo oscuro personalizado y otros idiomas; panel de administrador y versiones web/iOS.
 
@@ -276,10 +298,10 @@ El usuario revisa y modifica sus datos y preferencias desde la pestaña Perfil, 
 Recorrido en emulador o dispositivo antes de dar la feature por terminada:
 
 - [ ] Flujos felices: registro → onboarding → rutina y dieta generadas; login con cuenta existente; sesión persistente al reabrir.
-- [ ] Rutina: ver la semana, marcar ejercicios y terminar la sesión de hoy; días pasados y futuros bloqueados.
+- [ ] Rutina: ver la semana, marcar ejercicios y terminar la sesión de hoy; días pasados y futuros bloqueados; regenerar a mitad de semana conserva las sesiones ya terminadas.
 - [ ] Dieta: ver los 7 días y abrir recetas; valores iguales a los de los datos de ejemplo.
-- [ ] Alternativas: ejercicio, receta, rutina y dieta completas con respuesta exitosa, lenta (~60 s) y fallida.
-- [ ] Progreso: registrar peso, fecha futura bloqueada, fecha repetida actualiza, estado vacío.
+- [ ] Alternativas: ejercicio, receta, rutina y dieta completas con respuesta exitosa, lenta (~60 s) y fallida; en ejercicio y receta, "Usar esta", "Mantener la actual" y salir sin decidir.
+- [ ] Progreso: peso del onboarding como primer registro, registrar peso, fecha futura bloqueada, fecha repetida actualiza, peso del Perfil sincronizado, estado vacío del resumen.
 - [ ] Perfil: editar cada sección, las 4 opciones de regeneración, salir con cambios sin guardar, cerrar sesión, eliminar cuenta.
 - [ ] Errores: credenciales incorrectas, correo duplicado, servidor caído, respuesta incompleta, sesión invalidada; ningún mensaje técnico.
 - [ ] Sin conexión: consultar rutina, dieta y progreso cargados; acciones de red deshabilitadas con mensaje; primera apertura sin datos.
