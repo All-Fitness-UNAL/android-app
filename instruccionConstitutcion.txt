@@ -1,0 +1,88 @@
+
+
+# Constitución del Proyecto: All Fitness (Frontend Android)
+
+## 1. Naturaleza del Proyecto
+
+All Fitness es una app Android de fitness qu para generar rutinas de ejercicio y planesde nutrición/recetas personalizados según las características, gustos y preferencias de cada usuario. El usuario puede ver y seguir su rutina, ver su dieta, pedir una alternativa si algo no le gusta (indicando cómo lo preferiría) y
+consultar su progreso.
+
+Módulos principales: Rutinas, Nutrición/Dieta y Progreso. Módulos de soporte: Login/Registro, Onboarding/Perfil y Feedback a la IA.
+
+## 2. Alcance del Equipo (Regla Fundamental)
+
+* **Este repositorio es SOLO FRONTEND.** Nuestro equipo construye únicamente la app Android: pantallas, navegación, estado de UI, consumo de API y caché local.
+* **Fuera de alcance:** El backend, la base de datos del servidor, la lógica de autenticación, los modelos/prompts de IA y la generación de rutinas y recetas son responsabilidad del equipo de backend (3 ingenieros). El agente NO debe implementar, simular como lógica real ni diseñar nada de eso.
+* **La IA vive en el backend:** La app nunca llama directamente a proveedores de IA ni guarda claves de API. Solo envía peticiones al backend y muestra lo que recibe.
+* **Cálculos de negocio:** Calorías, macros, progresiones de carga, etc. los calcula el backend. El frontend solo da
+formato y muestra (fechas, unidades, porcento derivados trivialmente).
+
+## 3. Stack Tecnológico (Reglas de Implementación)
+
+* **Lenguaje:** Kotlin en todo el proyecto. No usar Java.
+* **UI:** Jetpack Compose con Material 3. No usar XML layouts ni Fragments.
+* **Navegación:** Navigation Compose.
+* **Arquitectura:** MVVM simple: Screen (Composable) → ViewModel (StateFlow de estado de UI) → Repository → fuente de datos (API remota, caché local o mock). Sin Clean Architecture, sin capas de UseCase salvo que una lógica se repita en 2+ ViewModels.
+* **Red:** Retrofit + kotlinx.serialization.nía (no RxJava).
+* **Persistencia local:** Room para la caché offline de rutina, dieta y progreso; DataStore para preferencias y token de sesión.
+* **Inyección de dependencias:** Hilt.
+* **Imágenes:** Coil.
+* **Plataforma:** minSdk 26 (Android 8.0), targetSdk en la última versión estable. Un único módulo Gradle `app`.
+* **Dependencias nuevas:** No añadir librerías fuera de esta lista sin justificarlo en el plan.md de la feature.
+
+## 4. Contrato de Datos con Backend
+
+* **El frontend define el contrato:** Nuestro equipo propone los modelos de datos (DTOs) y endpoints que necesita cada pantalla. Cada feature documenta su contrato en `specs/[feature]/contracts/` (endpoints, método, request/response JSON de ejemplo y códigos de error) para compartirlo con backend.
+* **Mocks primero:** Mientras el endpoint real no exista, cada Repository tiene una implementación Fake que devuelve datos de JSON de ejemplo que cumplen el contrato. El cambio entre Fake y real se hace con una sola configuración (build flavor `mock` / `real`), nunca editando pantallas.
+* **Separación DTO / modelo de UI:** Los DTOs de red no llegan a los Composables. El Repository los mapea a modelos de dominio simples, para que un cambio de backend solo toque el mapeo.
+* **Cambio de contrato:** Si el backend entrega algo distinto a lo acordado, no se "parcha" en la UI: se actualiza primero el contrato de la feature y luego el código.
+* **Convenciones del JSON:** camelCase en campos, fechas en ISO-8601 (UTC), unidades métricas (kg, cm, kcal, gramos).
+
+## 5. Reglas de Dominio y UX
+
+* **Contenido de salud generado por IA:** Toda pantalla que muestre una rutina o dieta generada por IA debe incluir un aviso visible de que es orientativa y no reemplaza la recomendación de un profesional de salud.
+* **Generación con IA es lenta y puede fallatenido a la IA (generar, regenerar, pediralternativa) debe mostrar estado de carga claro, impedir envíos duplicados mientras espera y ofrecer reintentar si falla.
+* **Regenerar no destruye:** Pedir otra rutina o receta nunca debe borrar la actual en pantalla hasta que la nueva llegue correctamente.
+* **Offline:** La rutina, la dieta y el último progreso cargados deben poder consultarse sin conexión desde la caché. Las acciones que requieren red (generar con IA, editar perfil, login) se deshabilitan sin conexión con un mensaje claro. No se implementa cola de sincronización de escrituras offline salvo que una spec lo pida.
+* **Sesión:** Todas las pantallas excepto Login/Registro requieren sesión activa. Si el backend responde 401, se limpia la sesión y se vuelve al Login.
+* **Estados obligatorios:** Toda pantalla que carga datos maneja los estados: cargando, contenido, vacío y error.
+
+## 6. Estructura y Estilo de Código
+
+* **Paquetes por feature:** `auth/`, `onboar`, `nutrition/`, `progress/`, `aifeedback/`,más `core/` (red, base de datos, tema, componentes comunes) y `navigation/`. Cada feature contiene sus pantallas, ViewModel, Repository y modelos.
+* **Componentes reutilizables:** Los elementos visuales repetidos (botones, tarjetas, estados de carga/error, aviso de IA) viven en `core/ui` y se reutilizan; no se duplican.
+* **Diseño:** Colores, tipografía y espaciados salen del tema de Material 3 (`core/ui/theme`). No usar colores ni
+tamaños hardcodeados en las pantallas.
+* **Textos:** Toda la interfaz está en español y todo texto visible va en `strings.xml` (nada hardcodeado), para permitir traducción futura.
+* **Estilo:** Composables sin estado siempre); el estado vive en el ViewModel. Funciones
+pequeñas y legibles.
+* **Nomenclatura:** camelCase para funciones/variables, PascalCase para clases, Composables y tipos. Pantallas terminan en `Screen`, ViewModels en `ViewModel`, estados en `UiState`.
+* **Accesibilidad:** contentDescription en imágenes e íconos con significado, áreas táctiles de mínimo 48dp y
+contraste suficiente.
+
+## 7. Manejo de Errores
+
+* **Nunca mostrar errores crudos:** Ningún stack trace, mensaje de excepción ni código HTTP llega al usuario. Todo error se traduce a un mensaje amigable en español (ej: "No pudimos generar tu rutina. Inténtalo de nuevo").
+* **Mapeo centralizado:** Los errores de red y HTTP (sin conexión, timeout, 400, 401, 404, 409, 5xx) se mapean en un solo lugar de `core/network` a un tipo de error de la app; las pantallas solo deciden qué mensaje mostrar.
+* **Sin crashes por datos:** Campos faltantes o inesperados en la respuesta del backend no deben cerrar la app; se manejan como error o con valores por defecto definidos en el mapeo.
+
+## 8. Calidad y Pruebas
+
+* **Validación manual como estándar:** Por ser un MVP, la verificación principal es manual: cada feature termina con una lista de comprobación en su spec (flujos felices, estados de error, sin conexión) que se recorre en emulador o
+dispositivo antes de darla por terminada.
+* **Pruebas automatizadas opcionales:** Solo se escriben si la spec de la feature lo pide explícitamente. No se generan tareas de tests por defecto.
+* **Build limpio:** El proyecto debe compilar sin errores y sin warnings nuevos de lint antes de cerrar una feature.
+
+## 9. Comportamiento del Agente de IA (Reglas SDD)
+
+* **Cero Código Sombra (Shadow Code):** Construye estrictamente lo documentado en spec.md. No añadas pantallas, opciones ni features "por si acaso" (no pagos, no redes sociales, no notificaciones, no wearables, no modo oscuro personalizado, etc., salvo que una spec lo pida).
+* **No invadir el backend:** Si una feature parece requerir lógica de servidor, IA o base de datos remota, detente y documéntalo como requisito para el equipo de backend en el contrato; no lo implementes en la app.
+* **Fuente de la verdad:** Si una instrucción del usuario contradice esta constitución, o detectas una falla lógica o un contrato de datos incompleto, detente. Advierte del problema y solicita actualizar spec.md o el contrato antes de tocar código.
+
+## Gobernanza
+
+* Esta constitución prevalece sobre cualquie Cada plan.md debe verificar el cumplimientode estos principios (Constitution Check).
+* Las enmiendas se hacen solo mediante /speckit-constitution, con versión semántica: MAJOR por eliminar o redefinir principios, MINOR por añadir principios o secciones, PATCH por aclaraciones.
+* Cambios de stack o de alcance entre frontend y backend requieren acuerdo del equipo completo antes de enmendar.
+
+Versión: 1.0.0 | Ratificada: 2026-10-28
