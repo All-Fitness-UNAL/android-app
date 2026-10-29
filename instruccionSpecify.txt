@@ -1,0 +1,94 @@
+## Features principales
+
+### 1. Registro, Inicio de Sesión y Sesión
+- El usuario debe poder registrarse con nombre, correo electrónico y contraseña, e iniciar sesión con correo y contraseña.
+- La creación de la cuenta y la validación de credenciales las hace el backend; la app solo valida el formato antes de enviar (campos obligatorios no vacíos, correo con formato válido, contraseña de mínimo 8 caracteres).
+- Si el correo ya está registrado o las credenciales son incorrectas, la app debe mostrar un mensaje claro en español, sin detalles técnicos.
+- La sesión se mantiene al cerrar y reabrir la app hasta que el usuario cierre sesión o el backend la invalide; en ese caso la app vuelve al Login.
+- El usuario puede cerrar sesión desde su Perfil; al hacerlo se borran la sesión y los datos guardados en el dispositivo.
+- Login y registro requieren conexión a internet.
+
+### 2. Onboarding
+- Después de registrarse, el usuario debe completar un onboarding obligatorio antes de usar la app. Si lo abandona a la mitad, lo retoma al volver a entrar.
+- El onboarding recoge, en pasos cortos:
+  - Datos físicos: edad, sexo, estatura (cm) y peso actual (kg).
+  - Objetivo: perder grasa, ganar masa muscular o mejorar la condición física general.
+  - Entrenamiento: nivel (principiante, intermedio, avanzado), días disponibles por semana (1 a 7), duración por sesión en minutos, lugar (casa o gimnasio), equipo disponible y lesiones o limitaciones (texto libre opcional).
+  - Alimentación: tipo de dieta (omnívora, vegetariana, vegana), alergias o intolerancias, alimentos que no le gustan y número de comidas al día (3 a 5).
+- Cada paso valida rangos razonables antes de avanzar (edad 16 a 100 años, estatura 100 a 250 cm, peso 30 a 300 kg).
+- Al terminar, la app envía el perfil al backend y solicita la primera rutina y la primera dieta, mostrando un estado de carga mientras la IA las genera.
+- Todos estos datos se pueden modificar después desde el Perfil (ver Feature 7).
+
+### 3. Rutinas (Ver y Seguir)
+- El usuario tiene una sola rutina activa a la vez: un plan semanal con sus días de entrenamiento según su disponibilidad; los demás días se muestran como descanso.
+- La pantalla de rutina muestra la semana completa y destaca el día de hoy.
+- Cada día de entrenamiento muestra su lista de ejercicios. Cada ejercicio muestra: nombre, grupo muscular, series, repeticiones o duración, descanso entre series, peso sugerido (si aplica) e instrucciones breves de ejecución. Si el backend envía una imagen, se muestra.
+- El usuario puede marcar cada ejercicio como completado y marcar la sesión del día como terminada. Esto se envía al backend y alimenta el módulo de Progreso.
+- Solo se puede marcar como terminada la sesión del día actual (según la fecha del dispositivo), no días pasados ni futuros.
+- El usuario puede pedir regenerar la rutina completa (ver Feature 5).
+- La pantalla debe mostrar el aviso de que la rutina es orientativa y no reemplaza a un profesional de salud.
+
+### 4. Nutrición / Dieta
+- El usuario tiene una sola dieta activa a la vez: un plan semanal con las comidas de cada día según el número de comidas que eligió (ej. desayuno, almuerzo, cena, snacks).
+- Cada día muestra sus comidas y los totales del día de calorías y macros (proteína, carbohidratos, grasas) tal como los entrega el backend.
+- Cada comida abre su receta con: nombre, ingredientes con cantidades (g o ml), pasos de preparación, tiempo aproximado, y calorías y macros por porción.
+- La app NO calcula calorías ni macros; solo muestra lo que recibe.
+- El usuario puede pedir regenerar la dieta completa (ver Feature 5).
+- La pantalla debe mostrar el aviso de que la dieta es orientativa y no reemplaza a un profesional de salud.
+
+### 5. Alternativas y Feedback a la IA
+- Desde un ejercicio, una receta, la rutina completa o la dieta completa, el usuario puede pedir una alternativa.
+- Al pedirla, el usuario elige un motivo y opcionalmente escribe cómo lo preferiría (máximo 300 caracteres):
+  - Ejercicio: "No me gusta", "No tengo el equipo", "Me causa molestia o dolor", "Muy difícil", "Muy fácil".
+  - Receta: "No me gusta", "No tengo los ingredientes", "Es muy elaborada", "No encaja con mi dieta o alergias".
+  - Rutina o dieta completa: solo el texto libre opcional.
+- Si el motivo es "Me causa molestia o dolor", la app muestra además una recomendación de consultar a un profesional de salud.
+- **Regla Crítica (Regenerar no destruye):** mientras la IA genera, el contenido actual sigue visible. Solo cuando la alternativa llega correctamente reemplaza al contenido anterior. Si falla, se conserva el actual y se ofrece reintentar.
+- Mientras espera, la app muestra un estado de carga claro y deshabilita la acción para impedir solicitudes duplicadas.
+- La generación puede tardar hasta 60 segundos; la app debe tolerar esa espera sin dar error antes de tiempo.
+
+### 6. Progreso
+- El usuario puede registrar su peso corporal (kg) con una fecha (por defecto hoy; no se permiten fechas futuras). Solo hay un registro por día: si ya existe uno para esa fecha, se actualiza.
+- El usuario puede ver su historial de peso como lista y como gráfica simple de evolución en el tiempo.
+- El usuario puede ver un resumen de entrenamiento: sesiones completadas en la semana actual frente a las programadas y su racha de semanas cumplidas, tal como lo entrega el backend.
+- Si aún no hay datos, se muestra un estado vacío que invita a registrar el primer peso o completar la primera sesión.
+
+### 7. Perfil de Usuario
+- El Perfil es una pestaña de la barra inferior y muestra el nombre y correo del usuario, y un resumen de sus datos y preferencias.
+- El usuario puede editar, agrupados en secciones, los mismos datos del onboarding: datos físicos, objetivo, preferencias de entrenamiento y preferencias de alimentación. Se aplican las mismas validaciones del onboarding.
+- Al guardar, los cambios se envían al backend. Si el envío falla, los datos editados no se pierden de la pantalla y se ofrece reintentar.
+- Editar el perfil NO regenera los planes automáticamente: después de guardar, la app pregunta si quiere regenerar la rutina, la dieta, ambas o ninguna.
+- Si el usuario sale de una sección con cambios sin guardar, la app le pide confirmar antes de descartarlos.
+- Desde el Perfil el usuario puede:
+  - Ver el aviso de que el contenido generado por IA es orientativo y no reemplaza a un profesional de salud.
+  - Cerrar sesión (con confirmación).
+  - Eliminar su cuenta: requiere confirmación explícita (ej. escribir "ELIMINAR"), la eliminación la realiza el backend y, al completarse, la app borra los datos del dispositivo y vuelve al Login.
+- El correo no se puede cambiar desde la app.
+
+### 8. Comportamiento Transversal (todas las pantallas)
+- Navegación principal con barra inferior: Rutina, Dieta, Progreso y Perfil.
+- Toda pantalla que carga datos maneja los estados: cargando, contenido, vacío y error (con opción de reintentar).
+- Sin conexión: la rutina, la dieta y el último progreso cargados se pueden consultar, con un indicador de que pueden no estar actualizados. Las acciones que requieren red se deshabilitan con un mensaje claro: login/registro, generar o pedir alternativas, editar perfil, marcar ejercicios o sesiones y registrar peso.
+- Ningún error técnico llega al usuario; todos se muestran como mensajes amigables en español.
+- Toda la interfaz está en español.
+
+## Dependencia con Backend
+- Autenticación, almacenamiento de datos, generación con IA y todos los cálculos (calorías, macros, rachas, progresiones) son del backend. La app solo consume su API.
+- Los endpoints aún no existen: esta spec debe definir el contrato que la app necesita (pantalla por pantalla) y la app debe poder funcionar con datos de ejemplo que cumplan ese contrato mientras backend lo implementa.
+
+## Lo que NO se va a construir en esta iteración (Non-Goals)
+
+- NO habrá pagos, suscripciones ni planes premium.
+- NO habrá login con Google/redes sociales, recuperación ni cambio de contraseña desde la app.
+- NO habrá notificaciones push ni recordatorios de entrenamiento o comidas, y por tanto tampoco un ajuste de notificaciones en el Perfil.
+- NO habrá integración con wearables, Google Fit ni Health Connect.
+- NO habrá funciones sociales (compartir, amigos, rankings, comunidad).
+- NO habrá chat libre con la IA; la única interacción con la IA es generar planes y pedir alternativas.
+- NO habrá edición manual de la rutina o la dieta (cambiar series, repeticiones o ingredientes a mano); los cambios se piden a la IA como alternativa.
+- NO habrá historial de rutinas ni dietas anteriores; al regenerar, el plan nuevo reemplaza al activo.
+- NO habrá registro de lo que el usuario comió, conteo manual de calorías ni escáner de alimentos.
+- NO habrá lista de compras.
+- NO habrá videos de ejercicios, temporizador de descanso ni registro del peso levantado por serie.
+- NO habrá medidas corporales distintas al peso (cintura, grasa corporal, fotos de progreso).
+- NO habrá modo oscuro personalizado ni otros idiomas distintos al español.
+- NO habrá panel de administrador ni versión web/iOS.
