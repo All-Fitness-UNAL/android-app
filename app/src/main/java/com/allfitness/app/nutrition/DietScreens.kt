@@ -12,10 +12,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -42,13 +40,16 @@ import com.allfitness.app.core.network.AppResult
 import com.allfitness.app.core.network.ConnectivityObserver
 import com.allfitness.app.core.time.Today
 import com.allfitness.app.core.time.displayName
-import com.allfitness.app.core.ui.AiDisclaimer
+import com.allfitness.app.core.ui.AiGeneratingState
+import com.allfitness.app.core.ui.AiNote
+import com.allfitness.app.core.ui.AlternativeButton
+import com.allfitness.app.core.ui.AppCard
 import com.allfitness.app.core.ui.AppTopBar
-import com.allfitness.app.core.ui.LoadingState
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
 import com.allfitness.app.core.ui.StateContent
+import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.formatNumber
@@ -57,6 +58,9 @@ import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
 import com.allfitness.app.navigation.RecipeRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.DayOfWeek
+import java.time.format.TextStyle
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -64,9 +68,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
-import java.time.format.TextStyle
-import javax.inject.Inject
 
 @StringRes
 fun MealType.labelRes(): Int = when (this) {
@@ -141,7 +142,7 @@ fun DietWeekScreen(
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         if (generating) {
-            LoadingState(Modifier.padding(padding), stringResource(R.string.generating_diet))
+            AiGeneratingState(stringResource(R.string.generating_diet), Modifier.padding(padding))
             return@Scaffold
         }
         StateContent(
@@ -155,46 +156,53 @@ fun DietWeekScreen(
             modifier = Modifier.padding(padding),
         ) { diet ->
             val day = diet.days.first { it.dayOfWeek == selected }
-            LazyColumn(contentPadding = PaddingValues(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                item {
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                        items(DayOfWeek.entries) { d ->
-                            FilterChip(
-                                selected = d == selected,
-                                onClick = { viewModel.select(d) },
-                                label = { Text(d.displayName(TextStyle.SHORT)) },
-                            )
-                        }
-                    }
-                }
-                item { AiDisclaimer() }
-                item {
-                    Card(Modifier.fillMaxWidth()) {
-                        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                            Text(stringResource(R.string.diet_day_totals, day.dayOfWeek.displayName()), style = MaterialTheme.typography.titleMedium)
-                            NutritionSummary(day.totals)
-                        }
-                    }
-                }
-                items(day.meals, key = { it.id }) { meal ->
-                    Card(onClick = { onOpenMeal(day.dayOfWeek, meal.id) }, modifier = Modifier.fillMaxWidth()) {
-                        Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically) {
-                            Column(Modifier.weight(1f)) {
-                                Text(stringResource(meal.type.labelRes()), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
-                                Text(meal.recipe.name, style = MaterialTheme.typography.titleMedium)
+            Column {
+                AiNote()
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(Spacing.m),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.s),
+                ) {
+                    item {
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                            items(DayOfWeek.entries) { d ->
+                                FilterChip(
+                                    selected = d == selected,
+                                    onClick = { viewModel.select(d) },
+                                    label = { Text(d.displayName(TextStyle.SHORT)) },
+                                )
                             }
-                            Text(stringResource(R.string.kcal_value, meal.recipe.perServing.kcal), style = MaterialTheme.typography.bodyMedium)
                         }
                     }
-                }
-                item {
-                    Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                        OutlinedButton(
-                            onClick = { alternatives.open(AlternativeTarget.WholeDiet) },
-                            enabled = online,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) { Text(stringResource(R.string.action_regenerate_diet)) }
-                        if (!online) OfflineHint()
+                    item {
+                        AppCard(Modifier.fillMaxWidth()) {
+                            Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                                Text(stringResource(R.string.diet_day_totals, day.dayOfWeek.displayName()), style = MaterialTheme.typography.titleMedium)
+                                NutritionSummary(day.totals)
+                            }
+                        }
+                    }
+                    items(day.meals, key = { it.id }) { meal ->
+                        AppCard(Modifier.fillMaxWidth(), onClick = { onOpenMeal(day.dayOfWeek, meal.id) }) {
+                            Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically) {
+                                Column(Modifier.weight(1f)) {
+                                    Text(stringResource(meal.type.labelRes()), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                                    Text(meal.recipe.name, style = MaterialTheme.typography.titleMedium)
+                                }
+                                Text(stringResource(R.string.kcal_value, meal.recipe.perServing.kcal), style = MaterialTheme.typography.bodyMedium)
+                            }
+                        }
+                    }
+                    item {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                            TonalActionButton(
+                                text = stringResource(R.string.action_regenerate_diet),
+                                onClick = { alternatives.open(AlternativeTarget.WholeDiet) },
+                                enabled = online,
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+                            if (!online) OfflineHint()
+                        }
                     }
                 }
             }
@@ -252,19 +260,21 @@ fun RecipeScreen(
             onRetry = viewModel::retry,
             modifier = Modifier.padding(padding),
         ) { meal ->
-            Column(
-                Modifier.verticalScroll(rememberScrollState()).padding(Spacing.m),
-                verticalArrangement = Arrangement.spacedBy(Spacing.m),
-            ) {
-                Text(meal.recipe.name, style = MaterialTheme.typography.headlineSmall)
-                RecipeContent(meal.recipe)
-                AiDisclaimer()
-                OutlinedButton(
-                    onClick = { alternatives.open(AlternativeTarget.Recipe(meal.id)) },
-                    enabled = online,
-                    modifier = Modifier.fillMaxWidth(),
-                ) { Text(stringResource(R.string.action_request_alternative)) }
-                if (!online) OfflineHint()
+            Column {
+                AiNote()
+                Column(
+                    Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(Spacing.m),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.m),
+                ) {
+                    Text(meal.recipe.name, style = MaterialTheme.typography.headlineSmall)
+                    RecipeContent(meal.recipe)
+                    AlternativeButton(
+                        onClick = { alternatives.open(AlternativeTarget.Recipe(meal.id)) },
+                        enabled = online,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    if (!online) OfflineHint()
+                }
             }
         }
     }

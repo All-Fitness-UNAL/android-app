@@ -17,7 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -50,7 +49,9 @@ import com.allfitness.app.core.network.ConnectivityObserver
 import com.allfitness.app.core.session.SessionManager
 import com.allfitness.app.core.session.SessionState
 import com.allfitness.app.core.time.Today
-import com.allfitness.app.core.ui.AiDisclaimer
+import com.allfitness.app.core.ui.AiGeneratingState
+import com.allfitness.app.core.ui.AiNote
+import com.allfitness.app.core.ui.AppCard
 import com.allfitness.app.core.ui.AppTopBar
 import com.allfitness.app.core.ui.ErrorState
 import com.allfitness.app.core.ui.LoadingState
@@ -70,6 +71,7 @@ import com.allfitness.app.nutrition.DietRepository
 import com.allfitness.app.progress.ProgressRepository
 import com.allfitness.app.routines.RoutineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -82,7 +84,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 // ---------------------------------------------------------------- Perfil
 
@@ -141,38 +142,44 @@ fun ProfileScreen(
             onRetry = viewModel::onResume,
             modifier = Modifier.padding(padding),
         ) { profile ->
-            LazyColumn(contentPadding = PaddingValues(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                item {
-                    Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                        Text(user?.name.orEmpty(), style = MaterialTheme.typography.headlineSmall)
-                        Text(user?.email.orEmpty(), style = MaterialTheme.typography.bodyLarge)
-                        Text(stringResource(R.string.profile_email_readonly), style = MaterialTheme.typography.bodySmall)
-                    }
-                }
-                items(ProfileSection.entries) { section ->
-                    Card(Modifier.fillMaxWidth()) {
-                        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(stringResource(section.titleRes()), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
-                                TextButton(onClick = { onEdit(section) }, enabled = online) { Text(stringResource(R.string.action_edit)) }
-                            }
-                            SectionSummary(section, profile)
+            Column {
+                AiNote()
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(Spacing.m),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.s),
+                ) {
+                    item {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                            Text(user?.name.orEmpty(), style = MaterialTheme.typography.headlineSmall)
+                            Text(user?.email.orEmpty(), style = MaterialTheme.typography.bodyLarge)
+                            Text(stringResource(R.string.profile_email_readonly), style = MaterialTheme.typography.bodySmall)
                         }
                     }
-                }
-                if (!online) item { OfflineHint() }
-                item { AiDisclaimer() }
-                item {
-                    OutlinedButton(onClick = { confirmLogout = true }, modifier = Modifier.fillMaxWidth()) {
-                        Text(stringResource(R.string.action_logout))
+                    items(ProfileSection.entries) { section ->
+                        AppCard(Modifier.fillMaxWidth()) {
+                            Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(stringResource(section.titleRes()), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+                                    TextButton(onClick = { onEdit(section) }, enabled = online) { Text(stringResource(R.string.action_edit)) }
+                                }
+                                SectionSummary(section, profile)
+                            }
+                        }
                     }
-                }
-                item {
-                    TextButton(
-                        onClick = onDeleteAccount,
-                        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
-                        modifier = Modifier.fillMaxWidth(),
-                    ) { Text(stringResource(R.string.action_delete_account)) }
+                    if (!online) item { OfflineHint() }
+                    item {
+                        OutlinedButton(onClick = { confirmLogout = true }, modifier = Modifier.fillMaxWidth()) {
+                            Text(stringResource(R.string.action_logout))
+                        }
+                    }
+                    item {
+                        TextButton(
+                            onClick = onDeleteAccount,
+                            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) { Text(stringResource(R.string.action_delete_account)) }
+                    }
                 }
             }
         }
@@ -349,7 +356,7 @@ fun ProfileEditScreen(onDone: () -> Unit, viewModel: ProfileEditViewModel = hilt
         when {
             !state.loaded -> LoadingState(modifier)
             state.missing -> ErrorState(AppError.NotFound, onRetry = onDone, modifier = modifier)
-            state.regenerating -> LoadingState(modifier, stringResource(R.string.generating_plan))
+            state.regenerating -> AiGeneratingState(stringResource(R.string.generating_plan), modifier)
             else -> Column(
                 modifier.fillMaxSize().imePadding().verticalScroll(rememberScrollState()).padding(Spacing.m),
                 verticalArrangement = Arrangement.spacedBy(Spacing.m),

@@ -29,6 +29,7 @@ import com.allfitness.app.core.network.AppResult
 import com.allfitness.app.core.network.ConnectivityObserver
 import com.allfitness.app.core.session.SessionManager
 import com.allfitness.app.core.time.Today
+import com.allfitness.app.core.ui.AiGeneratingState
 import com.allfitness.app.core.ui.EmptyState
 import com.allfitness.app.core.ui.LoadingState
 import com.allfitness.app.core.ui.OfflineHint
@@ -38,6 +39,7 @@ import com.allfitness.app.nutrition.DietRepository
 import com.allfitness.app.progress.ProgressRepository
 import com.allfitness.app.routines.RoutineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +47,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 data class OnboardingUiState(
     val loaded: Boolean = false,
@@ -160,7 +161,15 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
         val modifier = Modifier.padding(padding)
         when {
             !state.loaded -> LoadingState(modifier)
-            state.submitting -> LoadingState(modifier, stringResource(R.string.onboarding_generating))
+            state.submitting -> AiGeneratingState(
+                message = stringResource(R.string.onboarding_generating),
+                modifier = modifier,
+                stages = listOf(
+                    stringResource(R.string.generating_stage_profile),
+                    stringResource(R.string.generating_stage_routine),
+                    stringResource(R.string.generating_stage_diet),
+                ),
+            )
             state.submitError != null -> EmptyState(
                 message = stringResource(state.submitError!!),
                 modifier = modifier,

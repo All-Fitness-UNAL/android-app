@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,6 +51,7 @@ import com.allfitness.app.core.network.ConnectivityObserver
 import com.allfitness.app.core.time.Today
 import com.allfitness.app.core.time.longLabel
 import com.allfitness.app.core.time.shortLabel
+import com.allfitness.app.core.ui.AppCard
 import com.allfitness.app.core.ui.AppTopBar
 import com.allfitness.app.core.ui.FormTextField
 import com.allfitness.app.core.ui.MessageEffect
@@ -67,6 +67,10 @@ import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
 import com.allfitness.app.onboarding.ProfileValidation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -75,10 +79,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneOffset
-import javax.inject.Inject
 
 data class ProgressView(val weights: List<WeightEntry>, val summary: TrainingSummary?)
 
@@ -188,7 +188,7 @@ fun ProgressScreen(viewModel: ProgressViewModel = hiltViewModel()) {
             LazyColumn(contentPadding = PaddingValues(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 item { SummaryCard(view.summary) }
                 item {
-                    Card(Modifier.fillMaxWidth()) {
+                    AppCard(Modifier.fillMaxWidth()) {
                         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                             Text(stringResource(R.string.weight_history), style = MaterialTheme.typography.titleMedium)
                             if (view.weights.isEmpty()) {
@@ -220,7 +220,7 @@ fun ProgressScreen(viewModel: ProgressViewModel = hiltViewModel()) {
 
 @Composable
 private fun SummaryCard(summary: TrainingSummary?) {
-    Card(Modifier.fillMaxWidth()) {
+    AppCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(stringResource(R.string.summary_title), style = MaterialTheme.typography.titleMedium)
             when {
