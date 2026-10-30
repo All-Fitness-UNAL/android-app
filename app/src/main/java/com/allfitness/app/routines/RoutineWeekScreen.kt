@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -36,13 +35,14 @@ import com.allfitness.app.core.network.ConnectivityObserver
 import com.allfitness.app.core.time.Today
 import com.allfitness.app.core.time.displayName
 import com.allfitness.app.core.time.shortLabel
-import com.allfitness.app.core.ui.AiDisclaimer
+import com.allfitness.app.core.ui.AiGeneratingState
+import com.allfitness.app.core.ui.AiNote
 import com.allfitness.app.core.ui.AppTopBar
-import com.allfitness.app.core.ui.LoadingState
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
 import com.allfitness.app.core.ui.StateContent
+import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.mapContent
@@ -50,6 +50,8 @@ import com.allfitness.app.core.ui.messageRes
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -57,8 +59,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import javax.inject.Inject
 
 data class WeekDayRow(val date: LocalDate, val day: RoutineDay, val isToday: Boolean, val finished: Boolean)
 
@@ -139,7 +139,7 @@ fun RoutineWeekScreen(
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         if (generating) {
-            LoadingState(Modifier.padding(padding), stringResource(R.string.generating_routine))
+            AiGeneratingState(stringResource(R.string.generating_routine), Modifier.padding(padding))
             return@Scaffold
         }
         StateContent(
@@ -152,20 +152,24 @@ fun RoutineWeekScreen(
             onEmptyAction = viewModel::generate,
             modifier = Modifier.padding(padding),
         ) { rows ->
-            LazyColumn(
-                contentPadding = PaddingValues(Spacing.m),
-                verticalArrangement = Arrangement.spacedBy(Spacing.s),
-            ) {
-                item { AiDisclaimer() }
-                items(rows, key = { it.date.toString() }) { row -> DayCard(row) { onOpenDay(row.date) } }
-                item {
-                    Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                        OutlinedButton(
-                            onClick = { alternatives.open(AlternativeTarget.WholeRoutine) },
-                            enabled = online,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) { Text(stringResource(R.string.action_regenerate_routine)) }
-                        if (!online) OfflineHint()
+            Column {
+                AiNote()
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(Spacing.m),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.s),
+                ) {
+                    items(rows, key = { it.date.toString() }) { row -> DayCard(row) { onOpenDay(row.date) } }
+                    item {
+                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                            TonalActionButton(
+                                text = stringResource(R.string.action_regenerate_routine),
+                                onClick = { alternatives.open(AlternativeTarget.WholeRoutine) },
+                                enabled = online,
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+                            if (!online) OfflineHint()
+                        }
                     }
                 }
             }

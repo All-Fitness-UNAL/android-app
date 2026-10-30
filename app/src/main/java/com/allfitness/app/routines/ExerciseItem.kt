@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,6 +19,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import coil3.compose.AsyncImage
 import com.allfitness.app.R
+import com.allfitness.app.core.ui.AppCard
 import com.allfitness.app.core.ui.formatNumber
 import com.allfitness.app.core.ui.theme.Spacing
 
@@ -35,7 +35,7 @@ fun ExerciseItem(
     onCheckedChange: ((Boolean) -> Unit)? = null,
     trailing: (@Composable () -> Unit)? = null,
 ) {
-    Card(modifier.fillMaxWidth()) {
+    AppCard(modifier.fillMaxWidth()) {
         Row(Modifier.padding(Spacing.m), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
             if (checked != null) {
                 // TalkBack anuncia qué ejercicio se marca.

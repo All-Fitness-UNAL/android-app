@@ -13,7 +13,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -35,7 +34,8 @@ import com.allfitness.app.core.network.ConnectivityObserver
 import com.allfitness.app.core.time.Today
 import com.allfitness.app.core.time.displayName
 import com.allfitness.app.core.time.shortLabel
-import com.allfitness.app.core.ui.AiDisclaimer
+import com.allfitness.app.core.ui.AiNote
+import com.allfitness.app.core.ui.AlternativeButton
 import com.allfitness.app.core.ui.AppTopBar
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
@@ -49,6 +49,8 @@ import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
 import com.allfitness.app.navigation.RoutineDayRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -57,8 +59,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import javax.inject.Inject
 
 data class DayView(
     val day: RoutineDay,
@@ -174,38 +174,44 @@ fun RoutineDayScreen(
             modifier = Modifier.padding(padding),
         ) { view ->
             val canEdit = view.editable && online
-            LazyColumn(contentPadding = PaddingValues(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                item { AiDisclaimer() }
-                when {
-                    view.day.type == DayType.REST -> item { Text(stringResource(R.string.rest_day_message), style = MaterialTheme.typography.bodyLarge) }
-                    !view.isToday -> item { Text(stringResource(R.string.only_today_message), style = MaterialTheme.typography.bodyMedium) }
-                    !online && !view.finished -> item { OfflineHint() }
-                }
-                items(view.day.exercises, key = { it.id }) { exercise ->
-                    ExerciseItem(
-                        exercise = exercise,
-                        checked = if (view.day.type == DayType.TRAINING) exercise.id in view.completed else null,
-                        onCheckedChange = if (canEdit) ({ viewModel.toggle(exercise.id, it) }) else null,
-                        trailing = {
-                            TextButton(
-                                onClick = { alternatives.open(AlternativeTarget.Exercise(exercise.id)) },
-                                enabled = online,
-                            ) { Text(stringResource(R.string.action_request_alternative)) }
-                        },
-                    )
-                }
-                if (view.day.type == DayType.TRAINING) {
-                    item {
-                        Column(Modifier.fillMaxWidth().padding(top = Spacing.s)) {
-                            if (view.finished) {
-                                Text(stringResource(R.string.session_finished), color = MaterialTheme.colorScheme.primary)
-                            } else if (view.isToday) {
-                                // Se puede terminar aunque falten ejercicios (FR-014).
-                                Button(
-                                    onClick = viewModel::finishSession,
-                                    enabled = canEdit && !finishing,
-                                    modifier = Modifier.fillMaxWidth(),
-                                ) { Text(stringResource(R.string.action_finish_session)) }
+            Column {
+                AiNote()
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(Spacing.m),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.s),
+                ) {
+                    when {
+                        view.day.type == DayType.REST -> item { Text(stringResource(R.string.rest_day_message), style = MaterialTheme.typography.bodyLarge) }
+                        !view.isToday -> item { Text(stringResource(R.string.only_today_message), style = MaterialTheme.typography.bodyMedium) }
+                        !online && !view.finished -> item { OfflineHint() }
+                    }
+                    items(view.day.exercises, key = { it.id }) { exercise ->
+                        ExerciseItem(
+                            exercise = exercise,
+                            checked = if (view.day.type == DayType.TRAINING) exercise.id in view.completed else null,
+                            onCheckedChange = if (canEdit) ({ viewModel.toggle(exercise.id, it) }) else null,
+                            trailing = {
+                                AlternativeButton(
+                                    onClick = { alternatives.open(AlternativeTarget.Exercise(exercise.id)) },
+                                    enabled = online,
+                                )
+                            },
+                        )
+                    }
+                    if (view.day.type == DayType.TRAINING) {
+                        item {
+                            Column(Modifier.fillMaxWidth().padding(top = Spacing.s)) {
+                                if (view.finished) {
+                                    Text(stringResource(R.string.session_finished), color = MaterialTheme.colorScheme.primary)
+                                } else if (view.isToday) {
+                                    // Se puede terminar aunque falten ejercicios (FR-014).
+                                    Button(
+                                        onClick = viewModel::finishSession,
+                                        enabled = canEdit && !finishing,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    ) { Text(stringResource(R.string.action_finish_session)) }
+                                }
                             }
                         }
                     }

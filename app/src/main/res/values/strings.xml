@@ -256,4 +256,21 @@
     <string name="delete_title">Eliminar cuenta</string>
     <string name="delete_message">Se eliminarán tu cuenta y todos tus datos de forma permanente. Esta acción no se puede deshacer.</string>
     <string name="delete_field">Escribe %1$s para confirmar</string>
+
+    <!-- Rediseño Línea: etiquetas de dato (DataStrip) y etapas de generación -->
+    <string name="label_sets">SERIES</string>
+    <string name="label_reps">REPS</string>
+    <string name="label_duration">DURACIÓN</string>
+    <string name="label_rest">DESCANSO</string>
+    <string name="label_weight">PESO</string>
+    <string name="label_protein">PROTEÍNA</string>
+    <string name="label_carbs">CARBOHIDRATOS</string>
+    <string name="label_fat">GRASAS</string>
+    <string name="label_kcal">KCAL</string>
+    <string name="label_time">TIEMPO</string>
+    <string name="value_seconds">%1$d s</string>
+    <string name="value_grams">%1$s g</string>
+    <string name="generating_stage_profile">Leyendo tu perfil</string>
+    <string name="generating_stage_routine">Armando tu rutina</string>
+    <string name="generating_stage_diet">Armando tu dieta</string>
 </resources>
