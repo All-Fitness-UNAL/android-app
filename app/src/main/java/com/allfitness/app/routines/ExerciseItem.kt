@@ -122,9 +122,9 @@ private fun Exercise.dataCells(): List<DataCell> = buildList {
         if (reps != null) {
             DataCell(stringResource(R.string.label_reps), reps.toString())
         } else {
-            DataCell(stringResource(R.string.label_duration), stringResource(R.string.value_seconds, durationSeconds ?: 0))
+            DataCell(stringResource(R.string.label_duration), (durationSeconds ?: 0).toString(), stringResource(R.string.unit_seconds))
         },
     )
-    add(DataCell(stringResource(R.string.label_rest), stringResource(R.string.value_seconds, restSeconds)))
+    add(DataCell(stringResource(R.string.label_rest), restSeconds.toString(), stringResource(R.string.unit_seconds)))
     suggestedWeightKg?.let { add(DataCell(stringResource(R.string.label_weight), formatNumber(it), stringResource(R.string.unit_kg))) }
 }
