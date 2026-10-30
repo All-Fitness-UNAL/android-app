@@ -2,6 +2,9 @@ package com.allfitness.app.core.ui.theme
 
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.colorspace.ColorSpaces
+import kotlin.math.pow
+import kotlin.math.sqrt
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -39,6 +42,20 @@ class ContrastTest {
     @Test fun routineLineOnSignal() = check(3f) { _, a -> DarkAppColors.lineRoutine to a.signal }
     @Test fun hereOnSignal() = check(4.5f) { _, a -> a.here to a.signal }
     @Test fun tonalButton() = check(4.5f) { s, _ -> s.onSecondaryContainer to s.secondaryContainer }
+
+    // Tonal sobre hojas y diálogos (surfaceContainerHigh): sin separación, "Mantener la actual" parece texto suelto.
+    @Test
+    fun tonalStandsOutOnSheet() = themes.forEach { (name, s, _) ->
+        val distance = oklabDistance(s.secondaryContainer, s.surfaceContainerHigh)
+        assertTrue("$name: ΔE $distance < 4.5", distance >= 4.5f)
+    }
+
+    /** Distancia OKLab ×100, la misma escala que el validador de paletas. */
+    private fun oklabDistance(a: Color, b: Color): Float {
+        val x = a.convert(ColorSpaces.Oklab)
+        val y = b.convert(ColorSpaces.Oklab)
+        return 100 * sqrt((x.red - y.red).pow(2) + (x.green - y.green).pow(2) + (x.blue - y.blue).pow(2))
+    }
     @Test fun errorOnSurface() = check(4.5f) { s, _ -> s.error to s.surface }
     @Test fun outlineOnSurface() = check(3f) { s, _ -> s.outline to s.surface }
 

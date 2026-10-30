@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -16,9 +18,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
@@ -29,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.lifecycle.ViewModel
@@ -40,6 +43,7 @@ import com.allfitness.app.core.network.AppResult
 import com.allfitness.app.core.ui.FREE_TEXT_MAX
 import com.allfitness.app.core.ui.FormTextField
 import com.allfitness.app.core.ui.OfflineHint
+import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.messageRes
 import com.allfitness.app.core.ui.theme.Spacing
@@ -236,7 +240,11 @@ fun AlternativeHost(viewModel: AlternativeViewModel, online: Boolean) {
         confirmValueChange = { it != SheetValue.Hidden || !busy },
     )
 
-    ModalBottomSheet(onDismissRequest = viewModel::dismiss, sheetState = sheetState) {
+    ModalBottomSheet(
+        onDismissRequest = viewModel::dismiss,
+        sheetState = sheetState,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ) {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -292,11 +300,10 @@ private fun RequestForm(state: AlternativeUiState, target: AlternativeTarget, on
     if (state.exerciseReason == ExerciseReason.PAIN && target is AlternativeTarget.Exercise) {
         // FR-019
         Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
-            Text(
-                stringResource(R.string.alt_pain_warning),
-                modifier = Modifier.padding(Spacing.m),
-                color = MaterialTheme.colorScheme.onErrorContainer,
-            )
+            Row(Modifier.padding(Spacing.m), horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                Icon(painterResource(R.drawable.ic_info), contentDescription = null, tint = MaterialTheme.colorScheme.onErrorContainer)
+                Text(stringResource(R.string.alt_pain_warning), color = MaterialTheme.colorScheme.onErrorContainer)
+            }
         }
     }
     FormTextField(
@@ -310,20 +317,20 @@ private fun RequestForm(state: AlternativeUiState, target: AlternativeTarget, on
         Text(stringResource(it.message), color = MaterialTheme.colorScheme.error)
     }
     if (!online) OfflineHint()
-    Button(onClick = viewModel::submit, enabled = online, modifier = Modifier.fillMaxWidth()) {
+    Button(onClick = viewModel::submit, enabled = online, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.small) {
         Text(stringResource(if (state.phase is AlternativePhase.Failed) R.string.action_retry else R.string.action_send))
     }
 }
 
 @Composable
 private fun <T> ReasonList(options: List<T>, selected: T?, label: (T) -> Int, onSelect: (T) -> Unit) {
-    Column {
+    Column(Modifier.selectableGroup()) {
         options.forEach { option ->
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .selectable(selected = option == selected, role = Role.RadioButton, onClick = { onSelect(option) })
-                    .padding(vertical = Spacing.xs),
+                    .heightIn(min = Spacing.routeRowHeight)
+                    .selectable(selected = option == selected, role = Role.RadioButton, onClick = { onSelect(option) }),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(selected = option == selected, onClick = null)
@@ -352,10 +359,8 @@ private fun ProposalView(
     error?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error) }
     if (!online) OfflineHint()
     Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-        OutlinedButton(onClick = viewModel::dismiss, enabled = !accepting, modifier = Modifier.weight(1f)) {
-            Text(stringResource(R.string.action_keep_current))
-        }
-        Button(onClick = viewModel::accept, enabled = online && !accepting, modifier = Modifier.weight(1f)) {
+        TonalActionButton(stringResource(R.string.action_keep_current), viewModel::dismiss, Modifier.weight(1f), enabled = !accepting)
+        Button(onClick = viewModel::accept, enabled = online && !accepting, modifier = Modifier.weight(1f), shape = MaterialTheme.shapes.small) {
             Text(stringResource(if (accepting) R.string.loading else R.string.action_use_this))
         }
     }
