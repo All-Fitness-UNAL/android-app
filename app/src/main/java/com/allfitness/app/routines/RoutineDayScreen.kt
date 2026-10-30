@@ -65,6 +65,7 @@ data class DayView(
     val completed: Set<String>,
     val finished: Boolean,
     val isToday: Boolean,
+    val isPast: Boolean = false,
 ) {
     /** Solo se registra la sesión de hoy, en un día de entrenamiento y sin terminar (FR-013). */
     val editable get() = isToday && day.type == DayType.TRAINING && !finished
@@ -98,6 +99,7 @@ class RoutineDayViewModel @Inject constructor(
                 completed = saved - pending.filterValues { !it }.keys + pending.filterValues { it }.keys,
                 finished = log?.sessionFinished == true,
                 isToday = date == today,
+                isPast = date < today,
             )
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UiState.Loading)
@@ -197,7 +199,13 @@ fun RoutineDayScreen(
                     verticalArrangement = Arrangement.spacedBy(Spacing.s),
                 ) {
                     when {
-                        view.day.type == DayType.REST -> item { Text(stringResource(R.string.rest_day_message), style = MaterialTheme.typography.bodyLarge) }
+                        // "Hoy toca descansar" solo es cierto hoy; otro día de descanso solo se nombra.
+                        view.day.type == DayType.REST -> item {
+                            Text(
+                                stringResource(if (view.isToday) R.string.rest_day_message else R.string.rest_day),
+                                style = MaterialTheme.typography.bodyLarge,
+                            )
+                        }
                         !view.isToday -> item {
                             Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                                 if (view.finished) {
@@ -216,6 +224,7 @@ fun RoutineDayScreen(
                             checked = if (view.day.type == DayType.TRAINING) exercise.id in view.completed else null,
                             enabled = online,
                             onCheckedChange = if (view.editable) ({ viewModel.toggle(exercise.id, it) }) else null,
+                            past = view.isPast,
                             trailing = {
                                 AlternativeButton(
                                     onClick = { alternatives.open(AlternativeTarget.Exercise(exercise.id)) },

@@ -222,6 +222,7 @@
     <string name="chart_need_more">Registra otro peso para ver tu tendencia.</string>
     <string name="weight_trend_title">Evolución del peso</string>
     <string name="chart_range">Entre %1$s y %2$s kg</string>
+    <string name="chart_marker">%1$s · %2$s kg</string>
     <string name="weight_history">Historial de peso</string>
     <string name="weight_empty">Aún no has registrado tu peso.</string>
     <string name="weight_value">%1$s kg</string>
@@ -290,6 +291,7 @@
     <string name="hint_weight">Entre 30 y 300 kg</string>
     <string name="hint_minutes">Entre 15 y 120 minutos</string>
     <string name="today_station_label">HOY · %1$s</string>
+    <string name="status_pair">%1$s · %2$s</string>
     <string name="action_view_today_session">Ver sesión de hoy</string>
     <string name="session_status_not_started">Sin empezar</string>
     <string name="session_progress">%1$d de %2$d</string>

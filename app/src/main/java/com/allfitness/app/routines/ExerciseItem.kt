@@ -51,6 +51,7 @@ fun ExerciseItem(
     checked: Boolean? = null,
     enabled: Boolean = false,
     onCheckedChange: ((Boolean) -> Unit)? = null,
+    past: Boolean = false,
     trailing: (@Composable () -> Unit)? = null,
 ) {
     val scheme = MaterialTheme.colorScheme
@@ -78,7 +79,14 @@ fun ExerciseItem(
                 when {
                     checked == null -> Unit
                     onCheckedChange != null -> Checkbox(checked = checked, onCheckedChange = null, enabled = enabled)
-                    else -> RouteStation(if (checked) StationState.DONE else StationState.PENDING, line)
+                    else -> RouteStation(
+                        when {
+                            checked -> StationState.DONE
+                            past -> StationState.PAST
+                            else -> StationState.PENDING
+                        },
+                        line,
+                    )
                 }
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                     Text(

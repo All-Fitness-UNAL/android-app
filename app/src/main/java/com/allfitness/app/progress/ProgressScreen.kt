@@ -34,12 +34,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -64,6 +64,7 @@ import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
 import com.allfitness.app.core.ui.RouteStation
+import com.allfitness.app.core.ui.SectionTitle
 import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.StationProgress
 import com.allfitness.app.core.ui.StationState
@@ -71,6 +72,7 @@ import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.formatNumber
 import com.allfitness.app.core.ui.messageRes
+import com.allfitness.app.core.ui.numberStyle
 import com.allfitness.app.core.ui.parseOneDecimal
 import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Motion
@@ -260,10 +262,6 @@ fun showWeightRange(weights: List<WeightEntry>): Boolean = weights.map { it.weig
 /** Una tendencia necesita al menos dos registros. */
 fun canDrawTrend(weights: List<WeightEntry>): Boolean = weights.size >= 2
 
-@Composable
-private fun SectionTitle(text: String) {
-    Text(text, Modifier.semantics { heading() }, style = MaterialTheme.typography.titleLarge)
-}
 
 @Composable
 private fun SummaryCard(summary: TrainingSummary?) {
@@ -275,22 +273,21 @@ private fun SummaryCard(summary: TrainingSummary?) {
                 Text(stringResource(R.string.summary_unavailable), style = MaterialTheme.typography.bodyMedium)
                 return@Column
             }
-            if (summary.scheduledSessions > 0) {
-                StationProgress(summary.scheduledSessions, summary.completedSessions, colors.lineProgress)
-                val sessions = stringResource(R.string.summary_sessions, summary.completedSessions, summary.scheduledSessions)
-                Row(Modifier.clearAndSetSemantics { contentDescription = sessions }) {
-                    Text(
-                        stringResource(R.string.value_fraction, summary.completedSessions, summary.scheduledSessions),
-                        Modifier.alignByBaseline(),
-                        style = MaterialTheme.typography.displaySmall,
-                    )
-                    Text(
-                        stringResource(R.string.label_sessions),
-                        Modifier.alignByBaseline().padding(start = Spacing.s),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+            // Sin sesiones programadas no hay estaciones, pero "0/0" se sigue mostrando (FR-027).
+            StationProgress(summary.scheduledSessions, summary.completedSessions, colors.lineProgress)
+            val sessions = stringResource(R.string.summary_sessions, summary.completedSessions, summary.scheduledSessions)
+            Row(Modifier.clearAndSetSemantics { contentDescription = sessions }) {
+                Text(
+                    stringResource(R.string.value_fraction, summary.completedSessions, summary.scheduledSessions),
+                    Modifier.alignByBaseline(),
+                    style = MaterialTheme.typography.displaySmall,
+                )
+                Text(
+                    stringResource(R.string.label_sessions),
+                    Modifier.alignByBaseline().padding(start = Spacing.s),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
             if (summary.completedSessions == 0 && summary.weekStreak == 0) {
                 Text(stringResource(R.string.summary_empty), style = MaterialTheme.typography.bodyMedium)
@@ -343,10 +340,7 @@ private fun WeightHistory(weights: List<WeightEntry>) {
                     Text(
                         stringResource(R.string.weight_value, formatNumber(entry.weightKg)),
                         Modifier.alignByBaseline(),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                            lineHeight = MaterialTheme.typography.titleMedium.lineHeight,
-                        ),
+                        style = numberStyle(MaterialTheme.typography.titleMedium),
                     )
                 }
             }
@@ -379,15 +373,19 @@ fun WeightChart(weights: List<WeightEntry>) {
     val range = remember(min, max) { CartesianLayerRangeProvider.fixed(minY = floor(min) - 1, maxY = ceil(max) + 1) }
     val dates = remember(first) { CartesianValueFormatter { _, x, _ -> first.date.plusDays(x.toLong()).shortLabel() } }
     val kilos = remember { CartesianValueFormatter { _, y, _ -> formatNumber(y) } }
-    val kg = stringResource(R.string.unit_kg)
-    val markerText = remember(first, kg) {
+    val resources = LocalResources.current
+    val markerText = remember(first, resources) {
         DefaultCartesianMarker.ValueFormatter { _, targets ->
             val target = targets.firstOrNull() as? LineCartesianLayerMarkerTarget
             val y = target?.points?.firstOrNull()?.entry?.y
-            if (target == null || y == null) "" else "${first.date.plusDays(target.x.toLong()).shortLabel()} · ${formatNumber(y)} $kg"
+            if (target == null || y == null) {
+                ""
+            } else {
+                resources.getString(R.string.chart_marker, first.date.plusDays(target.x.toLong()).shortLabel(), formatNumber(y))
+            }
         }
     }
-    val axisLabel = rememberAxisLabelComponent(style = typography.labelMedium.copy(color = scheme.onSurfaceVariant))
+    val axisLabel = rememberAxisLabelComponent(style = numberStyle(typography.labelMedium).copy(color = scheme.onSurfaceVariant))
     val rule = rememberAxisGuidelineComponent(fill = Fill(scheme.outlineVariant))
     val line = Fill(colors.lineProgress)
     val reduced = AppTheme.reducedMotion
@@ -400,7 +398,7 @@ fun WeightChart(weights: List<WeightEntry>) {
         if (showWeightRange(weights)) {
             Text(
                 stringResource(R.string.chart_range, formatNumber(min), formatNumber(max)),
-                style = MaterialTheme.typography.labelMedium,
+                style = numberStyle(MaterialTheme.typography.labelMedium),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

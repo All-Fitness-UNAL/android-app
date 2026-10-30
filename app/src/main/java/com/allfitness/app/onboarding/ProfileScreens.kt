@@ -41,7 +41,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
@@ -70,6 +69,7 @@ import com.allfitness.app.core.ui.LoadingState
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
+import com.allfitness.app.core.ui.SectionTitle
 import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.UiState
@@ -171,7 +171,7 @@ fun ProfileScreen(
                                 // Cuatro botones "Editar": cada uno dice qué sección abre.
                                 val editLabel = stringResource(R.string.action_edit_section, title)
                                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                                    Text(title, Modifier.weight(1f).semantics { heading() }, style = MaterialTheme.typography.titleLarge)
+                                    SectionTitle(title, Modifier.weight(1f))
                                     TonalActionButton(
                                         text = stringResource(R.string.action_edit),
                                         onClick = { onEdit(section) },

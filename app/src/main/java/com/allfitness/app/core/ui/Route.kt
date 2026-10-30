@@ -57,7 +57,7 @@ import com.allfitness.app.core.ui.theme.DarkAppColors
 import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.Spacing
 
-enum class StationState { PENDING, DONE, REST, TODAY, TODAY_DONE }
+enum class StationState { PENDING, PAST, DONE, REST, TODAY, TODAY_DONE }
 
 fun sessionFraction(done: Int, total: Int): Float =
     if (total <= 0) 0f else (done.toFloat() / total).coerceIn(0f, 1f)
@@ -86,6 +86,8 @@ fun RouteStation(state: StationState, lineColor: Color, modifier: Modifier = Mod
             val station = if (state.isToday) Spacing.stationToday.toPx() / 2 else Spacing.stationSize.toPx() / 2
             when (state) {
                 StationState.PENDING -> drawCircle(lineColor, station - stroke / 2, style = Stroke(stroke))
+                // Entreno que ya pasó sin terminarse: la estación se apaga, no se tacha.
+                StationState.PAST -> drawCircle(outline, station - stroke / 2, style = Stroke(stroke))
                 StationState.DONE -> drawCircle(lineColor, station)
                 StationState.REST -> drawCircle(outline, size.minDimension / 2 - stroke / 4, style = Stroke(stroke / 2))
                 StationState.TODAY -> {
@@ -149,7 +151,11 @@ fun RouteRow(
             Text(
                 title,
                 style = MaterialTheme.typography.titleMedium,
-                color = if (state == StationState.REST) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface,
+                color = if (state == StationState.REST || state == StationState.PAST) {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                },
             )
             Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
@@ -272,7 +278,7 @@ fun SessionBar(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
                 ) {
-                    RouteStation(StationState.TODAY_DONE, colors.lineRoutine, Modifier.graphicsLayer { scaleX = pulse.value; scaleY = pulse.value })
+                    RouteStation(StationState.TODAY_DONE, DarkAppColors.lineRoutine, Modifier.graphicsLayer { scaleX = pulse.value; scaleY = pulse.value })
                     Text(stringResource(R.string.session_finished_message), style = MaterialTheme.typography.titleMedium)
                 }
             } else {
