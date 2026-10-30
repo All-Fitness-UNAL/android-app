@@ -214,7 +214,6 @@
     <string name="progress_empty">Aún no hay datos. Registra tu primer peso o termina tu primera sesión.</string>
     <string name="summary_title">Esta semana</string>
     <string name="summary_sessions">Sesiones completadas: %1$d de %2$d</string>
-    <string name="summary_streak">Semanas cumplidas seguidas: %1$d</string>
     <string name="summary_empty">Termina tu primera sesión para ver tu resumen.</string>
     <string name="summary_unavailable">El resumen no está disponible en este momento.</string>
     <string name="summary_age">Edad: %1$d</string>
@@ -223,6 +222,8 @@
     <string name="summary_minutes">Minutos por sesión: %1$d</string>
     <string name="summary_meals">Comidas al día: %1$d</string>
     <string name="chart_description">Gráfica de peso: de %1$s kg el %3$s a %2$s kg el %4$s</string>
+    <string name="chart_need_more">Registra otro peso para ver tu tendencia.</string>
+    <string name="weight_trend_title">Evolución del peso</string>
     <string name="chart_range">Entre %1$s y %2$s kg</string>
     <string name="weight_history">Historial de peso</string>
     <string name="weight_empty">Aún no has registrado tu peso.</string>
@@ -261,6 +262,13 @@
     <string name="label_fat">GRASAS</string>
     <string name="label_kcal">KCAL</string>
     <string name="label_time">TIEMPO</string>
+    <string name="label_streak">RACHA</string>
+    <string name="label_sessions">SESIONES</string>
+    <string name="value_fraction">%1$d/%2$d</string>
+    <plurals name="unit_weeks">
+        <item quantity="one">semana</item>
+        <item quantity="other">semanas</item>
+    </plurals>
     <string name="value_grams">%1$s g</string>
     <string name="value_ml">%1$s ml</string>
     <string name="generating_stage_profile">Leyendo tu perfil</string>
