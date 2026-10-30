@@ -158,6 +158,7 @@
     <string name="generating_diet">Generando tu dieta…</string>
 
     <!-- Navegación -->
+    <string name="tab_home">Inicio</string>
     <string name="tab_routine">Rutina</string>
     <string name="tab_diet">Dieta</string>
     <string name="tab_progress">Progreso</string>
