@@ -55,6 +55,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.allfitness.app.R
 import com.allfitness.app.auth.AuthRepository
 import com.allfitness.app.auth.LoginScreen
@@ -260,7 +261,7 @@ private fun MainScaffold() {
                     composable<RoutineWeekRoute> {
                         RoutineWeekScreen(onOpenSession = { date, index -> nav.navigate(RoutineDayRoute(date.toString(), index)) })
                     }
-                    composable<RoutineDayRoute> { RoutineDayScreen(onBack = back) }
+                    composable<RoutineDayRoute> { entry -> RoutineDayScreen(onBack = back, startIndex = entry.toRoute<RoutineDayRoute>().index) }
                     composable<DietWeekRoute> { DietWeekScreen(onOpenMeal = { day, mealId -> nav.navigate(RecipeRoute(day.name, mealId)) }) }
                     composable<RecipeRoute> { RecipeScreen(onBack = back) }
                     composable<ProgressRoute> { ProgressScreen() }

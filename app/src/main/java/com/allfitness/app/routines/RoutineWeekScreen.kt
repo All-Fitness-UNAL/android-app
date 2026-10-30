@@ -279,8 +279,8 @@ fun RoutineWeekScreen(
 }
 
 @Composable
-internal fun WeekDayRow.dayTitle(): String =
-    if (day.type == DayType.REST) stringResource(R.string.rest_day) else day.title ?: stringResource(R.string.training_day)
+internal fun RoutineDay.dayTitle(): String =
+    if (type == DayType.REST) stringResource(R.string.rest_day) else title ?: stringResource(R.string.training_day)
 
 /** Título, fecha y avance del día elegido (Figma `progress-bar-container`). Días que no son hoy: solo lectura (FR-013). */
 @Composable
@@ -288,7 +288,7 @@ private fun DayHeader(row: WeekDayRow, modifier: Modifier) {
     val scheme = MaterialTheme.colorScheme
     val date = stringResource(R.string.day_with_date, row.date.dayOfWeek.displayName(), row.date.shortLabel())
     Column(modifier, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-        SectionTitle(row.dayTitle())
+        SectionTitle(row.day.dayTitle())
         Text(
             if (row.finished) stringResource(R.string.status_pair, date, stringResource(R.string.session_finished)) else date,
             style = MaterialTheme.typography.bodyMedium,

@@ -338,7 +338,7 @@ private fun WorkoutCard(today: WeekDayRow, profile: Profile?, onOpenSession: (Lo
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                     AiBadge()
-                    Text(today.dayTitle(), style = MaterialTheme.typography.headlineSmall)
+                    Text(today.day.dayTitle(), style = MaterialTheme.typography.headlineSmall)
                     Text(meta, style = MaterialTheme.typography.bodyMedium, color = scheme.onSurfaceVariant)
                     if (training && profile != null) LevelRow(profile.level)
                 }

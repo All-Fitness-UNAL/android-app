@@ -191,6 +191,12 @@
         <item quantity="other">%d series</item>
     </plurals>
     <string name="action_open_exercise">Ver el ejercicio</string>
+    <string name="session_exercise_of">Ejercicio %1$d de %2$d</string>
+    <string name="session_up_next">A continuación</string>
+    <string name="action_mark_done">Marcar como hecho</string>
+    <string name="action_unmark_done">Desmarcar</string>
+    <string name="action_skip">Saltar</string>
+    <string name="action_previous_exercise">Anterior</string>
 
     <!-- Rutina -->
     <string name="routine_title">Tu rutina</string>
