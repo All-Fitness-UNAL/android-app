@@ -23,11 +23,15 @@ class ContrastTest {
     @Test fun secondaryInkOnGround() = check(4.5f) { s, _ -> s.onSurfaceVariant to s.background }
     @Test fun primaryOnSurface() = check(4.5f) { s, _ -> s.primary to s.surface }
     @Test fun onPrimaryOnPrimary() = check(4.5f) { s, _ -> s.onPrimary to s.primary }
+    // Chip de grupo muscular con contorno: tinta de línea también sobre la tarjeta hecha (andén). Con tinte al 12 % no llega.
+    @Test fun routineChipOnGround() = check(4.5f) { s, a -> a.lineRoutine to s.background }
     @Test fun dietTextOnSurface() = check(4.5f) { s, a -> a.lineDietText to s.surface }
     @Test fun dietGraphicOnSurface() = check(3f) { s, a -> a.lineDiet to s.surface }
     @Test fun progressOnSurface() = check(4.5f) { s, a -> a.lineProgress to s.surface }
     @Test fun fatOnSurface() = check(3f) { s, a -> a.macroFat to s.surface }
     @Test fun inkOnSignal() = check(4.5f) { _, a -> a.onSignal to a.signal }
+    // La Señal es oscura en los dos temas: el tramo de la SessionBar usa el tono de línea para fondo oscuro.
+    @Test fun routineLineOnSignal() = check(3f) { _, a -> DarkAppColors.lineRoutine to a.signal }
     @Test fun hereOnSignal() = check(4.5f) { _, a -> a.here to a.signal }
     @Test fun tonalButton() = check(4.5f) { s, _ -> s.onSecondaryContainer to s.secondaryContainer }
     @Test fun errorOnSurface() = check(4.5f) { s, _ -> s.error to s.surface }
