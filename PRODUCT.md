@@ -52,6 +52,7 @@ Un plan integral que se adapta a la persona: rutina y dieta se generan juntas a 
   - crítica final 30/40, Buena, con P0 0 y P1 0 (`.impeccable/critique/2026-10-30T08-25-15Z__app-src-main-java-com-allfitness-app.md`);
   - capturas en claro, oscuro y con fuente al 130 % y al 200 % en `visual-audit/redesign/final/`;
   - el sistema visual resultante está en `DESIGN.md`.
+- Prototipo de Figma `All Fitness_prototype.fig` (2026-09-17), con 7 pantallas en tema oscuro y acento verde. El árbol de nodos decodificado, la miniatura y los scripts que lo regeneran están en `docs/design/figma/`. La traducción a la app y lo que no se construye están en `docs/superpowers/specs/2026-10-30-interfaz-figma-design.md`.
 - Los datos de ejemplo del `FakeBackend` (`app/src/mock/`) muestran el contenido real esperado: ejercicios con grupo muscular, series, repeticiones y peso sugerido, y comidas colombianas con kcal y macros.
 - No hay fotografías de ejercicios ni de comida, ni testimonios, métricas de usuarios o marca registrada. Cuando el backend envía imágenes de ejercicio, la app las muestra; no hay que fabricarlas.
 
@@ -68,3 +69,27 @@ Un plan integral que se adapta a la persona: rutina y dieta se generan juntas a 
 - Áreas táctiles de mínimo 48dp, `contentDescription` en imágenes e íconos con significado, y contraste suficiente (requisito de la constitución).
 - La interfaz debe soportar escalado de fuente del sistema. En la auditoría se verificó al 130 % sin recortes.
 - Debe respetar el modo claro/oscuro del sistema.
+
+## Mejoras de la ejecución anterior
+
+Lecciones del rediseño "Línea" (rama `redesign/premium-ui`) para las próximas ejecuciones:
+
+- **Verificación visual sin tests:** no hay tests de UI, así que cada arreglo visual se comprobó solo con capturas. La lógica de presentación (qué botón mostrar, qué estado tiene un día, qué página sigue) va en funciones puras con test. Si una pantalla falla dos veces, se considera añadir un screenshot test.
+- **Estados sin disparador en el mock:** algunos estados no se podían provocar desde el `FakeBackend`, como 0 sesiones programadas o la tarjeta de error de una sección. Antes de dar por hecho un estado hay que tener cómo verlo; si el mock no lo permite, se anota como no verificado.
+- **Toques con texto exacto:** en el recorrido con adb, buscar "4" tocó "Paso 3 de 4". Los toques por texto usan coincidencia exacta.
+- **Cambios de ViewModel:** se añadieron campos (`completed`, `isPast`) a `WeekDayRow` y a `DayView`, y el aviso de sesión terminada pasó de un snackbar a la barra de sesión, sin preguntar. Cualquier cambio en un ViewModel se consulta antes, aunque sea derivado.
+- **Conformidad con la spec en cada tarea:** el documentador encontró desviaciones al final. Cada tarea se revisa contra su sección de la spec antes del commit.
+- **Barras del sistema:** la pantalla Generando dejaba franjas claras en la barra de estado y en la de navegación. Cada captura revisa ambas barras.
+- **Contraste calculado:** los pares de color se calculan con script y se fijan en `ContrastTest`; no se estiman a ojo.
+- **Instalaciones aisladas:** un `npm install` sin `package.json` propio escribió en `C:\Users\USER\package.json` y hubo que revertirlo. Toda instalación auxiliar va en una carpeta con su propio `package.json` o con `pip --target`.
+- **Pendientes heredados:**
+  - siguen abiertos:
+    - `OfflineHint` queda fuera de la vista cuando la lista ya está desplazada;
+    - el DatePicker sale en el idioma del dispositivo;
+    - la vista previa del gesto atrás muestra la pantalla sin barra;
+    - en el onboarding, "Objetivo" se repite como título y como etiqueta, y el paso 3 es muy denso;
+    - el scroll se pierde tras la muerte del proceso (`contentKey`);
+  - se corrigen en el plan de Figma:
+    - la inicial del avatar parte los pares sustitutos;
+    - la espera al regenerar el plan completo dice "una alternativa";
+    - quedan literales de duración y de `sp` fuera de los tokens.
