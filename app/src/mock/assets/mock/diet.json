@@ -1,0 +1,1109 @@
+{
+  "id": "d_demo",
+  "version": 1,
+  "updatedAt": "2026-10-27T05:00:00Z",
+  "days": [
+    {
+      "dayOfWeek": "MONDAY",
+      "totals": {
+        "kcal": 1780,
+        "proteinG": 105.5,
+        "carbsG": 169.0,
+        "fatG": 70.5
+      },
+      "meals": [
+        {
+          "id": "m_1",
+          "type": "BREAKFAST",
+          "recipe": {
+            "name": "Arepa con huevo y aguacate",
+            "ingredients": [
+              {
+                "name": "Arepa de maíz",
+                "amount": 80,
+                "unit": "G"
+              },
+              {
+                "name": "Huevo",
+                "amount": 100,
+                "unit": "G"
+              },
+              {
+                "name": "Aguacate",
+                "amount": 50,
+                "unit": "G"
+              },
+              {
+                "name": "Café sin azúcar",
+                "amount": 200,
+                "unit": "ML"
+              }
+            ],
+            "steps": [
+              "Asa la arepa 4 minutos por lado.",
+              "Prepara los huevos revueltos sin aceite.",
+              "Sirve con el aguacate en tajadas."
+            ],
+            "prepMinutes": 15,
+            "perServing": {
+              "kcal": 520,
+              "proteinG": 22.0,
+              "carbsG": 45.0,
+              "fatG": 27.0
+            }
+          }
+        },
+        {
+          "id": "m_2",
+          "type": "LUNCH",
+          "recipe": {
+            "name": "Pechuga a la plancha con arroz y ensalada",
+            "ingredients": [
+              {
+                "name": "Pechuga de pollo",
+                "amount": 150,
+                "unit": "G"
+              },
+              {
+                "name": "Arroz blanco cocido",
+                "amount": 150,
+                "unit": "G"
+              },
+              {
+                "name": "Lechuga",
+                "amount": 50,
+                "unit": "G"
+              },
+              {
+                "name": "Tomate",
+                "amount": 50,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Sazona y asa la pechuga 6 minutos por lado.",
+              "Sirve con el arroz y la ensalada."
+            ],
+            "prepMinutes": 25,
+            "perServing": {
+              "kcal": 650,
+              "proteinG": 50.0,
+              "carbsG": 70.0,
+              "fatG": 15.0
+            }
+          }
+        },
+        {
+          "id": "m_3",
+          "type": "SNACK",
+          "recipe": {
+            "name": "Mango con limón y sal",
+            "ingredients": [
+              {
+                "name": "Mango",
+                "amount": 200,
+                "unit": "G"
+              },
+              {
+                "name": "Limón",
+                "amount": 15,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Pela y corta el mango.",
+              "Agrega limón y una pizca de sal."
+            ],
+            "prepMinutes": 5,
+            "perServing": {
+              "kcal": 130,
+              "proteinG": 1.5,
+              "carbsG": 32.0,
+              "fatG": 0.5
+            }
+          }
+        },
+        {
+          "id": "m_4",
+          "type": "DINNER",
+          "recipe": {
+            "name": "Tortilla de espinaca y queso",
+            "ingredients": [
+              {
+                "name": "Huevo",
+                "amount": 150,
+                "unit": "G"
+              },
+              {
+                "name": "Espinaca",
+                "amount": 60,
+                "unit": "G"
+              },
+              {
+                "name": "Queso mozzarella",
+                "amount": 30,
+                "unit": "G"
+              },
+              {
+                "name": "Pan integral",
+                "amount": 40,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Saltea la espinaca.",
+              "Agrega los huevos batidos y el queso.",
+              "Cocina a fuego bajo y sirve con el pan."
+            ],
+            "prepMinutes": 15,
+            "perServing": {
+              "kcal": 480,
+              "proteinG": 32.0,
+              "carbsG": 22.0,
+              "fatG": 28.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "dayOfWeek": "TUESDAY",
+      "totals": {
+        "kcal": 1675,
+        "proteinG": 100.5,
+        "carbsG": 162.0,
+        "fatG": 60.5
+      },
+      "meals": [
+        {
+          "id": "m_5",
+          "type": "BREAKFAST",
+          "recipe": {
+            "name": "Calentado de fríjoles con huevo",
+            "ingredients": [
+              {
+                "name": "Fríjoles cocidos",
+                "amount": 120,
+                "unit": "G"
+              },
+              {
+                "name": "Arroz cocido",
+                "amount": 80,
+                "unit": "G"
+              },
+              {
+                "name": "Huevo",
+                "amount": 50,
+                "unit": "G"
+              },
+              {
+                "name": "Hogao",
+                "amount": 30,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Calienta los fríjoles con el arroz y el hogao.",
+              "Fríe el huevo en una sartén antiadherente.",
+              "Sirve el huevo encima del calentado."
+            ],
+            "prepMinutes": 15,
+            "perServing": {
+              "kcal": 480,
+              "proteinG": 21.0,
+              "carbsG": 62.0,
+              "fatG": 14.0
+            }
+          }
+        },
+        {
+          "id": "m_6",
+          "type": "LUNCH",
+          "recipe": {
+            "name": "Sudado de pollo con papa",
+            "ingredients": [
+              {
+                "name": "Muslo de pollo sin piel",
+                "amount": 160,
+                "unit": "G"
+              },
+              {
+                "name": "Papa pastusa",
+                "amount": 180,
+                "unit": "G"
+              },
+              {
+                "name": "Tomate",
+                "amount": 80,
+                "unit": "G"
+              },
+              {
+                "name": "Cebolla cabezona",
+                "amount": 40,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Sofríe el tomate y la cebolla.",
+              "Agrega el pollo y la papa con un poco de agua.",
+              "Cocina tapado 25 minutos."
+            ],
+            "prepMinutes": 40,
+            "perServing": {
+              "kcal": 620,
+              "proteinG": 42.0,
+              "carbsG": 60.0,
+              "fatG": 20.0
+            }
+          }
+        },
+        {
+          "id": "m_7",
+          "type": "SNACK",
+          "recipe": {
+            "name": "Maní tostado",
+            "ingredients": [
+              {
+                "name": "Maní sin sal",
+                "amount": 30,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Sirve una porción medida de maní."
+            ],
+            "prepMinutes": 1,
+            "perServing": {
+              "kcal": 175,
+              "proteinG": 7.5,
+              "carbsG": 5.0,
+              "fatG": 14.5
+            }
+          }
+        },
+        {
+          "id": "m_8",
+          "type": "DINNER",
+          "recipe": {
+            "name": "Crema de ahuyama con pollo desmechado",
+            "ingredients": [
+              {
+                "name": "Ahuyama",
+                "amount": 250,
+                "unit": "G"
+              },
+              {
+                "name": "Pechuga de pollo",
+                "amount": 100,
+                "unit": "G"
+              },
+              {
+                "name": "Cebolla cabezona",
+                "amount": 30,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Cocina la ahuyama con la cebolla y licúa.",
+              "Sirve con el pollo desmechado encima."
+            ],
+            "prepMinutes": 30,
+            "perServing": {
+              "kcal": 400,
+              "proteinG": 30.0,
+              "carbsG": 35.0,
+              "fatG": 12.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "dayOfWeek": "WEDNESDAY",
+      "totals": {
+        "kcal": 1750,
+        "proteinG": 106.0,
+        "carbsG": 227.0,
+        "fatG": 42.0
+      },
+      "meals": [
+        {
+          "id": "m_9",
+          "type": "BREAKFAST",
+          "recipe": {
+            "name": "Avena con banano y canela",
+            "ingredients": [
+              {
+                "name": "Avena en hojuelas",
+                "amount": 60,
+                "unit": "G"
+              },
+              {
+                "name": "Leche descremada",
+                "amount": 250,
+                "unit": "ML"
+              },
+              {
+                "name": "Banano",
+                "amount": 100,
+                "unit": "G"
+              },
+              {
+                "name": "Canela",
+                "amount": 2,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Cocina la avena en la leche 5 minutos.",
+              "Añade el banano en rodajas y la canela."
+            ],
+            "prepMinutes": 10,
+            "perServing": {
+              "kcal": 430,
+              "proteinG": 18.0,
+              "carbsG": 74.0,
+              "fatG": 7.0
+            }
+          }
+        },
+        {
+          "id": "m_10",
+          "type": "LUNCH",
+          "recipe": {
+            "name": "Bandeja ligera de carne molida",
+            "ingredients": [
+              {
+                "name": "Carne molida magra",
+                "amount": 130,
+                "unit": "G"
+              },
+              {
+                "name": "Fríjoles cocidos",
+                "amount": 120,
+                "unit": "G"
+              },
+              {
+                "name": "Arroz blanco cocido",
+                "amount": 120,
+                "unit": "G"
+              },
+              {
+                "name": "Plátano maduro",
+                "amount": 60,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Sofríe la carne con hogao.",
+              "Calienta los fríjoles.",
+              "Asa el plátano en sartén sin aceite y sirve todo junto."
+            ],
+            "prepMinutes": 35,
+            "perServing": {
+              "kcal": 720,
+              "proteinG": 45.0,
+              "carbsG": 85.0,
+              "fatG": 20.0
+            }
+          }
+        },
+        {
+          "id": "m_11",
+          "type": "SNACK",
+          "recipe": {
+            "name": "Yogur natural con papaya",
+            "ingredients": [
+              {
+                "name": "Yogur natural",
+                "amount": 150,
+                "unit": "G"
+              },
+              {
+                "name": "Papaya",
+                "amount": 150,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Pica la papaya y mézclala con el yogur."
+            ],
+            "prepMinutes": 5,
+            "perServing": {
+              "kcal": 180,
+              "proteinG": 8.0,
+              "carbsG": 30.0,
+              "fatG": 3.0
+            }
+          }
+        },
+        {
+          "id": "m_12",
+          "type": "DINNER",
+          "recipe": {
+            "name": "Wrap de atún y verduras",
+            "ingredients": [
+              {
+                "name": "Tortilla de trigo integral",
+                "amount": 60,
+                "unit": "G"
+              },
+              {
+                "name": "Atún en agua",
+                "amount": 120,
+                "unit": "G"
+              },
+              {
+                "name": "Lechuga",
+                "amount": 40,
+                "unit": "G"
+              },
+              {
+                "name": "Zanahoria rallada",
+                "amount": 40,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Mezcla el atún escurrido con las verduras.",
+              "Rellena la tortilla y enróllala."
+            ],
+            "prepMinutes": 10,
+            "perServing": {
+              "kcal": 420,
+              "proteinG": 35.0,
+              "carbsG": 38.0,
+              "fatG": 12.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "dayOfWeek": "THURSDAY",
+      "totals": {
+        "kcal": 1720,
+        "proteinG": 105.0,
+        "carbsG": 180.0,
+        "fatG": 57.0
+      },
+      "meals": [
+        {
+          "id": "m_13",
+          "type": "BREAKFAST",
+          "recipe": {
+            "name": "Huevos pericos con pan integral",
+            "ingredients": [
+              {
+                "name": "Huevo",
+                "amount": 100,
+                "unit": "G"
+              },
+              {
+                "name": "Tomate",
+                "amount": 60,
+                "unit": "G"
+              },
+              {
+                "name": "Cebolla larga",
+                "amount": 20,
+                "unit": "G"
+              },
+              {
+                "name": "Pan integral",
+                "amount": 60,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Sofríe el tomate y la cebolla picados.",
+              "Agrega los huevos batidos y revuelve.",
+              "Acompaña con el pan tostado."
+            ],
+            "prepMinutes": 12,
+            "perServing": {
+              "kcal": 450,
+              "proteinG": 23.0,
+              "carbsG": 38.0,
+              "fatG": 22.0
+            }
+          }
+        },
+        {
+          "id": "m_14",
+          "type": "LUNCH",
+          "recipe": {
+            "name": "Ajiaco santafereño",
+            "ingredients": [
+              {
+                "name": "Pechuga de pollo",
+                "amount": 120,
+                "unit": "G"
+              },
+              {
+                "name": "Papa criolla",
+                "amount": 120,
+                "unit": "G"
+              },
+              {
+                "name": "Papa sabanera",
+                "amount": 120,
+                "unit": "G"
+              },
+              {
+                "name": "Mazorca",
+                "amount": 80,
+                "unit": "G"
+              },
+              {
+                "name": "Guascas",
+                "amount": 3,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Cocina el pollo con las papas y la mazorca 40 minutos.",
+              "Agrega las guascas al final.",
+              "Desmecha el pollo y sirve."
+            ],
+            "prepMinutes": 60,
+            "perServing": {
+              "kcal": 610,
+              "proteinG": 40.0,
+              "carbsG": 75.0,
+              "fatG": 12.0
+            }
+          }
+        },
+        {
+          "id": "m_15",
+          "type": "SNACK",
+          "recipe": {
+            "name": "Queso campesino con bocadillo",
+            "ingredients": [
+              {
+                "name": "Queso campesino",
+                "amount": 50,
+                "unit": "G"
+              },
+              {
+                "name": "Bocadillo veleño",
+                "amount": 30,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Corta el queso y el bocadillo en tajadas."
+            ],
+            "prepMinutes": 3,
+            "perServing": {
+              "kcal": 210,
+              "proteinG": 10.0,
+              "carbsG": 22.0,
+              "fatG": 9.0
+            }
+          }
+        },
+        {
+          "id": "m_16",
+          "type": "DINNER",
+          "recipe": {
+            "name": "Arepa rellena de pollo y verduras",
+            "ingredients": [
+              {
+                "name": "Arepa de maíz",
+                "amount": 80,
+                "unit": "G"
+              },
+              {
+                "name": "Pechuga de pollo",
+                "amount": 100,
+                "unit": "G"
+              },
+              {
+                "name": "Pimentón",
+                "amount": 40,
+                "unit": "G"
+              },
+              {
+                "name": "Cebolla",
+                "amount": 30,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Saltea el pollo desmechado con las verduras.",
+              "Abre la arepa asada y rellénala."
+            ],
+            "prepMinutes": 20,
+            "perServing": {
+              "kcal": 450,
+              "proteinG": 32.0,
+              "carbsG": 45.0,
+              "fatG": 14.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "dayOfWeek": "FRIDAY",
+      "totals": {
+        "kcal": 1850,
+        "proteinG": 105.0,
+        "carbsG": 206.0,
+        "fatG": 61.0
+      },
+      "meals": [
+        {
+          "id": "m_17",
+          "type": "BREAKFAST",
+          "recipe": {
+            "name": "Arepa de choclo con queso campesino",
+            "ingredients": [
+              {
+                "name": "Arepa de choclo",
+                "amount": 100,
+                "unit": "G"
+              },
+              {
+                "name": "Queso campesino",
+                "amount": 40,
+                "unit": "G"
+              },
+              {
+                "name": "Chocolate en leche",
+                "amount": 200,
+                "unit": "ML"
+              }
+            ],
+            "steps": [
+              "Asa la arepa de choclo en sartén.",
+              "Sirve con el queso encima y el chocolate caliente."
+            ],
+            "prepMinutes": 10,
+            "perServing": {
+              "kcal": 500,
+              "proteinG": 20.0,
+              "carbsG": 62.0,
+              "fatG": 18.0
+            }
+          }
+        },
+        {
+          "id": "m_18",
+          "type": "LUNCH",
+          "recipe": {
+            "name": "Pescado al horno con patacón",
+            "ingredients": [
+              {
+                "name": "Filete de tilapia",
+                "amount": 160,
+                "unit": "G"
+              },
+              {
+                "name": "Plátano verde",
+                "amount": 120,
+                "unit": "G"
+              },
+              {
+                "name": "Limón",
+                "amount": 30,
+                "unit": "G"
+              },
+              {
+                "name": "Ensalada de repollo",
+                "amount": 80,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Hornea el pescado con limón y sal 20 minutos.",
+              "Prepara el patacón asado en sartén.",
+              "Sirve con la ensalada."
+            ],
+            "prepMinutes": 35,
+            "perServing": {
+              "kcal": 590,
+              "proteinG": 40.0,
+              "carbsG": 65.0,
+              "fatG": 16.0
+            }
+          }
+        },
+        {
+          "id": "m_19",
+          "type": "SNACK",
+          "recipe": {
+            "name": "Batido de banano y leche",
+            "ingredients": [
+              {
+                "name": "Banano",
+                "amount": 100,
+                "unit": "G"
+              },
+              {
+                "name": "Leche descremada",
+                "amount": 250,
+                "unit": "ML"
+              }
+            ],
+            "steps": [
+              "Licúa el banano con la leche."
+            ],
+            "prepMinutes": 5,
+            "perServing": {
+              "kcal": 200,
+              "proteinG": 9.0,
+              "carbsG": 37.0,
+              "fatG": 1.0
+            }
+          }
+        },
+        {
+          "id": "m_20",
+          "type": "DINNER",
+          "recipe": {
+            "name": "Salmón con puré de papa",
+            "ingredients": [
+              {
+                "name": "Salmón",
+                "amount": 130,
+                "unit": "G"
+              },
+              {
+                "name": "Papa",
+                "amount": 180,
+                "unit": "G"
+              },
+              {
+                "name": "Brócoli",
+                "amount": 80,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Hornea el salmón 15 minutos.",
+              "Cocina la papa y hazla puré.",
+              "Cocina el brócoli al vapor y sirve todo."
+            ],
+            "prepMinutes": 30,
+            "perServing": {
+              "kcal": 560,
+              "proteinG": 36.0,
+              "carbsG": 42.0,
+              "fatG": 26.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "dayOfWeek": "SATURDAY",
+      "totals": {
+        "kcal": 1680,
+        "proteinG": 82.5,
+        "carbsG": 190.0,
+        "fatG": 62.0
+      },
+      "meals": [
+        {
+          "id": "m_21",
+          "type": "BREAKFAST",
+          "recipe": {
+            "name": "Yogur con granola y fresas",
+            "ingredients": [
+              {
+                "name": "Yogur griego natural",
+                "amount": 170,
+                "unit": "G"
+              },
+              {
+                "name": "Granola sin azúcar",
+                "amount": 40,
+                "unit": "G"
+              },
+              {
+                "name": "Fresas",
+                "amount": 100,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Sirve el yogur en un tazón.",
+              "Agrega la granola y las fresas picadas."
+            ],
+            "prepMinutes": 5,
+            "perServing": {
+              "kcal": 380,
+              "proteinG": 20.0,
+              "carbsG": 45.0,
+              "fatG": 12.0
+            }
+          }
+        },
+        {
+          "id": "m_22",
+          "type": "LUNCH",
+          "recipe": {
+            "name": "Lentejas con arroz y aguacate",
+            "ingredients": [
+              {
+                "name": "Lentejas cocidas",
+                "amount": 180,
+                "unit": "G"
+              },
+              {
+                "name": "Arroz integral cocido",
+                "amount": 120,
+                "unit": "G"
+              },
+              {
+                "name": "Aguacate",
+                "amount": 50,
+                "unit": "G"
+              },
+              {
+                "name": "Hogao",
+                "amount": 40,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Calienta las lentejas con el hogao.",
+              "Sirve con el arroz y el aguacate."
+            ],
+            "prepMinutes": 20,
+            "perServing": {
+              "kcal": 600,
+              "proteinG": 26.0,
+              "carbsG": 88.0,
+              "fatG": 15.0
+            }
+          }
+        },
+        {
+          "id": "m_23",
+          "type": "SNACK",
+          "recipe": {
+            "name": "Galletas integrales con mantequilla de maní",
+            "ingredients": [
+              {
+                "name": "Galletas integrales",
+                "amount": 30,
+                "unit": "G"
+              },
+              {
+                "name": "Mantequilla de maní",
+                "amount": 15,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Unta la mantequilla de maní en las galletas."
+            ],
+            "prepMinutes": 2,
+            "perServing": {
+              "kcal": 230,
+              "proteinG": 6.5,
+              "carbsG": 22.0,
+              "fatG": 13.0
+            }
+          }
+        },
+        {
+          "id": "m_24",
+          "type": "DINNER",
+          "recipe": {
+            "name": "Caldo de costilla ligero",
+            "ingredients": [
+              {
+                "name": "Costilla de res desgrasada",
+                "amount": 120,
+                "unit": "G"
+              },
+              {
+                "name": "Papa",
+                "amount": 150,
+                "unit": "G"
+              },
+              {
+                "name": "Cilantro",
+                "amount": 5,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Cocina la costilla con la papa 40 minutos.",
+              "Agrega el cilantro al servir."
+            ],
+            "prepMinutes": 45,
+            "perServing": {
+              "kcal": 470,
+              "proteinG": 30.0,
+              "carbsG": 35.0,
+              "fatG": 22.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "dayOfWeek": "SUNDAY",
+      "totals": {
+        "kcal": 1680,
+        "proteinG": 100.0,
+        "carbsG": 171.0,
+        "fatG": 60.0
+      },
+      "meals": [
+        {
+          "id": "m_25",
+          "type": "BREAKFAST",
+          "recipe": {
+            "name": "Changua con pan integral",
+            "ingredients": [
+              {
+                "name": "Leche",
+                "amount": 250,
+                "unit": "ML"
+              },
+              {
+                "name": "Huevo",
+                "amount": 100,
+                "unit": "G"
+              },
+              {
+                "name": "Cilantro",
+                "amount": 5,
+                "unit": "G"
+              },
+              {
+                "name": "Pan integral",
+                "amount": 50,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Calienta la leche con agua y una pizca de sal.",
+              "Agrega los huevos sin revolver hasta que cuajen.",
+              "Sirve con cilantro y el pan."
+            ],
+            "prepMinutes": 15,
+            "perServing": {
+              "kcal": 440,
+              "proteinG": 26.0,
+              "carbsG": 36.0,
+              "fatG": 20.0
+            }
+          }
+        },
+        {
+          "id": "m_26",
+          "type": "LUNCH",
+          "recipe": {
+            "name": "Cerdo a la plancha con yuca",
+            "ingredients": [
+              {
+                "name": "Lomo de cerdo",
+                "amount": 150,
+                "unit": "G"
+              },
+              {
+                "name": "Yuca cocida",
+                "amount": 150,
+                "unit": "G"
+              },
+              {
+                "name": "Ensalada de pepino",
+                "amount": 80,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Asa el lomo 5 minutos por lado.",
+              "Sirve con la yuca y la ensalada."
+            ],
+            "prepMinutes": 30,
+            "perServing": {
+              "kcal": 640,
+              "proteinG": 42.0,
+              "carbsG": 62.0,
+              "fatG": 22.0
+            }
+          }
+        },
+        {
+          "id": "m_27",
+          "type": "SNACK",
+          "recipe": {
+            "name": "Piña con yogur griego",
+            "ingredients": [
+              {
+                "name": "Piña",
+                "amount": 150,
+                "unit": "G"
+              },
+              {
+                "name": "Yogur griego natural",
+                "amount": 100,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Pica la piña y sírvela con el yogur."
+            ],
+            "prepMinutes": 5,
+            "perServing": {
+              "kcal": 170,
+              "proteinG": 10.0,
+              "carbsG": 25.0,
+              "fatG": 3.0
+            }
+          }
+        },
+        {
+          "id": "m_28",
+          "type": "DINNER",
+          "recipe": {
+            "name": "Ensalada de garbanzos con huevo",
+            "ingredients": [
+              {
+                "name": "Garbanzos cocidos",
+                "amount": 150,
+                "unit": "G"
+              },
+              {
+                "name": "Huevo",
+                "amount": 50,
+                "unit": "G"
+              },
+              {
+                "name": "Tomate",
+                "amount": 80,
+                "unit": "G"
+              },
+              {
+                "name": "Pepino",
+                "amount": 60,
+                "unit": "G"
+              }
+            ],
+            "steps": [
+              "Pica las verduras.",
+              "Mezcla con los garbanzos y el huevo duro en cuartos.",
+              "Aliña con limón y sal."
+            ],
+            "prepMinutes": 15,
+            "perServing": {
+              "kcal": 430,
+              "proteinG": 22.0,
+              "carbsG": 48.0,
+              "fatG": 15.0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

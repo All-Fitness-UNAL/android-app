@@ -1,0 +1,35 @@
+{
+  "proposalId": "p_rec",
+  "recipe": {
+    "name": "Arepa con huevo y queso campesino",
+    "ingredients": [
+      {
+        "name": "Arepa de maíz",
+        "amount": 80,
+        "unit": "G"
+      },
+      {
+        "name": "Huevo",
+        "amount": 100,
+        "unit": "G"
+      },
+      {
+        "name": "Queso campesino",
+        "amount": 40,
+        "unit": "G"
+      }
+    ],
+    "steps": [
+      "Asa la arepa 4 minutos por lado.",
+      "Prepara los huevos revueltos.",
+      "Sirve con el queso desmenuzado."
+    ],
+    "prepMinutes": 15,
+    "perServing": {
+      "kcal": 500,
+      "proteinG": 28.0,
+      "carbsG": 42.0,
+      "fatG": 24.0
+    }
+  }
+}

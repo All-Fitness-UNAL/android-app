@@ -1,0 +1,15 @@
+{
+  "proposalId": "p_ex",
+  "exercise": {
+    "id": "e_alt",
+    "name": "Press de pecho con banda elástica",
+    "muscleGroup": "Pecho",
+    "sets": 3,
+    "reps": 15,
+    "durationSeconds": null,
+    "restSeconds": 60,
+    "suggestedWeightKg": null,
+    "instructions": "Pasa la banda por la espalda y empuja hacia el frente hasta estirar los brazos.",
+    "imageUrl": null
+  }
+}
