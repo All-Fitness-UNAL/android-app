@@ -12,12 +12,18 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.NavigationRailDefaults
 import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -182,6 +188,12 @@ private fun MainScaffold() {
         NavigationSuiteType.None
     }
     val hairline = scheme.outlineVariant
+    // Como NavigationSuiteScaffold: la barra (o el riel) ya cubre su inset, así que el Scaffold de cada pestaña no lo repite.
+    val consumed = when (layoutType) {
+        NavigationSuiteType.NavigationBar -> NavigationBarDefaults.windowInsets.only(WindowInsetsSides.Bottom)
+        NavigationSuiteType.NavigationRail -> NavigationRailDefaults.windowInsets.only(WindowInsetsSides.Start)
+        else -> WindowInsets(0, 0, 0, 0)
+    }
 
     Surface(color = scheme.background, contentColor = scheme.onBackground) {
         NavigationSuiteScaffoldLayout(
@@ -229,7 +241,7 @@ private fun MainScaffold() {
             layoutType = layoutType,
         ) {
             // Ancho máximo de lectura en pantallas grandes (spec 4.5); en el teléfono no cambia nada.
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+            Box(Modifier.fillMaxSize().consumeWindowInsets(consumed), contentAlignment = Alignment.TopCenter) {
                 NavHost(
                     nav,
                     startDestination = HomeRoute,
