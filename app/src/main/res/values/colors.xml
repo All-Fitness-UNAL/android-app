@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#1B6B4F</color>
+    <!-- Solo para ventana y splash, antes de que exista el tema de Compose. -->
+    <color name="brand_ground">#F3F5F4</color>
+    <color name="brand_signal">#0F1F1A</color>
+    <color name="brand_line">#0A7A50</color>
 </resources>
