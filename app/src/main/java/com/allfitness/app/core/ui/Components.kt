@@ -72,8 +72,13 @@ import java.time.format.DateTimeFormatter
 
 /** Tarjeta blanca sobre el andén, separada por un hilo y sin sombra. */
 @Composable
-fun AppCard(modifier: Modifier = Modifier, onClick: (() -> Unit)? = null, content: @Composable ColumnScope.() -> Unit) {
-    val colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+fun AppCard(
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+    color: Color = MaterialTheme.colorScheme.surface,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    val colors = CardDefaults.cardColors(containerColor = color)
     val border = BorderStroke(Spacing.hairline, MaterialTheme.colorScheme.outlineVariant)
     val shape = MaterialTheme.shapes.medium
     if (onClick != null) {

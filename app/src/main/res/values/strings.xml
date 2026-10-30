@@ -170,10 +170,6 @@
     <string name="only_today_message">Solo puedes marcar ejercicios y terminar la sesión del día de hoy.</string>
     <string name="session_finished">Terminada</string>
     <string name="session_finished_message">¡Sesión terminada! Buen trabajo.</string>
-    <string name="exercise_sets_reps">Series: %1$d · Repeticiones: %2$d</string>
-    <string name="exercise_sets_duration">Series: %1$d · Duración: %2$d s</string>
-    <string name="exercise_rest">Descanso: %1$d s</string>
-    <string name="exercise_weight">Peso sugerido: %1$s kg</string>
 
     <!-- Dieta -->
     <string name="diet_title">Tu dieta</string>
@@ -281,6 +277,7 @@
     <string name="action_view_today_session">Ver sesión de hoy</string>
     <string name="session_status_not_started">Sin empezar</string>
     <string name="session_progress">%1$d de %2$d</string>
+    <string name="exercise_done">Hecho</string>
     <plurals name="exercises_count">
         <item quantity="one">%d ejercicio</item>
         <item quantity="other">%d ejercicios</item>

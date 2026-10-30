@@ -3,11 +3,9 @@ package com.allfitness.app.routines
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -40,6 +38,7 @@ import com.allfitness.app.core.ui.AppTopBar
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
+import com.allfitness.app.core.ui.SessionBar
 import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
@@ -68,6 +67,9 @@ data class DayView(
 ) {
     /** Solo se registra la sesión de hoy, en un día de entrenamiento y sin terminar (FR-013). */
     val editable get() = isToday && day.type == DayType.TRAINING && !finished
+
+    /** Marcas de este día; las de otros días no cuentan. */
+    val doneCount: Int get() = day.exercises.count { it.id in completed }
 }
 
 @HiltViewModel
@@ -129,10 +131,8 @@ class RoutineDayViewModel @Inject constructor(
         viewModelScope.launch {
             val result = repository.finishSession(date)
             _finishing.value = false
-            _message.value = when (result) {
-                is AppResult.Success -> UserMessage(R.string.session_finished_message)
-                is AppResult.Failure -> UserMessage(result.error.messageRes(), ::finishSession)
-            }
+            // El éxito lo muestra (y anuncia) la SessionBar; un snackbar lo repetiría.
+            if (result is AppResult.Failure) _message.value = UserMessage(result.error.messageRes(), ::finishSession)
         }
     }
 
@@ -162,8 +162,22 @@ fun RoutineDayScreen(
     MessageEffect(altDone, snackbar, alternatives::doneShown)
 
     val title = stringResource(R.string.day_with_date, viewModel.date.dayOfWeek.displayName(), viewModel.date.shortLabel())
+    val loaded = (state as? UiState.Content)?.data
     Scaffold(
         topBar = { AppTopBar(title, onBack) },
+        bottomBar = {
+            // Fuera de la lista: "N de M" y "Terminar" siempre a la vista. El Scaffold reserva su alto.
+            if (loaded != null && loaded.isToday && loaded.day.type == DayType.TRAINING) {
+                SessionBar(
+                    done = loaded.doneCount,
+                    total = loaded.day.exercises.size,
+                    finished = loaded.finished,
+                    enabled = loaded.editable && online,
+                    finishing = finishing,
+                    onFinish = viewModel::finishSession,
+                )
+            }
+        },
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         StateContent(
@@ -173,7 +187,6 @@ fun RoutineDayScreen(
             onRetry = viewModel::retry,
             modifier = Modifier.padding(padding),
         ) { view ->
-            val canEdit = view.editable && online
             Column {
                 AiNote()
                 LazyColumn(
@@ -183,14 +196,22 @@ fun RoutineDayScreen(
                 ) {
                     when {
                         view.day.type == DayType.REST -> item { Text(stringResource(R.string.rest_day_message), style = MaterialTheme.typography.bodyLarge) }
-                        !view.isToday -> item { Text(stringResource(R.string.only_today_message), style = MaterialTheme.typography.bodyMedium) }
+                        !view.isToday -> item {
+                            Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                                if (view.finished) {
+                                    Text(stringResource(R.string.session_finished), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                                }
+                                Text(stringResource(R.string.only_today_message), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
                         !online && !view.finished -> item { OfflineHint() }
                     }
                     items(view.day.exercises, key = { it.id }) { exercise ->
                         ExerciseItem(
                             exercise = exercise,
                             checked = if (view.day.type == DayType.TRAINING) exercise.id in view.completed else null,
-                            onCheckedChange = if (canEdit) ({ viewModel.toggle(exercise.id, it) }) else null,
+                            enabled = online,
+                            onCheckedChange = if (view.editable) ({ viewModel.toggle(exercise.id, it) }) else null,
                             trailing = {
                                 AlternativeButton(
                                     onClick = { alternatives.open(AlternativeTarget.Exercise(exercise.id)) },
@@ -198,22 +219,6 @@ fun RoutineDayScreen(
                                 )
                             },
                         )
-                    }
-                    if (view.day.type == DayType.TRAINING) {
-                        item {
-                            Column(Modifier.fillMaxWidth().padding(top = Spacing.s)) {
-                                if (view.finished) {
-                                    Text(stringResource(R.string.session_finished), color = MaterialTheme.colorScheme.primary)
-                                } else if (view.isToday) {
-                                    // Se puede terminar aunque falten ejercicios (FR-014).
-                                    Button(
-                                        onClick = viewModel::finishSession,
-                                        enabled = canEdit && !finishing,
-                                        modifier = Modifier.fillMaxWidth(),
-                                    ) { Text(stringResource(R.string.action_finish_session)) }
-                                }
-                            }
-                        }
                     }
                 }
             }
