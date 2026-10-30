@@ -44,6 +44,7 @@ import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.mapContent
 import com.allfitness.app.core.ui.messageRes
+import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
 import com.allfitness.app.navigation.RoutineDayRoute
@@ -187,6 +188,7 @@ fun RoutineDayScreen(
             onRetry = viewModel::retry,
             modifier = Modifier.padding(padding),
         ) { view ->
+            val reduced = AppTheme.reducedMotion
             Column {
                 AiNote()
                 LazyColumn(
@@ -209,6 +211,8 @@ fun RoutineDayScreen(
                     items(view.day.exercises, key = { it.id }) { exercise ->
                         ExerciseItem(
                             exercise = exercise,
+                            // Al cambiar un ejercicio por su alternativa, el nuevo entra con fundido.
+                            modifier = if (reduced) Modifier else Modifier.animateItem(),
                             checked = if (view.day.type == DayType.TRAINING) exercise.id in view.completed else null,
                             enabled = online,
                             onCheckedChange = if (view.editable) ({ viewModel.toggle(exercise.id, it) }) else null,

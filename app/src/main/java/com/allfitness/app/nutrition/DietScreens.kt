@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -73,8 +73,10 @@ import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
+import com.allfitness.app.core.ui.entrance
 import com.allfitness.app.core.ui.formatNumber
 import com.allfitness.app.core.ui.messageRes
+import com.allfitness.app.core.ui.rememberEntranceClock
 import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
@@ -177,6 +179,8 @@ fun DietWeekScreen(
             modifier = Modifier.padding(padding),
         ) { diet ->
             val day = diet.days.first { it.dayOfWeek == selected }
+            val reduced = AppTheme.reducedMotion
+            val entrance = rememberEntranceClock()
             Column {
                 AiNote()
                 DayTabs(selected, viewModel::select)
@@ -186,8 +190,12 @@ fun DietWeekScreen(
                     verticalArrangement = Arrangement.spacedBy(Spacing.s),
                 ) {
                     item { DaySummary(day) }
-                    items(day.meals, key = { it.id }) { meal ->
-                        MealRow(meal, onClick = { onOpenMeal(day.dayOfWeek, meal.id) })
+                    itemsIndexed(day.meals, key = { _, meal -> meal.id }) { index, meal ->
+                        MealRow(
+                            meal,
+                            onClick = { onOpenMeal(day.dayOfWeek, meal.id) },
+                            modifier = (if (reduced) Modifier else Modifier.animateItem()).entrance(entrance, index),
+                        )
                     }
                     item {
                         Column(Modifier.padding(top = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
@@ -369,8 +377,8 @@ private fun DaySummary(day: DietDay) {
 }
 
 @Composable
-private fun MealRow(meal: Meal, onClick: () -> Unit) {
-    AppCard(Modifier.fillMaxWidth(), onClick = onClick) {
+private fun MealRow(meal: Meal, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    AppCard(modifier.fillMaxWidth(), onClick = onClick) {
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(stringResource(meal.type.labelRes()), style = MaterialTheme.typography.labelMedium, color = AppTheme.colors.lineDietText)
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {

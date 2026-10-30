@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -46,11 +47,17 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
@@ -376,4 +383,39 @@ fun MessageEffect(message: UserMessage?, snackbar: SnackbarHostState, onShown: (
         if (result == SnackbarResult.ActionPerformed) message.retry?.invoke()
         onShown()
     }
+}
+
+private const val ENTRANCE_ITEMS = 6
+private const val ENTRANCE_STAGGER_MS = 30
+
+/** Duración total de la entrada escalonada: el último escalón más una entrada MEDIUM. */
+const val ENTRANCE_TOTAL_MS = Motion.MEDIUM + (ENTRANCE_ITEMS - 1) * ENTRANCE_STAGGER_MS
+
+/** Avance (0–1) del ítem [index] cuando el reloj va por [elapsedMs]; del 7.º en adelante entran con el 6.º. */
+fun entranceProgress(elapsedMs: Float, index: Int): Float {
+    val delay = index.coerceAtMost(ENTRANCE_ITEMS - 1) * ENTRANCE_STAGGER_MS
+    return ((elapsedMs - delay) / Motion.MEDIUM).coerceIn(0f, 1f)
+}
+
+/**
+ * Reloj de la entrada de una lista: corre una sola vez por pantalla (al volver atrás o cambiar de
+ * pestaña no se repite) y nunca con movimiento reducido.
+ */
+@Composable
+fun rememberEntranceClock(): State<Float> {
+    val reduced = AppTheme.reducedMotion
+    var played by rememberSaveable { mutableStateOf(false) }
+    val clock = remember { Animatable(if (played || reduced) ENTRANCE_TOTAL_MS.toFloat() else 0f) }
+    LaunchedEffect(Unit) {
+        played = true
+        clock.animateTo(ENTRANCE_TOTAL_MS.toFloat(), tween(ENTRANCE_TOTAL_MS, easing = LinearEasing))
+    }
+    return clock.asState()
+}
+
+/** Fundido y subida de 8 dp del ítem [index]; el reloj se lee en la capa, sin recomponer la lista. */
+fun Modifier.entrance(clock: State<Float>, index: Int): Modifier = graphicsLayer {
+    val progress = Motion.Emphasized.transform(entranceProgress(clock.value, index))
+    alpha = progress
+    translationY = (1f - progress) * Spacing.s.toPx()
 }

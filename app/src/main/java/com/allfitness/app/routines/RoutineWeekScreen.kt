@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -48,8 +49,11 @@ import com.allfitness.app.core.ui.StationState
 import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
+import com.allfitness.app.core.ui.entrance
 import com.allfitness.app.core.ui.mapContent
 import com.allfitness.app.core.ui.messageRes
+import com.allfitness.app.core.ui.pressScale
+import com.allfitness.app.core.ui.rememberEntranceClock
 import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
@@ -175,6 +179,7 @@ fun RoutineWeekScreen(
             modifier = Modifier.padding(padding),
         ) { rows ->
             val lineColor = AppTheme.colors.lineRoutine
+            val entrance = rememberEntranceClock()
             Column {
                 AiNote()
                 LazyColumn(modifier = Modifier.weight(1f), contentPadding = PaddingValues(Spacing.m)) {
@@ -197,6 +202,7 @@ fun RoutineWeekScreen(
                             isFirst = index == 0,
                             isLast = index == rows.lastIndex,
                             onClick = { onOpenDay(row.date) },
+                            modifier = Modifier.entrance(entrance, index),
                         )
                     }
                     item {
@@ -241,7 +247,13 @@ private fun TodayPanel(row: WeekDayRow, onOpen: () -> Unit) {
         status = status,
         action = if (training) {
             {
-                Button(onClick = onOpen, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.small) {
+                val interaction = remember { MutableInteractionSource() }
+                Button(
+                    onClick = onOpen,
+                    modifier = Modifier.fillMaxWidth().pressScale(interaction),
+                    shape = MaterialTheme.shapes.small,
+                    interactionSource = interaction,
+                ) {
                     Text(stringResource(R.string.action_view_today_session))
                 }
             }

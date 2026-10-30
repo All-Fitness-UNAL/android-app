@@ -66,6 +66,10 @@ fun AppColors.lineFor(section: AppSection, ink: Color): Color = when (section) {
     AppSection.PROFILE -> ink
 }
 
+/** Color de línea para texto e íconos pequeños: el naranja de Dieta no llega a 4,5:1 y usa su tono de texto. */
+fun AppColors.lineTextFor(section: AppSection, ink: Color): Color =
+    if (section == AppSection.DIET) lineDietText else lineFor(section, ink)
+
 /** Contraste WCAG 2.x entre dos colores opacos. */
 fun contrastRatio(a: Color, b: Color): Float {
     val la = a.luminance()
