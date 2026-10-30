@@ -105,6 +105,8 @@
     <string name="unit_cm">cm</string>
     <string name="unit_kg">kg</string>
     <string name="unit_minutes">min</string>
+    <string name="unit_seconds">s</string>
+    <string name="unit_grams">g</string>
     <string name="unit_years">años</string>
 
     <!-- Secciones del perfil -->
@@ -181,15 +183,10 @@
     <string name="meal_dinner">Cena</string>
     <string name="meal_snack">Snack</string>
     <string name="kcal_value" tools:ignore="PluralsCandidate">%1$d kcal</string>
-    <string name="macros_value">Proteína %1$s g · Carbohidratos %2$s g · Grasas %3$s g</string>
     <string name="recipe_title">Receta</string>
     <string name="recipe_ingredients">Ingredientes</string>
     <string name="recipe_steps">Preparación</string>
-    <string name="recipe_prep_time">Tiempo aproximado: %1$d min</string>
-    <string name="recipe_per_serving">Por porción</string>
-    <string name="recipe_step">%1$d. %2$s</string>
-    <string name="ingredient_grams">%1$s g de %2$s</string>
-    <string name="ingredient_ml">%1$s ml de %2$s</string>
+    <string name="recipe_per_serving">Valores nutricionales por porción.</string>
 
     <!-- Alternativas -->
     <string name="reason_dislike">No me gusta</string>
@@ -264,8 +261,8 @@
     <string name="label_fat">GRASAS</string>
     <string name="label_kcal">KCAL</string>
     <string name="label_time">TIEMPO</string>
-    <string name="value_seconds">%1$d s</string>
     <string name="value_grams">%1$s g</string>
+    <string name="value_ml">%1$s ml</string>
     <string name="generating_stage_profile">Leyendo tu perfil</string>
     <string name="generating_stage_routine">Armando tu rutina</string>
     <string name="generating_stage_diet">Armando tu dieta</string>

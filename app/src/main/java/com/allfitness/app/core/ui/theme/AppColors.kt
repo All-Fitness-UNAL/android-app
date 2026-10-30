@@ -32,9 +32,10 @@ val LightAppColors = AppColors(
     signal = Color(0xFF0F1F1A),
     onSignal = Color(0xFFFFFFFF),
     signalOutline = Color.Transparent,
+    // Macros validados con dataviz/validate_palette (todos los pares, daltonismo y visión normal).
     macroProtein = Color(0xFF2C5BD6),
     macroCarbs = Color(0xFFD9661F),
-    macroFat = Color(0xFFB07F00),
+    macroFat = Color(0xFFC2389A),
 )
 
 val DarkAppColors = AppColors(
@@ -47,9 +48,10 @@ val DarkAppColors = AppColors(
     onSignal = Color(0xFFE6ECE9),
     // En oscuro la Señal casi no contrasta con la superficie: se separa con un hilo.
     signalOutline = Color(0xFF2A3531),
-    macroProtein = Color(0xFF8FAEFF),
-    macroCarbs = Color(0xFFF08A45),
-    macroFat = Color(0xFFE5B83A),
+    // Tonos propios, no los de línea: en oscuro estos quedan dentro de la banda de luminosidad de datos.
+    macroProtein = Color(0xFF5E8BEF),
+    macroCarbs = Color(0xFFDD7434),
+    macroFat = Color(0xFFCF4E9C),
 )
 
 val LocalAppColors = staticCompositionLocalOf { LightAppColors }

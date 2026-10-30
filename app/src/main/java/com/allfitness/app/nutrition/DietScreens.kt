@@ -1,29 +1,48 @@
 package com.allfitness.app.nutrition
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -45,6 +64,8 @@ import com.allfitness.app.core.ui.AiNote
 import com.allfitness.app.core.ui.AlternativeButton
 import com.allfitness.app.core.ui.AppCard
 import com.allfitness.app.core.ui.AppTopBar
+import com.allfitness.app.core.ui.DataCell
+import com.allfitness.app.core.ui.DataStrip
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
@@ -54,12 +75,12 @@ import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.formatNumber
 import com.allfitness.app.core.ui.messageRes
+import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
 import com.allfitness.app.navigation.RecipeRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.DayOfWeek
-import java.time.format.TextStyle
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -158,43 +179,18 @@ fun DietWeekScreen(
             val day = diet.days.first { it.dayOfWeek == selected }
             Column {
                 AiNote()
+                DayTabs(selected, viewModel::select)
                 LazyColumn(
                     modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(Spacing.m),
                     verticalArrangement = Arrangement.spacedBy(Spacing.s),
                 ) {
-                    item {
-                        LazyRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                            items(DayOfWeek.entries) { d ->
-                                FilterChip(
-                                    selected = d == selected,
-                                    onClick = { viewModel.select(d) },
-                                    label = { Text(d.displayName(TextStyle.SHORT)) },
-                                )
-                            }
-                        }
-                    }
-                    item {
-                        AppCard(Modifier.fillMaxWidth()) {
-                            Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                                Text(stringResource(R.string.diet_day_totals, day.dayOfWeek.displayName()), style = MaterialTheme.typography.titleMedium)
-                                NutritionSummary(day.totals)
-                            }
-                        }
-                    }
+                    item { DaySummary(day) }
                     items(day.meals, key = { it.id }) { meal ->
-                        AppCard(Modifier.fillMaxWidth(), onClick = { onOpenMeal(day.dayOfWeek, meal.id) }) {
-                            Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically) {
-                                Column(Modifier.weight(1f)) {
-                                    Text(stringResource(meal.type.labelRes()), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
-                                    Text(meal.recipe.name, style = MaterialTheme.typography.titleMedium)
-                                }
-                                Text(stringResource(R.string.kcal_value, meal.recipe.perServing.kcal), style = MaterialTheme.typography.bodyMedium)
-                            }
-                        }
+                        MealRow(meal, onClick = { onOpenMeal(day.dayOfWeek, meal.id) })
                     }
                     item {
-                        Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                        Column(Modifier.padding(top = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                             TonalActionButton(
                                 text = stringResource(R.string.action_regenerate_diet),
                                 onClick = { alternatives.open(AlternativeTarget.WholeDiet) },
@@ -281,36 +277,184 @@ fun RecipeScreen(
     AlternativeHost(alternatives, online)
 }
 
-/** Valores tal como los envía el servidor (FR-017). */
+/** Proporción de los gramos recibidos, solo para dibujar la barra; no calcula nutrición (FR-017). */
+data class MacroShares(val protein: Float, val carbs: Float, val fat: Float)
+
+fun Nutrition.macroShares(): MacroShares? {
+    val total = proteinG + carbsG + fatG
+    if (total <= 0.0) return null
+    return MacroShares((proteinG / total).toFloat(), (carbsG / total).toFloat(), (fatG / total).toFloat())
+}
+
+/**
+ * Barra apilada de macros con un hueco de 2 dp entre segmentos. Sin semántica propia: la DataStrip
+ * de debajo lee los mismos gramos y hace de leyenda.
+ */
 @Composable
-fun NutritionSummary(nutrition: Nutrition) {
-    Text(stringResource(R.string.kcal_value, nutrition.kcal), style = MaterialTheme.typography.titleLarge)
-    Text(
-        stringResource(R.string.macros_value, formatNumber(nutrition.proteinG), formatNumber(nutrition.carbsG), formatNumber(nutrition.fatG)),
-        style = MaterialTheme.typography.bodyMedium,
+fun MacroBar(shares: MacroShares, modifier: Modifier = Modifier) {
+    val colors = AppTheme.colors
+    Row(
+        modifier.fillMaxWidth().height(Spacing.s).clip(MaterialTheme.shapes.extraSmall).clearAndSetSemantics {},
+        horizontalArrangement = Arrangement.spacedBy(Spacing.hairline * 2),
+    ) {
+        listOf(shares.protein to colors.macroProtein, shares.carbs to colors.macroCarbs, shares.fat to colors.macroFat)
+            .filter { (share, _) -> share > 0f } // weight(0f) no es válido
+            .forEach { (share, color) -> Box(Modifier.weight(share).fillMaxHeight().background(color)) }
+    }
+}
+
+/** Gramos tal como los envía el servidor (FR-017); [legend] marca cada celda con el color de su segmento. */
+@Composable
+private fun macroCells(nutrition: Nutrition, legend: Boolean): List<DataCell> {
+    val colors = AppTheme.colors
+    val grams = stringResource(R.string.unit_grams)
+    return listOf(
+        DataCell(stringResource(R.string.label_protein), formatNumber(nutrition.proteinG), grams, colors.macroProtein.takeIf { legend }),
+        DataCell(stringResource(R.string.label_carbs), formatNumber(nutrition.carbsG), grams, colors.macroCarbs.takeIf { legend }),
+        DataCell(stringResource(R.string.label_fat), formatNumber(nutrition.fatG), grams, colors.macroFat.takeIf { legend }),
     )
+}
+
+/** Selector de días: desplaza a la pestaña elegida y deja ver que hay más días. */
+@Composable
+private fun DayTabs(selected: DayOfWeek, onSelect: (DayOfWeek) -> Unit) {
+    val colors = AppTheme.colors
+    val index = DayOfWeek.entries.indexOf(selected)
+    SecondaryScrollableTabRow(
+        selectedTabIndex = index,
+        containerColor = MaterialTheme.colorScheme.background,
+        edgePadding = Spacing.m,
+        // Más estrechas que los 90 dp por defecto: a los lados se asoman días cortados y se ve que hay más.
+        minTabWidth = Spacing.xxl + Spacing.l,
+        indicator = {
+            TabRowDefaults.SecondaryIndicator(Modifier.tabIndicatorOffset(index, matchContentSize = false), color = colors.lineDiet)
+        },
+    ) {
+        DayOfWeek.entries.forEach { day ->
+            Tab(
+                selected = day == selected,
+                onClick = { onSelect(day) },
+                text = { Text(day.displayName(java.time.format.TextStyle.SHORT)) },
+                selectedContentColor = colors.lineDietText,
+                unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+private fun DaySummary(day: DietDay) {
+    val totals = day.totals
+    val kcal = stringResource(R.string.kcal_value, totals.kcal)
+    AppCard(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+            Text(
+                stringResource(R.string.diet_day_totals, day.dayOfWeek.displayName().lowercase(Today.locale)),
+                Modifier.semantics { heading() },
+                style = MaterialTheme.typography.titleLarge,
+            )
+            Row(Modifier.clearAndSetSemantics { contentDescription = kcal }) {
+                Text(totals.kcal.toString(), Modifier.alignByBaseline(), style = MaterialTheme.typography.displaySmall)
+                Text(
+                    stringResource(R.string.label_kcal),
+                    Modifier.alignByBaseline().padding(start = Spacing.s),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            totals.macroShares()?.let { MacroBar(it) }
+            DataStrip(macroCells(totals, legend = true))
+        }
+    }
+}
+
+@Composable
+private fun MealRow(meal: Meal, onClick: () -> Unit) {
+    AppCard(Modifier.fillMaxWidth(), onClick = onClick) {
+        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Text(stringResource(meal.type.labelRes()), style = MaterialTheme.typography.labelMedium, color = AppTheme.colors.lineDietText)
+            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                Text(meal.recipe.name, Modifier.weight(1f).alignByBaseline(), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(R.string.kcal_value, meal.recipe.perServing.kcal),
+                    Modifier.alignByBaseline(),
+                    style = numberStyle(MaterialTheme.typography.titleMedium),
+                )
+            }
+        }
+    }
+}
+
+/** Cifras en Archivo tabular al tamaño de [size]: titleLarge es el rol Archivo más cercano. */
+@Composable
+private fun numberStyle(size: TextStyle): TextStyle =
+    MaterialTheme.typography.titleLarge.copy(fontSize = size.fontSize, lineHeight = size.lineHeight)
+
+/** Ancho del texto más ancho, para alinear una columna sin recortar con fuente grande. */
+@Composable
+private fun rememberMaxWidth(texts: List<String>, style: TextStyle): Dp {
+    val measurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+    return remember(texts, style, density) {
+        with(density) { (texts.maxOfOrNull { measurer.measure(it, style).size.width } ?: 0).toDp() }
+    }
+}
+
+@Composable
+private fun SectionTitle(text: String) {
+    Text(text, Modifier.semantics { heading() }, style = MaterialTheme.typography.titleLarge)
 }
 
 @Composable
 fun RecipeContent(recipe: Recipe) {
-    Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-        Text(stringResource(R.string.recipe_prep_time, recipe.prepMinutes), style = MaterialTheme.typography.bodyMedium)
-        Text(stringResource(R.string.recipe_per_serving), style = MaterialTheme.typography.titleSmall)
-        NutritionSummary(recipe.perServing)
-        Text(stringResource(R.string.recipe_ingredients), style = MaterialTheme.typography.titleSmall)
-        recipe.ingredients.forEach { ingredient ->
-            Text(
-                stringResource(
-                    if (ingredient.unit == MeasureUnit.G) R.string.ingredient_grams else R.string.ingredient_ml,
-                    formatNumber(ingredient.amount),
-                    ingredient.name,
+    val colors = AppTheme.colors
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+            DataStrip(
+                listOf(
+                    DataCell(stringResource(R.string.label_time), recipe.prepMinutes.toString(), stringResource(R.string.unit_minutes)),
+                    DataCell(stringResource(R.string.label_kcal), recipe.perServing.kcal.toString()),
                 ),
-                style = MaterialTheme.typography.bodyMedium,
             )
+            DataStrip(macroCells(recipe.perServing, legend = false))
+            Text(stringResource(R.string.recipe_per_serving), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        Text(stringResource(R.string.recipe_steps), style = MaterialTheme.typography.titleSmall)
-        recipe.steps.forEachIndexed { index, step ->
-            Text(stringResource(R.string.recipe_step, index + 1, step), style = MaterialTheme.typography.bodyMedium)
+
+        SectionTitle(stringResource(R.string.recipe_ingredients))
+        val amounts = recipe.ingredients.map {
+            stringResource(if (it.unit == MeasureUnit.G) R.string.value_grams else R.string.value_ml, formatNumber(it.amount))
+        }
+        val amountStyle = numberStyle(MaterialTheme.typography.titleMedium)
+        val amountWidth = rememberMaxWidth(amounts, amountStyle)
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            recipe.ingredients.forEachIndexed { index, ingredient ->
+                Row(
+                    Modifier.semantics(mergeDescendants = true) {},
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
+                ) {
+                    Box(Modifier.size(Spacing.s).border(Spacing.hairline * 2, colors.lineDiet, CircleShape))
+                    Text(amounts[index], Modifier.width(amountWidth), style = amountStyle, textAlign = TextAlign.End)
+                    Text(ingredient.name, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+                }
+            }
+        }
+
+        SectionTitle(stringResource(R.string.recipe_steps))
+        val numbers = recipe.steps.indices.map { (it + 1).toString() }
+        val numberWidth = rememberMaxWidth(numbers, MaterialTheme.typography.headlineSmall)
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
+            recipe.steps.forEachIndexed { index, step ->
+                Row(Modifier.semantics(mergeDescendants = true) {}, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                    Text(
+                        numbers[index],
+                        Modifier.width(numberWidth).alignByBaseline(),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = colors.lineDietText,
+                    )
+                    Text(step, Modifier.weight(1f).alignByBaseline(), style = MaterialTheme.typography.bodyLarge)
+                }
+            }
         }
     }
 }
