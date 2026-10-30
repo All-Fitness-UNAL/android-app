@@ -8,9 +8,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,11 +15,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -35,20 +30,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import com.allfitness.app.R
@@ -106,57 +95,6 @@ fun RouteStation(state: StationState, lineColor: Color, modifier: Modifier = Mod
     }
 }
 
-/** Fila de la semana: estación sobre una línea vertical continua, toda la fila tocable. */
-@Composable
-fun RouteRow(
-    state: StationState,
-    title: String,
-    subtitle: String,
-    lineColor: Color,
-    isFirst: Boolean,
-    isLast: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val today = stringResource(R.string.today)
-    val finished = stringResource(R.string.session_finished)
-    // El estado se ve en la estación; TalkBack lo necesita como texto.
-    val status = listOfNotNull(today.takeIf { state.isToday }, finished.takeIf { state.isDone }).joinToString(", ")
-    val gutter = Spacing.xl
-    val interaction = remember { MutableInteractionSource() }
-    Row(
-        modifier
-            .fillMaxWidth()
-            .heightIn(min = Spacing.routeRowHeight)
-            .clickable(interactionSource = interaction, indication = LocalIndication.current, role = Role.Button, onClick = onClick)
-            .semantics { if (status.isNotEmpty()) stateDescription = status }
-            .drawBehind {
-                val x = gutter.toPx() / 2
-                val y = size.height / 2
-                val gap = state.radius().toPx()
-                val width = Spacing.lineWidth.toPx()
-                if (!isFirst) drawLine(lineColor, Offset(x, 0f), Offset(x, y - gap), width)
-                if (!isLast) drawLine(lineColor, Offset(x, y + gap), Offset(x, size.height), width)
-            },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(Modifier.width(gutter), contentAlignment = Alignment.Center) { RouteStation(state, lineColor) }
-        // Solo el texto se encoge al pulsar: la línea de la semana sigue continua.
-        Column(Modifier.weight(1f).pressScale(interaction).padding(start = Spacing.sm, top = Spacing.s, bottom = Spacing.s)) {
-            Text(
-                title,
-                style = MaterialTheme.typography.titleMedium,
-                color = if (state == StationState.REST || state == StationState.PAST) {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                } else {
-                    MaterialTheme.colorScheme.onSurface
-                },
-            )
-            Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-    }
-}
-
 /** Marca de entrada: el wordmark sobre la Señal y una línea con sus 3 estaciones llenas. */
 @Composable
 fun BrandHeader(modifier: Modifier = Modifier) {
@@ -175,38 +113,6 @@ fun BrandHeader(modifier: Modifier = Modifier) {
             )
             // La Señal es oscura en los dos modos: la línea va en su tono para fondo oscuro, como en SessionBar.
             StationProgress(total = 3, reached = 3, lineColor = DefaultAppColors.lineRoutine)
-        }
-    }
-}
-
-/** Panel Señal: lo de hoy a un vistazo. */
-@Composable
-fun SignPanel(
-    label: String,
-    title: String,
-    status: String,
-    modifier: Modifier = Modifier,
-    action: (@Composable () -> Unit)? = null,
-) {
-    val colors = AppTheme.colors
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
-        color = colors.signal,
-        contentColor = colors.onSignal,
-        border = BorderStroke(Spacing.hairline, colors.signalOutline),
-    ) {
-        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-            Text(
-                text = label.uppercase(),
-                // En mayúsculas TalkBack puede deletrear "OCT"; se lee la forma normal.
-                modifier = Modifier.semantics { contentDescription = label },
-                style = MaterialTheme.typography.labelSmall,
-                color = colors.here,
-            )
-            Text(title, Modifier.semantics { heading() }, style = MaterialTheme.typography.headlineMedium)
-            Text(status, style = MaterialTheme.typography.bodyMedium)
-            if (action != null) Box(Modifier.fillMaxWidth().padding(top = Spacing.xs)) { action() }
         }
     }
 }

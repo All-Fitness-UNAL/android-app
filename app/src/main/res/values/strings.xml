@@ -181,6 +181,16 @@
     <string name="action_start_workout">Empezar entrenamiento</string>
     <string name="action_continue_workout">Continuar entrenamiento</string>
     <string name="meal_prep_minutes">%1$d min de preparación</string>
+    <string name="workout_percent">%1$d %% completado</string>
+    <string name="exercise_rest">Descanso: %1$d s</string>
+    <string name="exercise_sets_reps">%1$d × %2$d reps</string>
+    <string name="exercise_sets_seconds">%1$d × %2$d s</string>
+    <plurals name="exercise_sets">
+        <item quantity="one">%d serie</item>
+        <item quantity="many">%d series</item>
+        <item quantity="other">%d series</item>
+    </plurals>
+    <string name="action_open_exercise">Ver el ejercicio</string>
 
     <!-- Rutina -->
     <string name="routine_title">Tu rutina</string>
@@ -310,10 +320,7 @@
     <string name="hint_height">Entre 100 y 250 cm</string>
     <string name="hint_weight">Entre 30 y 300 kg</string>
     <string name="hint_minutes">Entre 15 y 120 minutos</string>
-    <string name="today_station_label">HOY · %1$s</string>
     <string name="status_pair">%1$s · %2$s</string>
-    <string name="action_view_today_session">Ver sesión de hoy</string>
-    <string name="session_status_not_started">Sin empezar</string>
     <string name="session_progress">%1$d de %2$d</string>
     <string name="exercise_done">Hecho</string>
     <plurals name="exercises_count">
@@ -321,5 +328,4 @@
         <item quantity="many">%d ejercicios</item>
         <item quantity="other">%d ejercicios</item>
     </plurals>
-    <string name="week_title">Tu semana</string>
 </resources>

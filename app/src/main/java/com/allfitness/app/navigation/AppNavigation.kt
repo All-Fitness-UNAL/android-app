@@ -257,7 +257,9 @@ private fun MainScaffold() {
                             onOpenMeal = { day, mealId -> nav.navigate(RecipeRoute(day.name, mealId)) },
                         )
                     }
-                    composable<RoutineWeekRoute> { RoutineWeekScreen(onOpenDay = { nav.navigate(RoutineDayRoute(it.toString())) }) }
+                    composable<RoutineWeekRoute> {
+                        RoutineWeekScreen(onOpenSession = { date, index -> nav.navigate(RoutineDayRoute(date.toString(), index)) })
+                    }
                     composable<RoutineDayRoute> { RoutineDayScreen(onBack = back) }
                     composable<DietWeekRoute> { DietWeekScreen(onOpenMeal = { day, mealId -> nav.navigate(RecipeRoute(day.name, mealId)) }) }
                     composable<RecipeRoute> { RecipeScreen(onBack = back) }
