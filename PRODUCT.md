@@ -23,7 +23,7 @@ Un plan integral que se adapta a la persona: rutina y dieta se generan juntas a 
 - Uso en el móvil, en sesiones cortas y frecuentes: consultar el día, marcar ejercicios mientras se entrena y leer una receta mientras se cocina.
 - La generación con IA tarda hasta 60 segundos y puede fallar. La espera y el reintento son parte normal del uso.
 - Hay uso sin conexión: rutina, dieta y último progreso se consultan desde caché, con indicador de que pueden no estar actualizados.
-- Navegación principal con barra inferior: Rutina, Dieta, Progreso y Perfil.
+- Navegación principal con barra inferior: Inicio, Rutina, Dieta, Progreso y Perfil.
 
 ## Capabilities and Constraints
 
@@ -35,7 +35,7 @@ Un plan integral que se adapta a la persona: rutina y dieta se generan juntas a 
 - Toda pantalla que carga datos maneja los estados cargando, contenido, vacío y error.
 - Solo se marca como terminada la sesión del día actual.
 - Toda la interfaz está en español y todo texto visible va en `strings.xml`.
-- **Fuera de alcance:** pagos, login social, recuperación de contraseña, notificaciones, wearables, funciones sociales, chat libre con la IA, edición manual de planes, historial de planes, registro de comidas, lista de compras, videos de ejercicios o temporizador, medidas distintas al peso, modo oscuro personalizado (se sigue el tema del sistema), otros idiomas y versiones web o iOS.
+- **Fuera de alcance:** pagos, login social, recuperación de contraseña, notificaciones, wearables, funciones sociales, chat libre con la IA, edición manual de planes, historial de planes, registro de comidas, lista de compras, videos de ejercicios o temporizador, medidas distintas al peso, selector de tema (la app usa un único tema oscuro), otros idiomas y versiones web o iOS.
 
 ## Brand Commitments
 
@@ -68,7 +68,7 @@ Un plan integral que se adapta a la persona: rutina y dieta se generan juntas a 
 
 - Áreas táctiles de mínimo 48dp, `contentDescription` en imágenes e íconos con significado, y contraste suficiente (requisito de la constitución).
 - La interfaz debe soportar escalado de fuente del sistema. En la auditoría se verificó al 130 % sin recortes.
-- Debe respetar el modo claro/oscuro del sistema.
+- La app usa un único tema oscuro (FR-035c); el contraste se verifica sobre él.
 
 ## Mejoras de la ejecución anterior
 
