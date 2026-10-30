@@ -1,29 +1,18 @@
 <!--
 Sync Impact Report
-- Version change: (plantilla sin ratificar) → 1.0.0
-- Principios definidos (antes eran placeholders):
-  - [PRINCIPLE_1_NAME] → I. Alcance Solo Frontend (NO NEGOCIABLE)
-  - [PRINCIPLE_2_NAME] → II. Contrato de Datos Definido por el Frontend
-  - [PRINCIPLE_3_NAME] → III. Contenido de IA Seguro y Resiliente en la UX
-  - [PRINCIPLE_4_NAME] → IV. Errores Centralizados y Amigables
-  - [PRINCIPLE_5_NAME] → V. Cero Código Sombra y Fuente de la Verdad
-- Secciones añadidas:
-  - Naturaleza del Proyecto (preámbulo)
-  - [SECTION_2_NAME] → Stack Tecnológico y Estructura de Código
-  - [SECTION_3_NAME] → Calidad, Pruebas y Flujo de Trabajo
-  - Governance completada
+- Version change: 1.0.0 → 1.1.0 (MINOR: se amplía materialmente la guía de dependencias)
+- Principios modificados: ninguno (I–V sin cambios)
+- Sección modificada: Stack Tecnológico y Estructura de Código → regla "Dependencias nuevas"
+  - Antes: MUST NOT añadir librerías fuera de la lista sin justificarlo como excepción en plan.md
+  - Ahora: se PUEDEN añadir librerías de UI/UX (gráficas, adaptive, splash, fuentes, animación,
+    iconos) si son compatibles con Kotlin + Compose + M3, están mantenidas, no reemplazan el stack
+    base y el plan.md de la feature registra qué se añade y para qué
+- Secciones añadidas: ninguna
 - Secciones eliminadas: ninguna
-- Templates: no modificados (fuera del alcance de este comando; los leen en tiempo de ejecución)
-  - .specify/templates/plan-template.md: su "Constitution Check" debe validar los principios I–V
-  - .specify/templates/tasks-template.md: las tareas de tests son opcionales (coherente con la
-    sección de Calidad)
-- Reconstrucciones de texto truncado en la entrada (revisar):
-  - "kotlinx.serialization.nía" → "kotlinx.serialization; Coroutines + Flow para asincronía"
-  - "puede fallatenido a la IA" → "puede fallar: toda acción que pide contenido a la IA"
-  - "`onboar`" → "`onboarding/`, `routines/`" (se añadió `routines/` por el módulo Rutinas)
-  - "Composables sin estado siempre)" → "sin estado (stateless) siempre que sea posible"
-  - "porcento derivados" → "porcentajes o totales derivados trivialmente"
-  - "prevalece sobre cualquie" → "prevalece sobre cualquier otra práctica o guía del proyecto"
+- Templates: no modificados (fuera del alcance de este comando)
+- Follow-up: Governance pide acuerdo del equipo completo para cambios de stack; esta enmienda no
+  reemplaza el stack base (solo permite añadir), y fue autorizada por el dueño del proyecto el
+  2026-10-30. Confirmar con el equipo si aplica.
 - TODOs diferidos: ninguno
 -->
 # All Fitness (Frontend Android) Constitution
@@ -136,8 +125,13 @@ revisada.
 - **Imágenes:** Coil.
 - **Plataforma:** minSdk 26 (Android 8.0), targetSdk en la última versión estable. Un único
   módulo Gradle `app`.
-- **Dependencias nuevas:** MUST NOT añadirse librerías fuera de esta lista sin justificarlo en el
-  plan.md de la feature.
+- **Dependencias nuevas:** se PUEDEN añadir librerías que mejoren la apariencia, la experiencia o
+  la calidad de la UI (gráficas, layouts adaptativos, splash screen, fuentes, animación, iconos),
+  sin tratarlas como excepción, siempre que: (a) sean compatibles con Kotlin + Jetpack Compose +
+  Material 3; (b) estén mantenidas activamente; (c) no reemplacen el stack base de esta lista
+  (Compose, Material 3, Navigation Compose, Hilt, Retrofit, kotlinx.serialization, Room, DataStore,
+  Coil); y (d) el plan.md de la feature registre qué se añade y para qué. Reemplazar una pieza del
+  stack base sigue requiriendo enmienda.
 
 **Estructura y estilo:**
 
@@ -179,4 +173,4 @@ revisada.
 - Los cambios de stack o de alcance entre frontend y backend requieren acuerdo del equipo completo
   antes de enmendar.
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-28 | **Last Amended**: 2026-10-28
+**Version**: 1.1.0 | **Ratified**: 2026-10-28 | **Last Amended**: 2026-10-30
