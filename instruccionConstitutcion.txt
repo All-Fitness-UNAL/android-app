@@ -28,7 +28,7 @@ formato y muestra (fechas, unidades, porcento derivados trivialmente).
 * **Inyección de dependencias:** Hilt.
 * **Imágenes:** Coil.
 * **Plataforma:** minSdk 26 (Android 8.0), targetSdk en la última versión estable. Un único módulo Gradle `app`.
-* **Dependencias nuevas:** No añadir librerías fuera de esta lista sin justificarlo en el plan.md de la feature.
+* **Dependencias nuevas:** Se pueden añadir librerías que mejoren la apariencia, la experiencia o la calidad de la UI (gráficas, layouts adaptativos, splash, fuentes, animación, iconos) si son compatibles con Kotlin + Compose + Material 3, están mantenidas, no reemplazan el stack base y el plan.md de la feature registra qué se añade y para qué.
 
 ## 4. Contrato de Datos con Backend
 

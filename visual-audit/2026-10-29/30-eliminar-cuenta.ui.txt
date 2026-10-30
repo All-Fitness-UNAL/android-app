@@ -1,0 +1,6 @@
+Se eliminarán tu cuenta y todos tus datos de forma permanente. Esta acción no se puede deshacer.||click=false|[42,352][1038,541]
+||click=true|[42,583][1038,751]
+Escribe ELIMINAR para confirmar||click=false|[84,646][747,709]
+Eliminar mi cuenta||click=false|[389,830][692,883]
+|Volver|click=false|[43,195][106,258]
+Eliminar cuenta||click=false|[148,189][539,263]

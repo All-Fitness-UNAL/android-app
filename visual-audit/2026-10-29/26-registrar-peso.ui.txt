@@ -1,0 +1,8 @@
+Registrar peso||click=false|[183,910][587,994]
+||click=true|[183,1036][897,1257]
+Peso actual||click=false|[225,1099][459,1162]
+0/5||click=false|[225,1215][276,1257]
+Fecha: 30 de octubre de 2026||click=false|[183,1315][695,1368]
+Cambiar||click=false|[727,1315][865,1368]
+Cancelar||click=false|[503,1504][648,1557]
+Guardar||click=false|[733,1504][865,1557]
