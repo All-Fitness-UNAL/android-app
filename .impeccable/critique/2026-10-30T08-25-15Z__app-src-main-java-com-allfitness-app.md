@@ -49,7 +49,7 @@ Ya no es intercambiable: línea con estaciones, Señal con "HOY" amarillo, color
 Moderada-baja (2/8: opciones mínimas en paso 3 y hoja de 5 motivos).
 
 ## Recorrido emocional
-Pico con preámbulo; final reconocido (estación + snackbar). Valle restante: paso 3.
+Pico con preámbulo; final reconocido (estación rellena + mensaje en la barra de sesión). Valle restante: paso 3.
 
 ## Menores
 CTA de hoy tras terminar sigue "Ver sesión de hoy"; gráfica ~95 dp al 200 %; enlace del login en dos líneas al 200 %.

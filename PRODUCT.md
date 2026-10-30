@@ -47,6 +47,11 @@ Un plan integral que se adapta a la persona: rutina y dieta se generan juntas a 
 - Auditoría visual real de la app actual en el emulador: `visual-audit/2026-10-29/AUDITORIA.md`, con 31 capturas y sus dumps de UI.
 - Crítica de diseño (`/impeccable critique`, 2026-10-29): 22/40 (Aceptable), con detalle en `.impeccable/critique/`. Diagnóstico: la interfaz es Material 3 por defecto y no tiene carácter propio. Problemas prioritarios: (P1) "Hoy" no está a un vistazo; (P1) entrenar no tiene forma propia: sin progreso, "Terminar sesión" al final de la lista y checkboxes inertes en días que no son hoy; (P1) no hay identidad visual (mezcla de verde, lavanda y menta, tipografía de serie); (P2) el aviso de IA ocupa el mejor espacio; (P2) la espera de 60 s es una pantalla muerta.
 - Auditoría técnica (`/impeccable audit`, 2026-10-30): 13/20 (Aceptable), con detalle en `.impeccable/audit/2026-10-30__app.md`. Es nativa y conforme con Material, pero el tema está a medio definir: `Color.kt` no define los roles `surfaceContainer*`, y por eso M3 rellena con lavanda, y la tipografía es `Typography()` de serie. Otros hallazgos: (P1) checkbox inerte en días que no son hoy, sin `enabled = false`; (P2) no hay `heading()` ni `liveRegion` para TalkBack; (P2) no hay adaptación a tablet ni a apaisado.
+- Rediseño "Línea" (rama `redesign/premium-ui`, 2026-10-30):
+  - auditoría técnica final 17/20, Buena, con P0 0 y P1 0 (`.impeccable/audit/2026-10-30__app-final.md`);
+  - crítica final 30/40, Buena, con P0 0 y P1 0 (`.impeccable/critique/2026-10-30T08-25-15Z__app-src-main-java-com-allfitness-app.md`);
+  - capturas en claro, oscuro y con fuente al 130 % y al 200 % en `visual-audit/redesign/final/`;
+  - el sistema visual resultante está en `DESIGN.md`.
 - Los datos de ejemplo del `FakeBackend` (`app/src/mock/`) muestran el contenido real esperado: ejercicios con grupo muscular, series, repeticiones y peso sugerido, y comidas colombianas con kcal y macros.
 - No hay fotografías de ejercicios ni de comida, ni testimonios, métricas de usuarios o marca registrada. Cuando el backend envía imágenes de ejercicio, la app las muestra; no hay que fabricarlas.
 

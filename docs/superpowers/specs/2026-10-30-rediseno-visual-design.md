@@ -138,8 +138,8 @@ Precisa, tranquila y segura. Habla poco y muestra mucho. Premium por la exactitu
 
 **Por qué estos colores:**
 - **El verde se queda pero se endurece.** Es la única herencia del launcher (`#1B6B4F`) y ancla lo saludable. Pasa de "verde app" a "verde línea" (`#0A7A50`), más saturado y con 5.4:1 sobre blanco.
-- **Naranja para Dieta:** se asocia con el apetito y la comida cocinada, y no compite con el rojo de error. Los macros siguen la convención que el usuario de apps de nutrición ya conoce (ui-ux-pro-max: carbohidratos en naranja), adaptada así: proteína en Línea Progreso (azul), carbohidratos en Línea Dieta (naranja) y grasas en ocre: `#B07F00` en claro (3.6:1, gráfico) y `#E5B83A` en oscuro (9.5:1). Los macros siempre llevan su etiqueta de texto; el color nunca es la única señal.
-- **Botón tonal (secondaryContainer):** claro `#DCEBE3` con tinta `#0F2A1F` (12.4:1); oscuro `#23352D` con `#D3E8DC` (10.1:1).
+- **Naranja para Dieta:** se asocia con el apetito y la comida cocinada, y no compite con el rojo de error. Los macros siguen la convención que el usuario de apps de nutrición ya conoce (ui-ux-pro-max: carbohidratos en naranja), adaptada así: proteína en Línea Progreso (azul), carbohidratos en Línea Dieta (naranja) y grasas en ocre: `#B07F00` en claro (3.6:1, gráfico) y `#E5B83A` en oscuro (9.5:1). Los macros siempre llevan su etiqueta de texto; el color nunca es la única señal. *Actualizado en la implementación (T7):* el validador de paletas rechazó el ocre junto al naranja (ΔE 1,6 con deuteranopía), así que las grasas pasan a magenta `#C2389A` en claro, y el modo oscuro tiene su propio trío: `#5E8BEF` (proteína), `#DD7434` (carbohidratos) y `#CF4E9C` (grasas).
+- **Botón tonal (secondaryContainer):** claro `#C6E3D2` con tinta `#0F2A1F` (11.2:1); oscuro `#2A4234` con `#D3E8DC` (8.5:1). *Actualizado en la implementación (T10):* los valores iniciales (`#DCEBE3` / `#23352D`) quedaban a ΔE OKLab 1,1 de la hoja (`surfaceContainerHigh`) y el botón se leía como texto suelto; `ContrastTest.tonalStandsOutOnSheet` exige ΔE ≥ 4,5.
 - **Azul para Progreso:** es frío y analítico, el color de "datos". Distingue la gráfica de la acción.
 - **Amarillo solo para "Estás aquí":** es el color de alerta suave de la señalética. Usarlo una sola vez por pantalla le da un poder que nadie más tiene.
 - **Neutros fríos con un 2 % de verde:** evitan el lavanda de M3 y el crema de la plantilla "premium". El blanco puro de las tarjetas sobre un andén ligeramente gris da separación sin sombras.
@@ -440,3 +440,30 @@ Cada etapa compila, se recorre en el emulador, se capturan las pantallas que toc
 2. **Librerías:** se permiten (constitución v1.1.0). Las elegidas están en la sección 0.1.
 3. **FR-037 (mi decisión, conservadora):** `AiNote` va **justo debajo del título**, siempre a la vista sin desplazar y con el texto completo. Cambia su peso visual: sin caja de color, una línea fina, el ícono de info y bodySmall en tinta secundaria. Así se cumple "visible" sin discusión. Moverlo al pie queda descartado.
 4. **Textos nuevos** (12.4): se incluyen en el plan como tareas explícitas para que se puedan revisar uno a uno antes de implementarlos.
+
+## 14. Estado de la implementación (2026-10-30)
+
+La dirección A se implementó en la rama `redesign/premium-ui` (tareas 0–12 del plan `docs/superpowers/plans/2026-10-30-rediseno-visual-linea.md`). El sistema resultante está documentado en `DESIGN.md`. Estas son las desviaciones respecto a esta spec, cada una tomada durante la implementación:
+
+| Sección | Spec | Implementado | Motivo |
+|---|---|---|---|
+| 0.1 | Vico 2.x estable | Vico 3.3.1 | Es la última estable en Maven Central |
+| 4.3 | Tonal `#DCEBE3` / `#23352D` | `#C6E3D2` / `#2A4234` | Se confundía con la hoja (ΔE 1,1) |
+| 4.3 | Grasas en ocre | Magenta `#C2389A`; trío propio en oscuro | El ocre y el naranja no se distinguen con deuteranopía |
+| 4.3 | Amarillo para "estás aquí" | Solo en el rótulo de la Señal; la estación de hoy lleva halo en el color de la línea | Máximo una vez por pantalla (8.3) |
+| 4.8 | Barra de sesión en Línea Rutina | Tramo en el verde del tema oscuro | `#0A7A50` sobre la Señal daba 3,1:1 |
+| 4.8 | Sesión terminada con snackbar | Mensaje en la propia barra de sesión, anunciado a TalkBack | El snackbar repetía la barra palabra por palabra |
+| 4.8 | Días no-hoy con checkbox deshabilitado | Estación de solo lectura: hecha, pendiente o pasada atenuada (contorno gris) | 4.8.4 y 4.11 piden "sin checkbox"; lo pasado se atenúa, no se tacha |
+| 4.9 | Barra en surface con hilo superior | `surfaceContainer` de `NavigationSuiteScaffold` | La suite no ofrece hueco para el hilo |
+| 4.9 | Rail en ventanas anchas | Rail en ventanas anchas; el teléfono en apaisado conserva la barra | Comportamiento por defecto de la librería con altura compacta |
+| 5 | Generando: línea que dibuja 3 tramos y texto que cambia por etapa | Tramo indeterminado y las 3 etapas listadas sin marcar; a sangre, con wordmark y resumen solo en la primera generación | No hay progreso real: marcar etapas inventaría avance (FR-010). Las regeneraciones viven bajo la barra superior de su pestaña |
+| 4.11 | Login con marca a sangre | Panel Señal redondeado dentro del margen | Mismo lenguaje que la Señal de Rutina; íconos de estado legibles |
+| 6 | Marcadores de 6 dp | 8 dp | Tamaño mínimo de marca de la guía de visualización |
+| 4.4 | Cifras tabulares solo en display | Archivo con `tnum` también en headline y titleLarge | Las cifras de títulos (kcal, N/M, kg) se alinean igual |
+| 4.5 | Margen de 20 dp en ventanas ≥ 600 dp | 16 dp en todas | No se aplicó; el ancho máximo de 640 dp ya centra el contenido. Pendiente |
+| 4.8.8 | Chips de opción con relleno Línea Rutina al 12 % y borde de 1 dp | `FilterChip` de M3 tematizado, con check | No se aplicó. Pendiente |
+| 6 | Fundido entre estados de 200 ms | 150 ms (`Motion.SHORT`) | Se reutilizó el token existente |
+
+Algunas razones de la tabla 4.3 no coinciden con el cálculo sobre los hex vigentes (tinta en oscuro 14,8; tinta secundaria 7,1 / 9,0; amarillo en oscuro 9,2; `#0A7A50` sobre la Señal 3,2). Los tests de contraste fijan los mínimos y todos pasan; los valores recalculados están en `DESIGN.md`.
+
+Resultados de cierre, tras la pasada de correcciones de la revisión final (commit `3a7e937`): lint 0 avisos (mock y real), 53 tests unitarios, `/impeccable audit` 17/20 (antes 13/20), `/impeccable critique` 30/40 (antes 22/40). Capturas finales en `visual-audit/redesign/final/` (claro, oscuro, fuente 130 % y 200 %, el recorrido funcional en `flujo/` y las correcciones en `fixes/`).
