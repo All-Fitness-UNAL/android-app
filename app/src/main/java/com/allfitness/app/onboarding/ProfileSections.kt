@@ -11,6 +11,7 @@ import com.allfitness.app.R
 import com.allfitness.app.core.ui.FREE_TEXT_MAX
 import com.allfitness.app.core.ui.FormTextField
 import com.allfitness.app.core.ui.MultiChoiceChips
+import com.allfitness.app.core.ui.SegmentedChoice
 import com.allfitness.app.core.ui.SingleChoiceChips
 import com.allfitness.app.core.ui.theme.Spacing
 
@@ -94,6 +95,7 @@ private fun PhysicalSection(form: ProfileForm, errors: Map<ProfileField, Int>, o
         error = errors[ProfileField.AGE],
         keyboardType = KeyboardType.Number,
         suffix = stringResource(R.string.unit_years),
+        hint = stringResource(R.string.hint_age),
         maxLength = 3,
     )
     SingleChoiceChips(
@@ -111,6 +113,7 @@ private fun PhysicalSection(form: ProfileForm, errors: Map<ProfileField, Int>, o
         error = errors[ProfileField.HEIGHT],
         keyboardType = KeyboardType.Number,
         suffix = stringResource(R.string.unit_cm),
+        hint = stringResource(R.string.hint_height),
         maxLength = 3,
     )
     FormTextField(
@@ -120,6 +123,7 @@ private fun PhysicalSection(form: ProfileForm, errors: Map<ProfileField, Int>, o
         error = errors[ProfileField.WEIGHT],
         keyboardType = KeyboardType.Decimal,
         suffix = stringResource(R.string.unit_kg),
+        hint = stringResource(R.string.hint_weight),
         maxLength = 5,
     )
 }
@@ -134,7 +138,7 @@ private fun TrainingSection(form: ProfileForm, errors: Map<ProfileField, Int>, o
         optionLabel = { it.label() },
         error = errors[ProfileField.LEVEL],
     )
-    SingleChoiceChips(
+    SegmentedChoice(
         label = stringResource(R.string.field_days),
         options = (1..7).toList(),
         selected = form.daysPerWeek,
@@ -149,6 +153,7 @@ private fun TrainingSection(form: ProfileForm, errors: Map<ProfileField, Int>, o
         error = errors[ProfileField.MINUTES],
         keyboardType = KeyboardType.Number,
         suffix = stringResource(R.string.unit_minutes),
+        hint = stringResource(R.string.hint_minutes),
         maxLength = 3,
     )
     SingleChoiceChips(
@@ -211,7 +216,7 @@ private fun NutritionSection(form: ProfileForm, errors: Map<ProfileField, Int>, 
         maxLength = FREE_TEXT_MAX,
         singleLine = false,
     )
-    SingleChoiceChips(
+    SegmentedChoice(
         label = stringResource(R.string.field_meals),
         options = (3..5).toList(),
         selected = form.mealsPerDay,

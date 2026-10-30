@@ -273,4 +273,8 @@
     <string name="generating_stage_profile">Leyendo tu perfil</string>
     <string name="generating_stage_routine">Armando tu rutina</string>
     <string name="generating_stage_diet">Armando tu dieta</string>
+    <string name="hint_age">Entre 16 y 100 años</string>
+    <string name="hint_height">Entre 100 y 250 cm</string>
+    <string name="hint_weight">Entre 30 y 300 kg</string>
+    <string name="hint_minutes">Entre 15 y 120 minutos</string>
 </resources>
