@@ -34,6 +34,9 @@ enum class StationState { PENDING, PAST, DONE, REST, TODAY, TODAY_DONE }
 fun sessionFraction(done: Int, total: Int): Float =
     if (total <= 0) 0f else (done.toFloat() / total).coerceIn(0f, 1f)
 
+/** Avance entre 0 y 1; NaN (p. ej. 0f/0f) cuenta como 0, porque ProgressBarRangeInfo lo rechaza. */
+internal fun progressFraction(fraction: Float): Float = if (fraction.isNaN()) 0f else fraction.coerceIn(0f, 1f)
+
 /** Figma `progress-bar-container` del onboarding: segmentos separados 6 dp. */
 private val SegmentGap = 6.dp
 
@@ -51,7 +54,7 @@ private fun animatedFraction(fraction: Float): Float {
 /** Anillo de [fraction] (0–1): pista `surfaceContainerHigh` y arco verde desde las 12, con [center] dentro. */
 @Composable
 fun ProgressRing(fraction: Float, size: Dp, modifier: Modifier = Modifier, center: @Composable () -> Unit) {
-    val target = fraction.coerceIn(0f, 1f)
+    val target = progressFraction(fraction)
     val sweep = animatedFraction(target)
     val track = MaterialTheme.colorScheme.surfaceContainerHigh
     val arc = MaterialTheme.colorScheme.primary
@@ -71,7 +74,7 @@ fun ProgressRing(fraction: Float, size: Dp, modifier: Modifier = Modifier, cente
 /** Barra de progreso en píldora de 6 dp. */
 @Composable
 fun LinearProgress(fraction: Float, modifier: Modifier = Modifier) {
-    val target = fraction.coerceIn(0f, 1f)
+    val target = progressFraction(fraction)
     val value = animatedFraction(target)
     val track = MaterialTheme.colorScheme.surfaceContainerHigh
     val bar = MaterialTheme.colorScheme.primary
