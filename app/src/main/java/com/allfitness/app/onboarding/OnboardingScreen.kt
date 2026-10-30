@@ -164,14 +164,21 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
         val modifier = Modifier.padding(padding)
         when {
             !state.loaded -> LoadingState(modifier)
+            // Sin padding: la Señal va a sangre bajo las barras del sistema.
             state.submitting -> AiGeneratingState(
                 message = stringResource(R.string.onboarding_generating),
-                modifier = modifier,
                 stages = listOf(
                     stringResource(R.string.generating_stage_profile),
                     stringResource(R.string.generating_stage_routine),
                     stringResource(R.string.generating_stage_diet),
                 ),
+                summary = listOfNotNull(
+                    state.form.goal?.let { null to stringResource(it.labelRes()) },
+                    state.form.daysPerWeek?.let { stringResource(R.string.label_days) to it.toString() },
+                    state.form.equipment.takeIf { it.isNotEmpty() }
+                        ?.let { set -> stringResource(R.string.label_equipment) to set.map { stringResource(it.labelRes()) }.joinToString(", ") },
+                ),
+                fullBleed = true,
             )
             state.submitError != null -> EmptyState(
                 message = stringResource(state.submitError!!),

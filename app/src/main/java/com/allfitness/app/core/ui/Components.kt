@@ -1,5 +1,6 @@
 package com.allfitness.app.core.ui
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -28,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -46,6 +48,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -66,11 +69,16 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.allfitness.app.R
 import com.allfitness.app.core.network.AppError
 import com.allfitness.app.core.time.Today
+import androidx.core.view.WindowCompat
 import com.allfitness.app.core.ui.theme.AppTheme
+import com.allfitness.app.core.ui.theme.DarkAppColors
 import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.Spacing
 import java.time.Instant
@@ -146,27 +154,47 @@ fun LoadingState(modifier: Modifier = Modifier, message: String? = null) {
 
 /**
  * Espera de la IA sobre la Señal. Las etapas son orientativas: ninguna se marca como hecha,
- * porque no hay progreso real que mostrar.
+ * porque no hay progreso real que mostrar. Con [fullBleed] (primera generación, sin barra superior)
+ * la Señal llega bajo las barras del sistema y lleva el wordmark; [summary] son pares etiqueta/valor.
  */
 @Composable
-fun AiGeneratingState(message: String, modifier: Modifier = Modifier, stages: List<String> = emptyList()) {
+fun AiGeneratingState(
+    message: String,
+    modifier: Modifier = Modifier,
+    stages: List<String> = emptyList(),
+    summary: List<Pair<String?, String>> = emptyList(),
+    fullBleed: Boolean = false,
+) {
     val colors = AppTheme.colors
+    // La Señal es oscura en los dos temas: la línea va en su tono para fondo oscuro.
+    val line = DarkAppColors.lineRoutine
+    if (fullBleed) LightSystemBarIcons()
     Column(
-        modifier = modifier.fillMaxSize().background(colors.signal).padding(Spacing.l),
+        modifier = modifier.fillMaxSize().background(colors.signal)
+            .then(if (fullBleed) Modifier.safeDrawingPadding() else Modifier)
+            .padding(Spacing.l),
         verticalArrangement = Arrangement.Center,
     ) {
+        if (fullBleed) {
+            Text(
+                stringResource(R.string.app_wordmark),
+                Modifier.padding(bottom = Spacing.xl),
+                style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.ExtraBold),
+                color = colors.onSignal,
+            )
+        }
         Text(
             text = message,
             modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
             style = MaterialTheme.typography.headlineSmall,
             color = colors.onSignal,
         )
-        LineIndicator(Modifier.padding(top = Spacing.l), color = colors.lineRoutine)
+        LineIndicator(Modifier.padding(top = Spacing.l), color = line)
         if (stages.isNotEmpty()) {
             Column(Modifier.padding(top = Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 stages.forEach { stage ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(Spacing.stationSize).border(Spacing.hairline * 2, colors.lineRoutine, CircleShape))
+                        Box(Modifier.size(Spacing.stationSize).border(Spacing.hairline * 2, line, CircleShape))
                         Text(
                             text = stage,
                             modifier = Modifier.padding(start = Spacing.sm),
@@ -176,6 +204,36 @@ fun AiGeneratingState(message: String, modifier: Modifier = Modifier, stages: Li
                     }
                 }
             }
+        }
+        if (summary.isNotEmpty()) {
+            Column(Modifier.padding(top = Spacing.xl), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                summary.forEach { (label, value) ->
+                    Column(Modifier.semantics(mergeDescendants = true) {}) {
+                        if (label != null) {
+                            Text(label, style = MaterialTheme.typography.labelMedium, color = colors.onSignal.copy(alpha = 0.72f))
+                        }
+                        Text(value, style = MaterialTheme.typography.bodyLarge, color = colors.onSignal)
+                    }
+                }
+            }
+        }
+    }
+}
+
+/** Íconos claros en las barras del sistema mientras la Señal está debajo; al salir vuelven los del tema. */
+@Composable
+private fun LightSystemBarIcons() {
+    val window = LocalActivity.current?.window ?: return
+    val view = LocalView.current
+    DisposableEffect(window, view) {
+        val controller = WindowCompat.getInsetsController(window, view)
+        val status = controller.isAppearanceLightStatusBars
+        val navigation = controller.isAppearanceLightNavigationBars
+        controller.isAppearanceLightStatusBars = false
+        controller.isAppearanceLightNavigationBars = false
+        onDispose {
+            controller.isAppearanceLightStatusBars = status
+            controller.isAppearanceLightNavigationBars = navigation
         }
     }
 }
@@ -263,6 +321,17 @@ fun OfflineBanner(savedAt: Long?, modifier: Modifier = Modifier) {
         }
     }
 }
+
+/** Título de sección: Archivo y marcado como encabezado para TalkBack. */
+@Composable
+fun SectionTitle(text: String, modifier: Modifier = Modifier) {
+    Text(text, modifier.semantics { heading() }, style = MaterialTheme.typography.titleLarge)
+}
+
+/** Cifra en Archivo tabular (kg, kcal) con el tamaño de [size]: las columnas de números se alinean. */
+@Composable
+fun numberStyle(size: TextStyle): TextStyle =
+    MaterialTheme.typography.titleLarge.copy(fontSize = size.fontSize, lineHeight = size.lineHeight)
 
 /** Aviso de IA compacto bajo el título: el texto completo, sin caja de color. */
 @Composable

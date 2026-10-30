@@ -20,8 +20,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -43,6 +41,7 @@ import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
 import com.allfitness.app.core.ui.RouteRow
+import com.allfitness.app.core.ui.SectionTitle
 import com.allfitness.app.core.ui.SignPanel
 import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.StationState
@@ -74,6 +73,7 @@ data class WeekDayRow(
     val isToday: Boolean,
     val finished: Boolean,
     val completed: Set<String> = emptySet(),
+    val isPast: Boolean = false,
 ) {
     /** Solo cuentan los ejercicios de este día. */
     val doneCount: Int get() = day.exercises.count { it.id in completed }
@@ -84,6 +84,7 @@ fun WeekDayRow.stationState(): StationState = when {
     isToday -> StationState.TODAY
     day.type == DayType.REST -> StationState.REST
     finished -> StationState.DONE
+    isPast -> StationState.PAST
     else -> StationState.PENDING
 }
 
@@ -107,6 +108,7 @@ class RoutineWeekViewModel @Inject constructor(
                     isToday = date == today,
                     finished = logs?.data.orEmpty().any { it.date == date && it.sessionFinished },
                     completed = logs?.data.orEmpty().firstOrNull { it.date == date }?.completedExerciseIds.orEmpty(),
+                    isPast = date < today,
                 )
             }
         }
@@ -187,10 +189,9 @@ fun RoutineWeekScreen(
                         item { TodayPanel(today, onOpen = { onOpenDay(today.date) }) }
                     }
                     item {
-                        Text(
+                        SectionTitle(
                             stringResource(R.string.week_title),
-                            Modifier.padding(top = Spacing.l, bottom = Spacing.s).semantics { heading() },
-                            style = MaterialTheme.typography.titleLarge,
+                            Modifier.padding(top = Spacing.l, bottom = Spacing.s),
                         )
                     }
                     itemsIndexed(rows, key = { _, row -> row.date.toString() }) { index, row ->
@@ -239,10 +240,13 @@ private fun TodayPanel(row: WeekDayRow, onOpen: () -> Unit) {
             row.doneCount > 0 -> stringResource(R.string.session_progress, row.doneCount, total)
             else -> stringResource(R.string.session_status_not_started)
         }
-        pluralStringResource(R.plurals.exercises_count, total, total) + " · " + progress
+        stringResource(R.string.status_pair, pluralStringResource(R.plurals.exercises_count, total, total), progress)
     }
     SignPanel(
-        label = stringResource(R.string.today_station_label, "${row.date.dayOfWeek.displayName()} ${row.date.shortLabel()}"),
+        label = stringResource(
+            R.string.today_station_label,
+            stringResource(R.string.day_with_date, row.date.dayOfWeek.displayName(), row.date.shortLabel()),
+        ),
         title = row.dayTitle(),
         status = status,
         action = if (training) {
