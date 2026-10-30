@@ -45,6 +45,9 @@ object Spacing {
     val avatarLarge = 104.dp
     val logoMark = 28.dp
     val progressHeight = 6.dp
+
+    /** Figma `diff-meters` de Inicio: los 3 segmentos del nivel. */
+    val levelMeter = 54.dp
 }
 
 object AppTheme {

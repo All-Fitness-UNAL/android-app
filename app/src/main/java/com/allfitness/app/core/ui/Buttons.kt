@@ -77,7 +77,8 @@ private fun PillButton(
         ),
         interactionSource = interaction,
     ) {
-        Text(text, style = if (primary) MaterialTheme.typography.titleMedium else MaterialTheme.typography.labelLarge)
+        // weight(fill = false): con fuente grande el texto se parte y deja sitio al ícono en vez de echarlo.
+        Text(text, Modifier.weight(1f, fill = false), style = if (primary) MaterialTheme.typography.titleMedium else MaterialTheme.typography.labelLarge)
         if (trailingIcon != null) {
             Spacer(Modifier.width(ButtonDefaults.IconSpacing))
             Icon(painterResource(trailingIcon), contentDescription = null, modifier = Modifier.size(ButtonDefaults.IconSize))

@@ -88,6 +88,32 @@ fun WeekDayRow.stationState(): StationState = when {
     else -> StationState.PENDING
 }
 
+/** Las 7 filas de la semana de [today] con la rutina y los registros de esa semana. */
+fun weekRows(routine: Routine, logs: List<WorkoutLog>, today: LocalDate): List<WeekDayRow> =
+    Today.weekDates(today).map { date ->
+        WeekDayRow(
+            date = date,
+            day = routine.days.first { it.dayOfWeek == date.dayOfWeek },
+            isToday = date == today,
+            finished = logs.any { it.date == date && it.sessionFinished },
+            completed = logs.firstOrNull { it.date == date }?.completedExerciseIds.orEmpty(),
+            isPast = date < today,
+        )
+    }
+
+enum class WorkoutCta { START, CONTINUE, FINISHED, NONE }
+
+/** Acción del entreno de hoy en Inicio; solo hoy, en día de entreno con ejercicios (FR-013). */
+fun WeekDayRow.workoutCta(): WorkoutCta = when {
+    !isToday || day.type != DayType.TRAINING || day.exercises.isEmpty() -> WorkoutCta.NONE
+    finished -> WorkoutCta.FINISHED
+    doneCount > 0 -> WorkoutCta.CONTINUE
+    else -> WorkoutCta.START
+}
+
+/** Primer ejercicio sin marcar; con todos marcados, el primero. */
+fun WeekDayRow.firstPendingIndex(): Int = day.exercises.indexOfFirst { it.id !in completed }.coerceAtLeast(0)
+
 @HiltViewModel
 class RoutineWeekViewModel @Inject constructor(
     private val repository: RoutineRepository,
@@ -100,18 +126,7 @@ class RoutineWeekViewModel @Inject constructor(
     val state: StateFlow<UiState<List<WeekDayRow>>> = combine(
         repository.routine, repository.weekLogs, refresher.state, isOnline, today,
     ) { routine, logs, refresh, online, today ->
-        uiStateOf(routine, refresh, online).mapContent { r ->
-            Today.weekDates(today).map { date ->
-                WeekDayRow(
-                    date = date,
-                    day = r.days.first { it.dayOfWeek == date.dayOfWeek },
-                    isToday = date == today,
-                    finished = logs?.data.orEmpty().any { it.date == date && it.sessionFinished },
-                    completed = logs?.data.orEmpty().firstOrNull { it.date == date }?.completedExerciseIds.orEmpty(),
-                    isPast = date < today,
-                )
-            }
-        }
+        uiStateOf(routine, refresh, online).mapContent { weekRows(it, logs?.data.orEmpty(), today) }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UiState.Loading)
 
     private val _generating = MutableStateFlow(false)
@@ -225,7 +240,7 @@ fun RoutineWeekScreen(
 }
 
 @Composable
-private fun WeekDayRow.dayTitle(): String =
+internal fun WeekDayRow.dayTitle(): String =
     if (day.type == DayType.REST) stringResource(R.string.rest_day) else day.title ?: stringResource(R.string.training_day)
 
 @Composable

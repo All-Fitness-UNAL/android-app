@@ -251,7 +251,12 @@ private fun MainScaffold() {
                     popEnterTransition = { enter(reduced, pop = true) },
                     popExitTransition = { exit(reduced, pop = true) },
                 ) {
-                    composable<HomeRoute> { HomeScreen() }
+                    composable<HomeRoute> {
+                        HomeScreen(
+                            onOpenSession = { date, index -> nav.navigate(RoutineDayRoute(date.toString(), index)) },
+                            onOpenMeal = { day, mealId -> nav.navigate(RecipeRoute(day.name, mealId)) },
+                        )
+                    }
                     composable<RoutineWeekRoute> { RoutineWeekScreen(onOpenDay = { nav.navigate(RoutineDayRoute(it.toString())) }) }
                     composable<RoutineDayRoute> { RoutineDayScreen(onBack = back) }
                     composable<DietWeekRoute> { DietWeekScreen(onOpenMeal = { day, mealId -> nav.navigate(RecipeRoute(day.name, mealId)) }) }
