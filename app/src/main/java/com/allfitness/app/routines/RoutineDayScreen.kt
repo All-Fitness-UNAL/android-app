@@ -105,9 +105,15 @@ data class DayView(
 /** Botones del pie del modo sesión para una página. */
 data class SessionControls(val canMark: Boolean, val canFinish: Boolean, val finishProminent: Boolean)
 
-/** Marcar y terminar siguen a [DayView.editable] (FR-013); terminar se ofrece en toda página (FR-014) y destaca en la última. */
-fun DayView.controls(page: Int): SessionControls =
-    SessionControls(canMark = editable, canFinish = editable, finishProminent = editable && page == day.exercises.lastIndex)
+/**
+ * Marcar y terminar siguen a [DayView.editable] (FR-013); terminar se ofrece en toda página (FR-014) y solo
+ * destaca en la última ya marcada, para que nunca haya dos acciones principales.
+ */
+fun DayView.controls(page: Int): SessionControls = SessionControls(
+    canMark = editable,
+    canFinish = editable,
+    finishProminent = editable && page == day.exercises.lastIndex && day.exercises[page].id in completed,
+)
 
 /** Tras marcar se pasa al siguiente ejercicio; en el último se queda. */
 fun nextPageAfterMark(page: Int, count: Int): Int = (page + 1).coerceIn(0, maxOf(count - 1, 0))
@@ -276,14 +282,29 @@ private fun Session(
         AiNote()
         HorizontalPager(pager, Modifier.weight(1f), key = { exercises[it].id }) { index ->
             val exercise = exercises[index]
-            ExercisePage(exercise, done = exercise.id in view.completed, alternativeEnabled = online, onAlternative = { onAlternative(exercise.id) })
+            ExercisePage(
+                exercise = exercise,
+                done = exercise.id in view.completed,
+                next = exercises.getOrNull(index + 1),
+                alternativeEnabled = online,
+                onAlternative = { onAlternative(exercise.id) },
+                onSkip = { go(index + 1) },
+            )
         }
         SessionFooter(view, page, online, finishing, go, onToggle, onFinish)
     }
 }
 
+/** Una página: el ejercicio y, al final del desplazamiento (no en el pie, que con fuente grande no cabría), el siguiente. */
 @Composable
-private fun ExercisePage(exercise: Exercise, done: Boolean, alternativeEnabled: Boolean, onAlternative: () -> Unit) {
+private fun ExercisePage(
+    exercise: Exercise,
+    done: Boolean,
+    next: Exercise?,
+    alternativeEnabled: Boolean,
+    onAlternative: () -> Unit,
+    onSkip: () -> Unit,
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -320,6 +341,7 @@ private fun ExercisePage(exercise: Exercise, done: Boolean, alternativeEnabled: 
             Text(exercise.instructions, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         AlternativeButton(onClick = onAlternative, enabled = alternativeEnabled)
+        if (next != null) UpNext(next, onSkip)
     }
 }
 
@@ -332,8 +354,8 @@ private fun DoneTag() {
 }
 
 /**
- * Pie fijo sobre el fondo: "A continuación", Anterior y Saltar (la alternativa al deslizamiento para TalkBack)
- * y, solo hoy, marcar y terminar (FR-013, FR-014; sin conexión, deshabilitados con aviso: FR-039).
+ * Pie fijo sobre el fondo: Anterior y Saltar (la alternativa al deslizamiento para TalkBack) y, solo hoy,
+ * marcar y terminar (FR-013, FR-014; sin conexión, deshabilitados con aviso: FR-039).
  */
 @Composable
 private fun SessionFooter(
@@ -356,22 +378,22 @@ private fun SessionFooter(
             .padding(horizontal = Spacing.screenEdge, vertical = Spacing.sm),
         verticalArrangement = Arrangement.spacedBy(Spacing.sm),
     ) {
-        exercises.getOrNull(page + 1)?.let { UpNext(it, onSkip = { go(page + 1) }) }
         Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             SecondaryButton(stringResource(R.string.action_previous_exercise), { go(page - 1) }, Modifier.weight(1f), enabled = page > 0)
             SecondaryButton(stringResource(R.string.action_skip), { go(page + 1) }, Modifier.weight(1f), enabled = page < exercises.lastIndex)
         }
         if (controls.canMark) {
-            PrimaryButton(
-                text = stringResource(if (done) R.string.action_unmark_done else R.string.action_mark_done),
-                onClick = {
-                    haptics.performHapticFeedback(if (done) HapticFeedbackType.ToggleOff else HapticFeedbackType.ToggleOn)
-                    onToggle(current.id, !done)
-                    if (!done) go(nextPageAfterMark(page, exercises.size))
-                },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = online,
-            )
+            val toggle = {
+                haptics.performHapticFeedback(if (done) HapticFeedbackType.ToggleOff else HapticFeedbackType.ToggleOn)
+                onToggle(current.id, !done)
+                if (!done) go(nextPageAfterMark(page, exercises.size))
+            }
+            // Desmarcar deshace: va en secundario para que la acción principal siga siendo una sola.
+            if (done) {
+                SecondaryButton(stringResource(R.string.action_unmark_done), toggle, Modifier.fillMaxWidth(), enabled = online)
+            } else {
+                PrimaryButton(stringResource(R.string.action_mark_done), toggle, Modifier.fillMaxWidth(), enabled = online)
+            }
         }
         if (controls.canFinish) {
             val finish = stringResource(R.string.action_finish_session)
