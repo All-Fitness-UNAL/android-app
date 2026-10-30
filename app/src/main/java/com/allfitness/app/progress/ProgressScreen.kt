@@ -1,7 +1,6 @@
 package com.allfitness.app.progress
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,8 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
@@ -26,19 +25,24 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -53,19 +57,49 @@ import com.allfitness.app.core.time.longLabel
 import com.allfitness.app.core.time.shortLabel
 import com.allfitness.app.core.ui.AppCard
 import com.allfitness.app.core.ui.AppTopBar
+import com.allfitness.app.core.ui.DataCell
+import com.allfitness.app.core.ui.DataStrip
 import com.allfitness.app.core.ui.FormTextField
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
+import com.allfitness.app.core.ui.RouteStation
 import com.allfitness.app.core.ui.StateContent
+import com.allfitness.app.core.ui.StationProgress
+import com.allfitness.app.core.ui.StationState
 import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.formatNumber
 import com.allfitness.app.core.ui.messageRes
 import com.allfitness.app.core.ui.parseOneDecimal
+import com.allfitness.app.core.ui.theme.AppTheme
+import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
 import com.allfitness.app.onboarding.ProfileValidation
+import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.compose.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisGuidelineComponent
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLabelComponent
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLineComponent
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianLayerRangeProvider
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
+import com.patrykandpatrick.vico.compose.cartesian.data.lineSeries
+import com.patrykandpatrick.vico.compose.cartesian.layer.LineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.marker.CartesianMarkerController
+import com.patrykandpatrick.vico.compose.cartesian.marker.DefaultCartesianMarker
+import com.patrykandpatrick.vico.compose.cartesian.marker.LineCartesianLayerMarkerTarget
+import com.patrykandpatrick.vico.compose.cartesian.marker.rememberDefaultCartesianMarker
+import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
+import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
+import com.patrykandpatrick.vico.compose.common.Fill
+import com.patrykandpatrick.vico.compose.common.Insets
+import com.patrykandpatrick.vico.compose.common.component.rememberShapeComponent
+import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
 import java.time.LocalDate
@@ -79,6 +113,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
+import kotlin.math.floor
 
 data class ProgressView(val weights: List<WeightEntry>, val summary: TrainingSummary?)
 
@@ -189,14 +225,20 @@ fun ProgressScreen(viewModel: ProgressViewModel = hiltViewModel()) {
                 item { SummaryCard(view.summary) }
                 item {
                     AppCard(Modifier.fillMaxWidth()) {
-                        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                            Text(stringResource(R.string.weight_history), style = MaterialTheme.typography.titleMedium)
-                            if (view.weights.isEmpty()) {
-                                Text(stringResource(R.string.weight_empty), style = MaterialTheme.typography.bodyMedium)
-                            } else {
-                                WeightChart(view.weights)
+                        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                            SectionTitle(stringResource(R.string.weight_trend_title))
+                            when {
+                                view.weights.isEmpty() -> Text(stringResource(R.string.weight_empty), style = MaterialTheme.typography.bodyMedium)
+                                canDrawTrend(view.weights) -> WeightChart(view.weights)
+                                // Un punto suelto no es una tendencia.
+                                else -> NeedMoreWeights()
                             }
-                            Button(onClick = viewModel::openDialog, enabled = online, modifier = Modifier.fillMaxWidth()) {
+                            Button(
+                                onClick = viewModel::openDialog,
+                                enabled = online,
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = MaterialTheme.shapes.small,
+                            ) {
                                 Icon(painterResource(R.drawable.ic_add), contentDescription = null)
                                 Text(stringResource(R.string.action_add_weight), modifier = Modifier.padding(start = Spacing.s))
                             }
@@ -204,13 +246,7 @@ fun ProgressScreen(viewModel: ProgressViewModel = hiltViewModel()) {
                         }
                     }
                 }
-                items(view.weights, key = { it.date.toString() }) { entry ->
-                    Row(Modifier.fillMaxWidth().padding(vertical = Spacing.s), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text(entry.date.longLabel(), style = MaterialTheme.typography.bodyLarge)
-                        Text(stringResource(R.string.weight_value, formatNumber(entry.weightKg)), style = MaterialTheme.typography.bodyLarge)
-                    }
-                    HorizontalDivider()
-                }
+                if (view.weights.isNotEmpty()) item { WeightHistory(view.weights) }
             }
         }
     }
@@ -218,68 +254,203 @@ fun ProgressScreen(viewModel: ProgressViewModel = hiltViewModel()) {
     dialog?.let { WeightDialog(it, viewModel) }
 }
 
+/** Rango "Entre X y Y kg" solo con dos pesos distintos: "Entre 62 y 62 kg" no dice nada. */
+fun showWeightRange(weights: List<WeightEntry>): Boolean = weights.map { it.weightKg }.distinct().size >= 2
+
+/** Una tendencia necesita al menos dos registros. */
+fun canDrawTrend(weights: List<WeightEntry>): Boolean = weights.size >= 2
+
+@Composable
+private fun SectionTitle(text: String) {
+    Text(text, Modifier.semantics { heading() }, style = MaterialTheme.typography.titleLarge)
+}
+
 @Composable
 private fun SummaryCard(summary: TrainingSummary?) {
+    val colors = AppTheme.colors
     AppCard(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-            Text(stringResource(R.string.summary_title), style = MaterialTheme.typography.titleMedium)
-            when {
-                summary == null -> Text(stringResource(R.string.summary_unavailable), style = MaterialTheme.typography.bodyMedium)
-                summary.completedSessions == 0 && summary.weekStreak == 0 -> {
-                    if (summary.scheduledSessions > 0) {
-                        Text(stringResource(R.string.summary_sessions, 0, summary.scheduledSessions), style = MaterialTheme.typography.bodyLarge)
-                    }
-                    Text(stringResource(R.string.summary_empty), style = MaterialTheme.typography.bodyMedium)
-                }
-                else -> {
+        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+            SectionTitle(stringResource(R.string.summary_title))
+            if (summary == null) {
+                Text(stringResource(R.string.summary_unavailable), style = MaterialTheme.typography.bodyMedium)
+                return@Column
+            }
+            if (summary.scheduledSessions > 0) {
+                StationProgress(summary.scheduledSessions, summary.completedSessions, colors.lineProgress)
+                val sessions = stringResource(R.string.summary_sessions, summary.completedSessions, summary.scheduledSessions)
+                Row(Modifier.clearAndSetSemantics { contentDescription = sessions }) {
                     Text(
-                        stringResource(R.string.summary_sessions, summary.completedSessions, summary.scheduledSessions),
-                        style = MaterialTheme.typography.bodyLarge,
+                        stringResource(R.string.value_fraction, summary.completedSessions, summary.scheduledSessions),
+                        Modifier.alignByBaseline(),
+                        style = MaterialTheme.typography.displaySmall,
                     )
-                    Text(stringResource(R.string.summary_streak, summary.weekStreak), style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        stringResource(R.string.label_sessions),
+                        Modifier.alignByBaseline().padding(start = Spacing.s),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            if (summary.completedSessions == 0 && summary.weekStreak == 0) {
+                Text(stringResource(R.string.summary_empty), style = MaterialTheme.typography.bodyMedium)
+            } else {
+                DataStrip(
+                    listOf(
+                        DataCell(
+                            stringResource(R.string.label_streak),
+                            summary.weekStreak.toString(),
+                            pluralStringResource(R.plurals.unit_weeks, summary.weekStreak),
+                        ),
+                    ),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun NeedMoreWeights() {
+    Column(
+        Modifier.fillMaxWidth().padding(vertical = Spacing.l),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+    ) {
+        RouteStation(StationState.PENDING, AppTheme.colors.lineProgress)
+        Text(
+            stringResource(R.string.chart_need_more),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+/** Historial: filas regladas con la fecha y los kg tabulares a la derecha. */
+// shortcut: compone todas las filas de una vez; con cientos de registros, pasarlas a items del LazyColumn.
+@Composable
+private fun WeightHistory(weights: List<WeightEntry>) {
+    AppCard(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(Spacing.m)) {
+            SectionTitle(stringResource(R.string.weight_history))
+            weights.sortedByDescending { it.date }.forEachIndexed { index, entry ->
+                if (index > 0) HorizontalDivider(thickness = Spacing.hairline, color = MaterialTheme.colorScheme.outlineVariant)
+                Row(
+                    Modifier.fillMaxWidth().padding(vertical = Spacing.sm).semantics(mergeDescendants = true) {},
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+                ) {
+                    Text(entry.date.longLabel(), Modifier.weight(1f).alignByBaseline(), style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        stringResource(R.string.weight_value, formatNumber(entry.weightKg)),
+                        Modifier.alignByBaseline(),
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            lineHeight = MaterialTheme.typography.titleMedium.lineHeight,
+                        ),
+                    )
                 }
             }
         }
     }
 }
 
-/** Línea simple de evolución dibujada con Canvas; solo pinta los valores recibidos (research R9). */
+/**
+ * Evolución del peso con Vico: x = días desde el primer registro, y = kg tal como llegan (research R9).
+ * Tocar un punto muestra fecha y kg; el historial de debajo es la vista en tabla.
+ */
 @Composable
 fun WeightChart(weights: List<WeightEntry>) {
-    val points = weights.sortedBy { it.date }
+    val points = remember(weights) { weights.sortedBy { it.date } }
     val first = points.first()
     val last = points.last()
     val min = points.minOf { it.weightKg }
     val max = points.maxOf { it.weightKg }
-    val lineColor = MaterialTheme.colorScheme.primary
+    val colors = AppTheme.colors
+    val scheme = MaterialTheme.colorScheme
+    val typography = MaterialTheme.typography
+
+    val producer = remember { CartesianChartModelProducer() }
+    LaunchedEffect(points) {
+        producer.runTransaction {
+            lineSeries { series(points.map { it.date.toEpochDay() - first.date.toEpochDay() }, points.map { it.weightKg }) }
+        }
+    }
+    // 1 kg de aire arriba y abajo: el eje no empieza en 0 y la línea no toca los bordes.
+    val range = remember(min, max) { CartesianLayerRangeProvider.fixed(minY = floor(min) - 1, maxY = ceil(max) + 1) }
+    val dates = remember(first) { CartesianValueFormatter { _, x, _ -> first.date.plusDays(x.toLong()).shortLabel() } }
+    val kilos = remember { CartesianValueFormatter { _, y, _ -> formatNumber(y) } }
+    val kg = stringResource(R.string.unit_kg)
+    val markerText = remember(first, kg) {
+        DefaultCartesianMarker.ValueFormatter { _, targets ->
+            val target = targets.firstOrNull() as? LineCartesianLayerMarkerTarget
+            val y = target?.points?.firstOrNull()?.entry?.y
+            if (target == null || y == null) "" else "${first.date.plusDays(target.x.toLong()).shortLabel()} · ${formatNumber(y)} $kg"
+        }
+    }
+    val axisLabel = rememberAxisLabelComponent(style = typography.labelMedium.copy(color = scheme.onSurfaceVariant))
+    val rule = rememberAxisGuidelineComponent(fill = Fill(scheme.outlineVariant))
+    val line = Fill(colors.lineProgress)
+    val reduced = AppTheme.reducedMotion
+
     val description = stringResource(
         R.string.chart_description,
         formatNumber(first.weightKg), formatNumber(last.weightKg), first.date.shortLabel(), last.date.shortLabel(),
     )
-    Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-        Text(stringResource(R.string.chart_range, formatNumber(min), formatNumber(max)), style = MaterialTheme.typography.labelMedium)
-        Canvas(
-            Modifier
-                .fillMaxWidth()
-                .height(Spacing.chartHeight)
-                .semantics { contentDescription = description },
-        ) {
-            val pad = Spacing.chartPoint.toPx() * 2
-            val days = (last.date.toEpochDay() - first.date.toEpochDay()).coerceAtLeast(1)
-            val range = (max - min).takeIf { it > 0 } ?: 1.0
-            val offsets = points.map { p ->
-                val x = if (points.size == 1) size.width / 2 else pad + (size.width - 2 * pad) * (p.date.toEpochDay() - first.date.toEpochDay()) / days
-                val y = size.height - pad - (size.height - 2 * pad) * ((p.weightKg - min) / range).toFloat()
-                Offset(x, if (min == max) size.height / 2 else y)
-            }
-            offsets.zipWithNext { a, b -> drawLine(lineColor, a, b, strokeWidth = Spacing.chartStroke.toPx()) }
-            offsets.forEach { drawCircle(lineColor, Spacing.chartPoint.toPx(), it) }
-            drawCircle(lineColor, Spacing.chartPoint.toPx(), offsets.last(), style = Stroke(Spacing.chartStroke.toPx()))
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        if (showWeightRange(weights)) {
+            Text(
+                stringResource(R.string.chart_range, formatNumber(min), formatNumber(max)),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(first.date.shortLabel(), style = MaterialTheme.typography.labelMedium)
-            if (points.size > 1) Text(last.date.shortLabel(), style = MaterialTheme.typography.labelMedium)
-        }
+        CartesianChartHost(
+            chart = rememberCartesianChart(
+                rememberLineCartesianLayer(
+                    lineProvider = LineCartesianLayer.LineProvider.series(
+                        LineCartesianLayer.rememberLine(
+                            fill = remember(line) { LineCartesianLayer.LineFill.single(line) },
+                            pointProvider = LineCartesianLayer.PointProvider.single(
+                                LineCartesianLayer.Point(rememberShapeComponent(line, CircleShape), Spacing.chartPoint),
+                            ),
+                        ),
+                    ),
+                    rangeProvider = range,
+                ),
+                startAxis = VerticalAxis.rememberStart(
+                    line = null,
+                    label = axisLabel,
+                    valueFormatter = kilos,
+                    tick = null,
+                    guideline = rule,
+                    itemPlacer = remember { VerticalAxis.ItemPlacer.count({ 3 }) },
+                ),
+                bottomAxis = HorizontalAxis.rememberBottom(
+                    line = rememberAxisLineComponent(fill = Fill(scheme.outlineVariant)),
+                    label = axisLabel,
+                    valueFormatter = dates,
+                    tick = null,
+                    guideline = null,
+                    itemPlacer = remember { HorizontalAxis.ItemPlacer.extremes() },
+                ),
+                marker = rememberDefaultCartesianMarker(
+                    label = rememberTextComponent(
+                        style = typography.labelLarge.copy(color = scheme.inverseOnSurface),
+                        padding = Insets(start = Spacing.s, top = Spacing.xs, end = Spacing.s, bottom = Spacing.xs),
+                        background = rememberShapeComponent(Fill(scheme.inverseSurface), MaterialTheme.shapes.extraSmall),
+                    ),
+                    valueFormatter = markerText,
+                    guideline = rule,
+                ),
+                // Un paso de un día: los registros quedan a la distancia real entre fechas.
+                getXStep = { _, _, _ -> 1.0 },
+                markerController = CartesianMarkerController.rememberToggleOnTap(),
+            ),
+            modelProducer = producer,
+            modifier = Modifier.fillMaxWidth().height(Spacing.chartHeight).semantics { contentDescription = description },
+            scrollState = rememberVicoScrollState(scrollEnabled = false),
+            animationSpec = if (reduced) null else tween(Motion.MEDIUM, easing = Motion.Emphasized),
+        )
     }
 }
 

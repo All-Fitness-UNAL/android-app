@@ -29,8 +29,7 @@ object Spacing {
     val routeRowHeight = 56.dp
     val imageSize = 64.dp
     val chartHeight = 180.dp
-    val chartStroke = 3.dp
-    val chartPoint = 4.dp
+    val chartPoint = 8.dp
     val contentMaxWidth = 640.dp
 }
 
