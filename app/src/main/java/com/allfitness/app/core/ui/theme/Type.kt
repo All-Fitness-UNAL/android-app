@@ -9,53 +9,54 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.allfitness.app.R
 
-private fun archivo(weight: Int) = Font(
-    R.font.archivo_variable,
-    weight = FontWeight(weight),
-    variationSettings = FontVariation.Settings(FontVariation.weight(weight), FontVariation.width(87.5f)),
-)
-
-private fun atkinson(weight: Int) = Font(
-    R.font.atkinson_next_variable,
+// Las dos TTF son variables y su instancia por defecto es la más fina: cada peso fija su eje.
+private fun outfit(weight: Int) = Font(
+    R.font.outfit_variable,
     weight = FontWeight(weight),
     variationSettings = FontVariation.Settings(FontVariation.weight(weight)),
 )
 
-val ArchivoFamily = FontFamily(archivo(600), archivo(650), archivo(700), archivo(800))
-val AtkinsonFamily = FontFamily(atkinson(400), atkinson(700))
+private fun manrope(weight: Int) = Font(
+    R.font.manrope_variable,
+    weight = FontWeight(weight),
+    variationSettings = FontVariation.Settings(FontVariation.weight(weight)),
+)
 
-// Archivo lleva cifras tabulares en todos sus roles: series, kg y kcal se alinean en columna.
-private fun sign(weight: Int, size: Int, line: Int) = TextStyle(
-    fontFamily = ArchivoFamily,
+val OutfitFamily = FontFamily(outfit(700), outfit(800))
+val ManropeFamily = FontFamily(manrope(400), manrope(500), manrope(600), manrope(700))
+
+// Outfit (títulos y cifras) lleva cifras tabulares: series, kg y kcal se alinean en columna.
+private fun heading(weight: Int, size: Int, line: Int) = TextStyle(
+    fontFamily = OutfitFamily,
     fontWeight = FontWeight(weight),
     fontSize = size.sp,
     lineHeight = line.sp,
     fontFeatureSettings = "tnum",
 )
 
-private fun read(weight: Int, size: Int, line: Int, tracking: Float = 0f) = TextStyle(
-    fontFamily = AtkinsonFamily,
+private fun text(weight: Int, size: Int, line: Int) = TextStyle(
+    fontFamily = ManropeFamily,
     fontWeight = FontWeight(weight),
     fontSize = size.sp,
     lineHeight = line.sp,
-    letterSpacing = tracking.sp,
 )
 
-// labelSmall es el rótulo de estación en mayúsculas: TextStyle no transforma, se aplica uppercase() al usarlo.
+// Spec §4.2. displayLarge, displayMedium y headlineLarge no están en el Figma: Outfit ExtraBold a su tamaño de siempre.
+// labelSmall se usa en mayúsculas: TextStyle no transforma, se aplica uppercase() al usarlo.
 val AppTypography = Typography(
-    displayLarge = sign(700, 57, 64),
-    displayMedium = sign(700, 45, 52),
-    displaySmall = sign(700, 40, 44),
-    headlineLarge = sign(700, 32, 38),
-    headlineMedium = sign(700, 28, 34),
-    headlineSmall = sign(650, 24, 30),
-    titleLarge = sign(600, 20, 26),
-    titleMedium = read(700, 16, 22),
-    titleSmall = read(700, 14, 20),
-    bodyLarge = read(400, 16, 24),
-    bodyMedium = read(400, 14, 20),
-    bodySmall = read(400, 12, 16),
-    labelLarge = read(700, 14, 20),
-    labelMedium = read(700, 12, 16, tracking = 0.4f),
-    labelSmall = read(700, 11, 14, tracking = 0.8f),
+    displayLarge = heading(800, 57, 64),
+    displayMedium = heading(800, 45, 52),
+    displaySmall = heading(800, 32, 40),
+    headlineLarge = heading(800, 32, 38),
+    headlineMedium = heading(800, 28, 35),
+    headlineSmall = heading(800, 24, 30),
+    titleLarge = heading(800, 20, 26),
+    titleMedium = heading(700, 16, 20),
+    titleSmall = heading(700, 15, 19),
+    bodyLarge = text(500, 15, 21),
+    bodyMedium = text(500, 14, 19),
+    bodySmall = text(400, 12, 16),
+    labelLarge = text(700, 14, 19),
+    labelMedium = text(600, 12, 16),
+    labelSmall = text(700, 10, 14),
 )
