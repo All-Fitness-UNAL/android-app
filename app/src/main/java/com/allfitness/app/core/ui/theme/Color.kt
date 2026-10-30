@@ -7,7 +7,8 @@ import androidx.compose.ui.graphics.Color
 // definir lo rellena M3 con su paleta de referencia, que es de donde salía el lavanda.
 // Los valores fijados vienen de la tabla 4.3 de la spec; el resto son tonos M3 de las paletas
 // de #0A7A50 (primario), #DCEBE3 (secundario), matiz +60 (terciario), neutros 178°
-// (croma 6 y 9) y #C62828 (error).
+// (croma 6 y 9) y #C62828 (error). El tonal (secondaryContainer) se oscureció a #C6E3D2 / #2A4234
+// para separarse de surfaceContainerHigh en hojas y diálogos (ContrastTest.tonalStandsOutOnSheet).
 
 val LightColors = ColorScheme(
     primary = LightAppColors.lineRoutine,
@@ -17,7 +18,7 @@ val LightColors = ColorScheme(
     inversePrimary = DarkAppColors.lineRoutine,
     secondary = Color(0xFF52625B),
     onSecondary = Color(0xFFFFFFFF),
-    secondaryContainer = Color(0xFFDCEBE3),
+    secondaryContainer = Color(0xFFC6E3D2),
     onSecondaryContainer = Color(0xFF0F2A1F),
     tertiary = Color(0xFF3C6472),
     onTertiary = Color(0xFFFFFFFF),
@@ -69,7 +70,7 @@ val DarkColors = ColorScheme(
     inversePrimary = DarkAppColors.lineRoutine,
     secondary = Color(0xFFB9CBC2),
     onSecondary = Color(0xFF24342E),
-    secondaryContainer = Color(0xFF23352D),
+    secondaryContainer = Color(0xFF2A4234),
     onSecondaryContainer = Color(0xFFD3E8DC),
     tertiary = Color(0xFFA4CDDD),
     onTertiary = Color(0xFF053542),

@@ -47,6 +47,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import com.allfitness.app.R
 import com.allfitness.app.core.ui.theme.AppTheme
@@ -147,6 +148,28 @@ fun RouteRow(
                 color = if (state == StationState.REST) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface,
             )
             Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+}
+
+/** Marca de entrada: el wordmark sobre la Señal y una línea con sus 3 estaciones llenas. */
+@Composable
+fun BrandHeader(modifier: Modifier = Modifier) {
+    val colors = AppTheme.colors
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        color = colors.signal,
+        contentColor = colors.onSignal,
+        border = BorderStroke(Spacing.hairline, colors.signalOutline),
+    ) {
+        Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.Bottom)) {
+            Text(
+                stringResource(R.string.app_wordmark),
+                style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.ExtraBold),
+            )
+            // La Señal es oscura en los dos modos: la línea va en su tono para fondo oscuro, como en SessionBar.
+            StationProgress(total = 3, reached = 3, lineColor = DarkAppColors.lineRoutine)
         }
     }
 }

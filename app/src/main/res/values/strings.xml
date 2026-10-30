@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
     <string name="app_name">All Fitness</string>
+    <string name="app_wordmark" translatable="false">AllFitness</string>
 
     <!-- Acciones -->
     <string name="action_retry">Reintentar</string>

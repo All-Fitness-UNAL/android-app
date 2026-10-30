@@ -11,15 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,7 +33,10 @@ import com.allfitness.app.core.ui.AiGeneratingState
 import com.allfitness.app.core.ui.EmptyState
 import com.allfitness.app.core.ui.LoadingState
 import com.allfitness.app.core.ui.OfflineHint
+import com.allfitness.app.core.ui.StationProgress
+import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.messageRes
+import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.nutrition.DietRepository
 import com.allfitness.app.progress.ProgressRepository
@@ -190,23 +193,29 @@ private fun OnboardingForm(state: OnboardingUiState, online: Boolean, viewModel:
             Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(Spacing.m),
             verticalArrangement = Arrangement.spacedBy(Spacing.m),
         ) {
-            Text(stringResource(R.string.onboarding_step, state.step + 1, steps), style = MaterialTheme.typography.labelLarge)
-            LinearProgressIndicator(progress = { (state.step + 1f) / steps }, modifier = Modifier.fillMaxWidth())
-            Text(stringResource(state.section.titleRes()), style = MaterialTheme.typography.headlineSmall)
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                // El texto "Paso N de M" ya lo lee TalkBack; las estaciones lo dibujan.
+                Text(stringResource(R.string.onboarding_step, state.step + 1, steps), style = MaterialTheme.typography.labelLarge)
+                StationProgress(total = steps, reached = state.step + 1, lineColor = AppTheme.colors.lineRoutine)
+            }
+            Text(
+                stringResource(state.section.titleRes()),
+                Modifier.semantics { heading() },
+                style = MaterialTheme.typography.headlineLarge,
+            )
             ProfileSectionForm(state.section, state.form, state.errors, viewModel::update)
         }
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
             if (state.isLastStep && !online) OfflineHint()
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 if (state.step > 0) {
-                    OutlinedButton(onClick = viewModel::back, modifier = Modifier.weight(1f)) {
-                        Text(stringResource(R.string.action_back))
-                    }
+                    TonalActionButton(stringResource(R.string.action_back), viewModel::back, Modifier.weight(1f))
                 }
                 Button(
                     onClick = viewModel::next,
                     enabled = !state.isLastStep || online,
                     modifier = Modifier.weight(1f),
+                    shape = MaterialTheme.shapes.small,
                 ) {
                     Text(stringResource(if (state.isLastStep) R.string.action_finish else R.string.action_next))
                 }
