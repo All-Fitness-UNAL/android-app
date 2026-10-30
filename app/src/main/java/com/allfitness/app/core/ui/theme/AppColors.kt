@@ -7,9 +7,21 @@ import androidx.compose.ui.graphics.luminance
 import kotlin.math.max
 import kotlin.math.min
 
-/** Colores de la dirección "Línea" que no tienen rol en Material 3. */
+/** Colores del Figma que no tienen rol en Material 3. */
 @Immutable
 data class AppColors(
+    /** Solo gráficos (≥ 3:1): el texto nunca va en un color de macro. */
+    val macroProtein: Color,
+    val macroCarbs: Color,
+    val macroFat: Color,
+    /** Ámbar: solo la racha. */
+    val accent: Color,
+    val accentContainer: Color,
+    /** Fondo de campos y steppers. */
+    val surfaceInput: Color,
+    /** Solo decorativo (< 4,5:1): viñetas, puntos y bordes de pendiente. Nunca texto. */
+    val muted: Color,
+    // Línea: se borra en la Task 12.
     val lineRoutine: Color,
     val lineDiet: Color,
     val lineDietText: Color,
@@ -18,44 +30,32 @@ data class AppColors(
     val signal: Color,
     val onSignal: Color,
     val signalOutline: Color,
-    val macroProtein: Color,
-    val macroCarbs: Color,
-    val macroFat: Color,
 )
 
-val LightAppColors = AppColors(
-    lineRoutine = Color(0xFF0A7A50),
-    lineDiet = Color(0xFFD9661F),
-    lineDietText = Color(0xFFA84A0E),
-    lineProgress = Color(0xFF2C5BD6),
-    here = Color(0xFFF2C230),
-    signal = Color(0xFF0F1F1A),
-    onSignal = Color(0xFFFFFFFF),
-    signalOutline = Color.Transparent,
-    // Macros validados con dataviz/validate_palette (todos los pares, daltonismo y visión normal).
-    macroProtein = Color(0xFF2C5BD6),
-    macroCarbs = Color(0xFFD9661F),
-    macroFat = Color(0xFFC2389A),
+val DefaultAppColors = AppColors(
+    macroProtein = Color(0xFF22A85E),
+    macroCarbs = Color(0xFF5B8DEF),
+    macroFat = Color(0xFFE8607A),
+    accent = Color(0xFFFFB300),
+    // #FFB300 al 12 % sobre #11111E.
+    accentContainer = Color(0xFF2E241A),
+    surfaceInput = Color(0xFF121B2A),
+    muted = Color(0xFF5F6175),
+    // Línea: se borra en la Task 12. Sin color de sección: el verde es el único acento.
+    lineRoutine = AppColorScheme.primary,
+    lineDiet = AppColorScheme.primary,
+    lineDietText = AppColorScheme.primary,
+    lineProgress = AppColorScheme.primary,
+    here = AppColorScheme.primary,
+    // Línea: se borra en la Task 12. La Señal pasa a ser un panel oscuro (no verde) para que el verde de línea se vea sobre ella.
+    signal = AppColorScheme.surfaceContainerHigh,
+    onSignal = AppColorScheme.onSurface,
+    signalOutline = AppColorScheme.outlineVariant,
 )
 
-val DarkAppColors = AppColors(
-    lineRoutine = Color(0xFF4CC38A),
-    lineDiet = Color(0xFFF08A45),
-    lineDietText = Color(0xFFF08A45),
-    lineProgress = Color(0xFF8FAEFF),
-    here = Color(0xFFF5CD4C),
-    signal = Color(0xFF1D2F28),
-    onSignal = Color(0xFFE6ECE9),
-    // En oscuro la Señal casi no contrasta con la superficie: se separa con un hilo.
-    signalOutline = Color(0xFF2A3531),
-    // Tonos propios, no los de línea: en oscuro estos quedan dentro de la banda de luminosidad de datos.
-    macroProtein = Color(0xFF5E8BEF),
-    macroCarbs = Color(0xFFDD7434),
-    macroFat = Color(0xFFCF4E9C),
-)
+val LocalAppColors = staticCompositionLocalOf { DefaultAppColors }
 
-val LocalAppColors = staticCompositionLocalOf { LightAppColors }
-
+// Línea: se borra en la Task 12.
 enum class AppSection { ROUTINE, DIET, PROGRESS, PROFILE }
 
 /** Perfil no tiene línea propia y usa la tinta. */
@@ -66,7 +66,7 @@ fun AppColors.lineFor(section: AppSection, ink: Color): Color = when (section) {
     AppSection.PROFILE -> ink
 }
 
-/** Color de línea para texto e íconos pequeños: el naranja de Dieta no llega a 4,5:1 y usa su tono de texto. */
+/** Color de línea para texto e íconos pequeños (Dieta tenía un tono de texto propio). */
 fun AppColors.lineTextFor(section: AppSection, ink: Color): Color =
     if (section == AppSection.DIET) lineDietText else lineFor(section, ink)
 

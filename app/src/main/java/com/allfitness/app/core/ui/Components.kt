@@ -78,7 +78,7 @@ import com.allfitness.app.core.network.AppError
 import com.allfitness.app.core.time.Today
 import androidx.core.view.WindowCompat
 import com.allfitness.app.core.ui.theme.AppTheme
-import com.allfitness.app.core.ui.theme.DarkAppColors
+import com.allfitness.app.core.ui.theme.DefaultAppColors
 import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.Spacing
 import java.time.Instant
@@ -167,7 +167,7 @@ fun AiGeneratingState(
 ) {
     val colors = AppTheme.colors
     // La Señal es oscura en los dos temas: la línea va en su tono para fondo oscuro.
-    val line = DarkAppColors.lineRoutine
+    val line = DefaultAppColors.lineRoutine
     if (fullBleed) LightSystemBarIcons()
     Column(
         modifier = modifier.fillMaxSize().background(colors.signal)

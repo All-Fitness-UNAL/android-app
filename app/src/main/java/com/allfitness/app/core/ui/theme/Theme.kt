@@ -1,7 +1,6 @@
 package com.allfitness.app.core.ui.theme
 
 import android.provider.Settings
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -43,7 +42,6 @@ object AppTheme {
 
 @Composable
 fun AllFitnessTheme(content: @Composable () -> Unit) {
-    val dark = isSystemInDarkTheme()
     val resolver = LocalContext.current.contentResolver
     fun readReduced() =
         isReducedMotion(Settings.Global.getFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f))
@@ -54,11 +52,11 @@ fun AllFitnessTheme(content: @Composable () -> Unit) {
         onPauseOrDispose {}
     }
     CompositionLocalProvider(
-        LocalAppColors provides if (dark) DarkAppColors else LightAppColors,
+        LocalAppColors provides DefaultAppColors,
         LocalReducedMotion provides reduced,
     ) {
         MaterialTheme(
-            colorScheme = if (dark) DarkColors else LightColors,
+            colorScheme = AppColorScheme,
             typography = AppTypography,
             shapes = AppShapes,
             content = content,

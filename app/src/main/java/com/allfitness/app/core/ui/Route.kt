@@ -53,7 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import com.allfitness.app.R
 import com.allfitness.app.core.ui.theme.AppTheme
-import com.allfitness.app.core.ui.theme.DarkAppColors
+import com.allfitness.app.core.ui.theme.DefaultAppColors
 import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.Spacing
 
@@ -179,7 +179,7 @@ fun BrandHeader(modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.ExtraBold),
             )
             // La Señal es oscura en los dos modos: la línea va en su tono para fondo oscuro, como en SessionBar.
-            StationProgress(total = 3, reached = 3, lineColor = DarkAppColors.lineRoutine)
+            StationProgress(total = 3, reached = 3, lineColor = DefaultAppColors.lineRoutine)
         }
     }
 }
@@ -278,14 +278,14 @@ fun SessionBar(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
                 ) {
-                    RouteStation(StationState.TODAY_DONE, DarkAppColors.lineRoutine, Modifier.graphicsLayer { scaleX = pulse.value; scaleY = pulse.value })
+                    RouteStation(StationState.TODAY_DONE, DefaultAppColors.lineRoutine, Modifier.graphicsLayer { scaleX = pulse.value; scaleY = pulse.value })
                     Text(stringResource(R.string.session_finished_message), style = MaterialTheme.typography.titleMedium)
                 }
             } else {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                     Box(Modifier.weight(1f).height(Spacing.lineWidth).background(colors.onSignal.copy(alpha = 0.24f))) {
                         // La Señal es oscura también en tema claro: el tono de línea para fondo oscuro se ve mejor.
-                        Box(Modifier.fillMaxWidth(fraction).fillMaxHeight().background(DarkAppColors.lineRoutine))
+                        Box(Modifier.fillMaxWidth(fraction).fillMaxHeight().background(DefaultAppColors.lineRoutine))
                     }
                     Text(stringResource(R.string.session_progress, done, total), style = MaterialTheme.typography.titleLarge)
                 }

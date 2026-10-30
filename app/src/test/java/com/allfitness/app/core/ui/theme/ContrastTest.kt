@@ -1,76 +1,78 @@
 package com.allfitness.app.core.ui.theme
 
-import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.graphics.colorspace.ColorSpaces
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.abs
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ContrastTest {
-    private val themes = listOf(
-        Triple("claro", LightColors, LightAppColors),
-        Triple("oscuro", DarkColors, DarkAppColors),
-    )
+    private val s = AppColorScheme
+    private val a = DefaultAppColors
 
-    private fun check(min: Float, pair: (ColorScheme, AppColors) -> Pair<Color, Color>) =
-        themes.forEach { (name, scheme, app) ->
-            val (fg, bg) = pair(scheme, app)
-            val ratio = contrastRatio(fg, bg)
-            assertTrue("$name: $ratio < $min", ratio >= min)
-        }
+    // Color es una clase de valor: no admite vararg.
+    private fun assertContrast(min: Float, fg: Color, backgrounds: List<Color>) = backgrounds.forEach { bg ->
+        val ratio = contrastRatio(fg, bg)
+        assertTrue("$fg sobre $bg: $ratio < $min", ratio >= min)
+    }
 
-    @Test fun inkOnSurface() = check(4.5f) { s, _ -> s.onSurface to s.surface }
-    @Test fun secondaryInkOnGround() = check(4.5f) { s, _ -> s.onSurfaceVariant to s.background }
-    @Test fun primaryOnSurface() = check(4.5f) { s, _ -> s.primary to s.surface }
-    @Test fun onPrimaryOnPrimary() = check(4.5f) { s, _ -> s.onPrimary to s.primary }
-    // Chip de grupo muscular con contorno: tinta de línea también sobre la tarjeta hecha (andén). Con tinte al 12 % no llega.
-    @Test fun routineChipOnGround() = check(4.5f) { s, a -> a.lineRoutine to s.background }
-    @Test fun dietTextOnSurface() = check(4.5f) { s, a -> a.lineDietText to s.surface }
-    @Test fun dietGraphicOnSurface() = check(3f) { s, a -> a.lineDiet to s.surface }
-    @Test fun progressOnSurface() = check(4.5f) { s, a -> a.lineProgress to s.surface }
+    private fun assertContrast(min: Float, fg: Color, bg: Color) = assertContrast(min, fg, listOf(bg))
+
+    /** Un tinte al 12 % ya precalculado como hex opaco debe coincidir con la mezcla real (±1/255 por el redondeo). */
+    private fun assertBlend(tint: Color, over: Color, precomputed: Color) {
+        val blended = tint.copy(alpha = 0.12f).compositeOver(over)
+        val tolerance = 1f / 255f
+        assertTrue("rojo", abs(blended.red - precomputed.red) <= tolerance)
+        assertTrue("verde", abs(blended.green - precomputed.green) <= tolerance)
+        assertTrue("azul", abs(blended.blue - precomputed.blue) <= tolerance)
+    }
+
     @Test
-    fun macrosOnSurface() {
-        check(3f) { s, a -> a.macroProtein to s.surface }
-        check(3f) { s, a -> a.macroCarbs to s.surface }
-        check(3f) { s, a -> a.macroFat to s.surface }
+    fun textOnBackgroundAndCards() {
+        val cards = listOf(s.background, s.surface, s.surfaceContainerHigh)
+        assertContrast(4.5f, s.onSurface, cards)
+        assertContrast(4.5f, s.onSurfaceVariant, cards)
     }
-    @Test fun inkOnSignal() = check(4.5f) { _, a -> a.onSignal to a.signal }
-    // La Señal es oscura en los dos temas: el tramo de la SessionBar usa el tono de línea para fondo oscuro.
-    @Test fun routineLineOnSignal() = check(3f) { _, a -> DarkAppColors.lineRoutine to a.signal }
-    @Test fun hereOnSignal() = check(4.5f) { _, a -> a.here to a.signal }
-    @Test fun tonalButton() = check(4.5f) { s, _ -> s.onSecondaryContainer to s.secondaryContainer }
 
-    // Tonal sobre hojas y diálogos (surfaceContainerHigh): sin separación, "Mantener la actual" parece texto suelto.
     @Test
-    fun tonalStandsOutOnSheet() = themes.forEach { (name, s, _) ->
-        val distance = oklabDistance(s.secondaryContainer, s.surfaceContainerHigh)
-        assertTrue("$name: ΔE $distance < 4.5", distance >= 4.5f)
+    fun primaryAsTextAndOnPrimary() {
+        assertContrast(4.5f, s.primary, listOf(s.background, s.surface))
+        assertContrast(4.5f, s.onPrimary, s.primary)
     }
 
-    /** Distancia OKLab ×100, la misma escala que el validador de paletas. */
-    private fun oklabDistance(a: Color, b: Color): Float {
-        val x = a.convert(ColorSpaces.Oklab)
-        val y = b.convert(ColorSpaces.Oklab)
-        return 100 * sqrt((x.red - y.red).pow(2) + (x.green - y.green).pow(2) + (x.blue - y.blue).pow(2))
-    }
-    // Pestaña activa: ícono y etiqueta en el color de la sección sobre la barra; el ícono, también sobre el indicador al 16 %.
     @Test
-    fun navItemOnBar() = AppSection.entries.forEach { section ->
-        check(4.5f) { s, a -> a.lineTextFor(section, s.onSurface) to s.surfaceContainer }
-        check(3f) { s, a ->
-            a.lineTextFor(section, s.onSurface) to a.lineFor(section, s.onSurface).copy(alpha = 0.16f).compositeOver(s.surfaceContainer)
-        }
+    fun accentOnItsContainer() {
+        assertBlend(a.accent, s.background, a.accentContainer)
+        assertContrast(4.5f, a.accent, a.accentContainer)
     }
-    @Test fun errorOnSurface() = check(4.5f) { s, _ -> s.error to s.surface }
-    @Test fun outlineOnSurface() = check(3f) { s, _ -> s.outline to s.surface }
 
-    // Snackbar: texto y acción sobre inverseSurface, que es la Señal.
-    @Test fun snackbarText() = check(4.5f) { s, _ -> s.inverseOnSurface to s.inverseSurface }
-    @Test fun snackbarAction() = check(4.5f) { s, _ -> s.inversePrimary to s.inverseSurface }
+    @Test
+    fun primaryContainerIsPrimaryTint() {
+        assertBlend(s.primary, s.background, s.primaryContainer)
+        assertContrast(4.5f, s.onPrimaryContainer, s.primaryContainer)
+    }
+
+    @Test fun errorOnCard() = assertContrast(4.5f, s.error, s.surface)
+
+    @Test fun outlineBoundsControls() = assertContrast(3f, s.outline, listOf(s.surface, a.surfaceInput, s.surfaceContainerHigh))
+
+    @Test
+    fun macrosAreGraphics() {
+        assertContrast(3f, a.macroProtein, s.surface)
+        assertContrast(3f, a.macroCarbs, s.surface)
+        assertContrast(3f, a.macroFat, s.surface)
+    }
+
+    /** `muted` solo es decorativo: si algún día llega a 4,5:1 este test avisa de que ya puede ser texto. */
+    @Test fun mutedIsNeverText() = assertTrue(contrastRatio(a.muted, s.surface) < 4.5f)
+
+    // Snackbar: texto y acción sobre inverseSurface.
+    @Test
+    fun snackbar() {
+        assertContrast(4.5f, s.inverseOnSurface, s.inverseSurface)
+        assertContrast(4.5f, s.inversePrimary, s.inverseSurface)
+    }
 
     @Test
     fun contrastRatioMatchesWcag() {
@@ -78,10 +80,10 @@ class ContrastTest {
         assertEquals(1f, contrastRatio(Color.White, Color.White), 0.001f)
     }
 
+    // Línea: se borra en la Task 12 junto con lineFor.
     @Test
     fun lineForProfileIsInk() {
-        val ink = LightColors.onSurface
-        assertEquals(ink, LightAppColors.lineFor(AppSection.PROFILE, ink))
-        assertEquals(LightAppColors.lineRoutine, LightAppColors.lineFor(AppSection.ROUTINE, ink))
+        assertEquals(s.onSurface, a.lineFor(AppSection.PROFILE, s.onSurface))
+        assertEquals(a.lineRoutine, a.lineFor(AppSection.ROUTINE, s.onSurface))
     }
 }
