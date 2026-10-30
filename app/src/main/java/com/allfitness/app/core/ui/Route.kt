@@ -8,7 +8,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -124,11 +126,12 @@ fun RouteRow(
     // El estado se ve en la estación; TalkBack lo necesita como texto.
     val status = listOfNotNull(today.takeIf { state.isToday }, finished.takeIf { state.isDone }).joinToString(", ")
     val gutter = Spacing.xl
+    val interaction = remember { MutableInteractionSource() }
     Row(
         modifier
             .fillMaxWidth()
             .heightIn(min = Spacing.routeRowHeight)
-            .clickable(role = Role.Button, onClick = onClick)
+            .clickable(interactionSource = interaction, indication = LocalIndication.current, role = Role.Button, onClick = onClick)
             .semantics { if (status.isNotEmpty()) stateDescription = status }
             .drawBehind {
                 val x = gutter.toPx() / 2
@@ -141,7 +144,8 @@ fun RouteRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(Modifier.width(gutter), contentAlignment = Alignment.Center) { RouteStation(state, lineColor) }
-        Column(Modifier.weight(1f).padding(start = Spacing.sm, top = Spacing.s, bottom = Spacing.s)) {
+        // Solo el texto se encoge al pulsar: la línea de la semana sigue continua.
+        Column(Modifier.weight(1f).pressScale(interaction).padding(start = Spacing.sm, top = Spacing.s, bottom = Spacing.s)) {
             Text(
                 title,
                 style = MaterialTheme.typography.titleMedium,
