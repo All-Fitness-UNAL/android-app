@@ -16,20 +16,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationRailItemDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuite
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldLayout
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
@@ -52,12 +56,10 @@ import com.allfitness.app.auth.RegisterScreen
 import com.allfitness.app.core.session.SessionManager
 import com.allfitness.app.core.session.SessionState
 import com.allfitness.app.core.ui.LoadingState
-import com.allfitness.app.core.ui.theme.AppSection
 import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.Spacing
-import com.allfitness.app.core.ui.theme.lineFor
-import com.allfitness.app.core.ui.theme.lineTextFor
+import com.allfitness.app.home.HomeScreen
 import com.allfitness.app.nutrition.DietWeekScreen
 import com.allfitness.app.nutrition.RecipeScreen
 import com.allfitness.app.onboarding.DeleteAccountScreen
@@ -74,8 +76,9 @@ import javax.inject.Inject
 
 @Serializable data object LoginRoute
 @Serializable data object RegisterRoute
+@Serializable data object HomeRoute
 @Serializable data object RoutineWeekRoute
-@Serializable data class RoutineDayRoute(val date: String)
+@Serializable data class RoutineDayRoute(val date: String, val index: Int = 0)
 @Serializable data object DietWeekRoute
 @Serializable data class RecipeRoute(val dayOfWeek: String, val mealId: String)
 @Serializable data object ProgressRoute
@@ -112,19 +115,15 @@ private fun AuthNavHost(sessionExpired: Boolean) {
     }
 }
 
-private data class Tab(
-    val route: Any,
-    val section: AppSection,
-    @StringRes val label: Int,
-    @DrawableRes val icon: Int,
-    @DrawableRes val selectedIcon: Int,
-)
+// Lucide no tiene variantes rellenas: el mismo ícono sirve seleccionado o no.
+private data class Tab(val route: Any, @StringRes val label: Int, @DrawableRes val icon: Int)
 
 private val tabs = listOf(
-    Tab(RoutineWeekRoute, AppSection.ROUTINE, R.string.tab_routine, R.drawable.ic_fitness, R.drawable.ic_fitness_filled),
-    Tab(DietWeekRoute, AppSection.DIET, R.string.tab_diet, R.drawable.ic_restaurant, R.drawable.ic_restaurant_filled),
-    Tab(ProgressRoute, AppSection.PROGRESS, R.string.tab_progress, R.drawable.ic_chart, R.drawable.ic_chart_filled),
-    Tab(ProfileRoute, AppSection.PROFILE, R.string.tab_profile, R.drawable.ic_person, R.drawable.ic_person_filled),
+    Tab(HomeRoute, R.string.tab_home, R.drawable.lc_house),
+    Tab(RoutineWeekRoute, R.string.tab_routine, R.drawable.lc_dumbbell),
+    Tab(DietWeekRoute, R.string.tab_diet, R.drawable.lc_apple),
+    Tab(ProgressRoute, R.string.tab_progress, R.drawable.lc_chart_line),
+    Tab(ProfileRoute, R.string.tab_profile, R.drawable.lc_user),
 )
 
 /** Pantallas que se abren desde una pestaña: entran de lado. Entre pestañas, fundido. */
@@ -153,84 +152,108 @@ private fun MainScaffold() {
     val entry by nav.currentBackStackEntryAsState()
     val destination = entry?.destination
     val back: () -> Unit = { nav.popBackStack() }
-    val colors = AppTheme.colors
-    val ink = MaterialTheme.colorScheme.onSurface
+    val scheme = MaterialTheme.colorScheme
     val reduced = AppTheme.reducedMotion
-    // El indicador toma el color de la sección (mapa de metro). NavigationSuiteScope no es @Composable: se calcula aquí.
-    val itemColors = tabs.map { tab ->
-        val indicator = colors.lineFor(tab.section, ink).copy(alpha = 0.16f)
-        val mark = colors.lineTextFor(tab.section, ink)
-        NavigationSuiteDefaults.itemColors(
-            navigationBarItemColors = NavigationBarItemDefaults.colors(
-                indicatorColor = indicator,
-                selectedIconColor = mark,
-                selectedTextColor = mark,
-            ),
-            navigationRailItemColors = NavigationRailItemDefaults.colors(
-                indicatorColor = indicator,
-                selectedIconColor = mark,
-                selectedTextColor = mark,
-            ),
-        )
+    // Sin píldora indicadora (Figma): la pestaña activa solo cambia de color.
+    val itemColors = NavigationSuiteDefaults.itemColors(
+        navigationBarItemColors = NavigationBarItemDefaults.colors(
+            indicatorColor = Color.Transparent,
+            selectedIconColor = scheme.primary,
+            selectedTextColor = scheme.primary,
+            unselectedIconColor = scheme.onSurfaceVariant,
+            unselectedTextColor = scheme.onSurfaceVariant,
+        ),
+        navigationRailItemColors = NavigationRailItemDefaults.colors(
+            indicatorColor = Color.Transparent,
+            selectedIconColor = scheme.primary,
+            selectedTextColor = scheme.primary,
+            unselectedIconColor = scheme.onSurfaceVariant,
+            unselectedTextColor = scheme.onSurfaceVariant,
+        ),
+    )
+    val suiteColors = NavigationSuiteDefaults.colors(
+        navigationBarContainerColor = scheme.surface,
+        navigationRailContainerColor = scheme.surface,
+    )
+    // Barra en el teléfono, riel en tableta; oculta en las pantallas de detalle.
+    val layoutType = if (tabs.any { destination?.hasRoute(it.route::class) == true }) {
+        NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
+    } else {
+        NavigationSuiteType.None
     }
+    val hairline = scheme.outlineVariant
 
-    NavigationSuiteScaffold(
-        navigationSuiteItems = {
-            tabs.forEachIndexed { index, tab ->
-                val selected = destination?.hierarchy?.any { it.hasRoute(tab.route::class) } == true
-                item(
-                    selected = selected,
-                    onClick = {
-                        nav.navigate(tab.route) {
-                            popUpTo(nav.graph.findStartDestination().id) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
+    Surface(color = scheme.background, contentColor = scheme.onBackground) {
+        NavigationSuiteScaffoldLayout(
+            navigationSuite = {
+                NavigationSuite(
+                    // El hilo superior se dibuja sobre el contenedor de la barra (drawBehind quedaría bajo su fondo); el riel no lo lleva.
+                    modifier = if (layoutType == NavigationSuiteType.NavigationBar) {
+                        Modifier.drawWithContent {
+                            drawContent()
+                            drawRect(hairline, size = Size(size.width, Spacing.hairline.toPx()))
                         }
+                    } else {
+                        Modifier
                     },
-                    icon = { Icon(painterResource(if (selected) tab.selectedIcon else tab.icon), contentDescription = null) },
-                    label = {
-                        // Con fuente al 200 % "Progreso" no cabe: se reduce lo justo en vez de partirse en "Progres/o".
-                        Text(
-                            stringResource(tab.label),
-                            maxLines = 1,
-                            autoSize = TextAutoSize.StepBased(minFontSize = 10.sp, maxFontSize = LocalTextStyle.current.fontSize),
+                    layoutType = layoutType,
+                    colors = suiteColors,
+                ) {
+                    tabs.forEach { tab ->
+                        val selected = destination?.hierarchy?.any { it.hasRoute(tab.route::class) } == true
+                        item(
+                            selected = selected,
+                            onClick = {
+                                nav.navigate(tab.route) {
+                                    popUpTo(nav.graph.findStartDestination().id) { saveState = true }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            icon = { Icon(painterResource(tab.icon), contentDescription = null) },
+                            label = {
+                                // Con fuente al 200 % "Progreso" no cabe en 10 sp: se reduce lo justo (6 sp × 2 sigue siendo mayor que 10 sp × 1) en vez de cortarse.
+                                val style = MaterialTheme.typography.labelSmall
+                                Text(
+                                    stringResource(tab.label),
+                                    style = style,
+                                    maxLines = 1,
+                                    autoSize = TextAutoSize.StepBased(minFontSize = 6.sp, maxFontSize = style.fontSize),
+                                )
+                            },
+                            colors = itemColors,
                         )
-                    },
-                    colors = itemColors[index],
-                )
-            }
-        },
-        // Barra en el teléfono, riel en tableta; oculta en las pantallas de detalle.
-        layoutType = if (tabs.any { destination?.hasRoute(it.route::class) == true }) {
-            NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
-        } else {
-            NavigationSuiteType.None
-        },
-    ) {
-        // Ancho máximo de lectura en pantallas grandes (spec 4.5); en el teléfono no cambia nada.
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-            NavHost(
-                nav,
-                startDestination = RoutineWeekRoute,
-                modifier = Modifier.widthIn(max = Spacing.contentMaxWidth),
-                enterTransition = { enter(reduced, pop = false) },
-                exitTransition = { exit(reduced, pop = false) },
-                popEnterTransition = { enter(reduced, pop = true) },
-                popExitTransition = { exit(reduced, pop = true) },
-            ) {
-                composable<RoutineWeekRoute> { RoutineWeekScreen(onOpenDay = { nav.navigate(RoutineDayRoute(it.toString())) }) }
-                composable<RoutineDayRoute> { RoutineDayScreen(onBack = back) }
-                composable<DietWeekRoute> { DietWeekScreen(onOpenMeal = { day, mealId -> nav.navigate(RecipeRoute(day.name, mealId)) }) }
-                composable<RecipeRoute> { RecipeScreen(onBack = back) }
-                composable<ProgressRoute> { ProgressScreen() }
-                composable<ProfileRoute> {
-                    ProfileScreen(
-                        onEdit = { nav.navigate(ProfileSectionRoute(it.name)) },
-                        onDeleteAccount = { nav.navigate(DeleteAccountRoute) },
-                    )
+                    }
                 }
-                composable<ProfileSectionRoute> { ProfileEditScreen(onDone = back) }
-                composable<DeleteAccountRoute> { DeleteAccountScreen(onBack = back) }
+            },
+            layoutType = layoutType,
+        ) {
+            // Ancho máximo de lectura en pantallas grandes (spec 4.5); en el teléfono no cambia nada.
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+                NavHost(
+                    nav,
+                    startDestination = HomeRoute,
+                    modifier = Modifier.widthIn(max = Spacing.contentMaxWidth),
+                    enterTransition = { enter(reduced, pop = false) },
+                    exitTransition = { exit(reduced, pop = false) },
+                    popEnterTransition = { enter(reduced, pop = true) },
+                    popExitTransition = { exit(reduced, pop = true) },
+                ) {
+                    composable<HomeRoute> { HomeScreen() }
+                    composable<RoutineWeekRoute> { RoutineWeekScreen(onOpenDay = { nav.navigate(RoutineDayRoute(it.toString())) }) }
+                    composable<RoutineDayRoute> { RoutineDayScreen(onBack = back) }
+                    composable<DietWeekRoute> { DietWeekScreen(onOpenMeal = { day, mealId -> nav.navigate(RecipeRoute(day.name, mealId)) }) }
+                    composable<RecipeRoute> { RecipeScreen(onBack = back) }
+                    composable<ProgressRoute> { ProgressScreen() }
+                    composable<ProfileRoute> {
+                        ProfileScreen(
+                            onEdit = { nav.navigate(ProfileSectionRoute(it.name)) },
+                            onDeleteAccount = { nav.navigate(DeleteAccountRoute) },
+                        )
+                    }
+                    composable<ProfileSectionRoute> { ProfileEditScreen(onDone = back) }
+                    composable<DeleteAccountRoute> { DeleteAccountScreen(onBack = back) }
+                }
             }
         }
     }
