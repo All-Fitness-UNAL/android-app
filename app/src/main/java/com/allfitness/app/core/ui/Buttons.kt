@@ -5,8 +5,10 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -22,8 +24,68 @@ import androidx.compose.ui.res.stringResource
 import com.allfitness.app.R
 import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Motion
+import com.allfitness.app.core.ui.theme.PillShape
+import com.allfitness.app.core.ui.theme.Spacing
+import com.allfitness.app.core.ui.theme.primaryGlow
 
-/** Acción secundaria: tonal y rectangular, para que no se lea como deshabilitada. */
+/** Acción principal: píldora verde de 56 dp con brillo (Figma `continue-button`, `start-workout-cta`). */
+@Composable
+fun PrimaryButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    @DrawableRes trailingIcon: Int? = null,
+) = PillButton(text, onClick, modifier, enabled, trailingIcon, primary = true)
+
+/** Acción secundaria: píldora `surfaceContainerHigh` con texto blanco (Figma `pause-btn`). */
+@Composable
+fun SecondaryButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    @DrawableRes trailingIcon: Int? = null,
+) = PillButton(text, onClick, modifier, enabled, trailingIcon, primary = false)
+
+@Composable
+private fun PillButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier,
+    enabled: Boolean,
+    @DrawableRes trailingIcon: Int?,
+    primary: Boolean,
+) {
+    val scheme = MaterialTheme.colorScheme
+    val interaction = remember { MutableInteractionSource() }
+    Button(
+        onClick = onClick,
+        // Alto mínimo, no fijo: con fuente grande el botón crece. El brillo solo cuando se puede pulsar.
+        modifier = modifier
+            .heightIn(min = Spacing.buttonHeight)
+            .pressScale(interaction)
+            .then(if (primary && enabled) Modifier.primaryGlow(PillShape) else Modifier),
+        enabled = enabled,
+        shape = PillShape,
+        // Deshabilitado: texto gris legible (5,9:1) en vez del blanco al 38 % por defecto.
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (primary) scheme.primary else scheme.surfaceContainerHigh,
+            contentColor = if (primary) scheme.onPrimary else scheme.onSurface,
+            disabledContainerColor = scheme.surfaceContainerHigh,
+            disabledContentColor = scheme.onSurfaceVariant,
+        ),
+        interactionSource = interaction,
+    ) {
+        Text(text, style = if (primary) MaterialTheme.typography.titleMedium else MaterialTheme.typography.labelLarge)
+        if (trailingIcon != null) {
+            Spacer(Modifier.width(ButtonDefaults.IconSpacing))
+            Icon(painterResource(trailingIcon), contentDescription = null, modifier = Modifier.size(ButtonDefaults.IconSize))
+        }
+    }
+}
+
+/** Acción secundaria con ícono delante: tonal y en píldora, para que no se lea como deshabilitada. */
 @Composable
 fun TonalActionButton(
     text: String,
@@ -37,7 +99,7 @@ fun TonalActionButton(
         onClick = onClick,
         modifier = modifier.pressScale(interaction),
         enabled = enabled,
-        shape = MaterialTheme.shapes.small,
+        shape = PillShape,
         interactionSource = interaction,
     ) {
         if (icon != null) {

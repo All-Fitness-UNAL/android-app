@@ -25,16 +25,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,8 +49,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -85,17 +87,18 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-/** Tarjeta blanca sobre el andén, separada por un hilo y sin sombra. */
+/** Tarjeta `surface` de radio 16 con hilo y sin sombra; [highlighted] (Figma `goal-card`): radio 20 y borde verde. */
 @Composable
 fun AppCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
-    color: Color = MaterialTheme.colorScheme.surface,
+    highlighted: Boolean = false,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val colors = CardDefaults.cardColors(containerColor = color)
-    val border = BorderStroke(Spacing.hairline, MaterialTheme.colorScheme.outlineVariant)
-    val shape = MaterialTheme.shapes.medium
+    val scheme = MaterialTheme.colorScheme
+    val colors = CardDefaults.cardColors(containerColor = scheme.surface)
+    val border = BorderStroke(Spacing.hairline, if (highlighted) scheme.primary else scheme.outlineVariant)
+    val shape = if (highlighted) MaterialTheme.shapes.extraLarge else MaterialTheme.shapes.large
     if (onClick != null) {
         Card(onClick = onClick, modifier = modifier, shape = shape, colors = colors, border = border, content = content)
     } else {
@@ -274,14 +277,11 @@ private fun MessageState(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        // Estación como ilustración mínima: llena en error, hueca en vacío.
-        val station = Modifier.size(Spacing.stationToday)
-        Box(
-            if (isError) {
-                station.background(MaterialTheme.colorScheme.error, CircleShape)
-            } else {
-                station.border(Spacing.hairline * 2, MaterialTheme.colorScheme.outline, CircleShape)
-            },
+        Icon(
+            painterResource(if (isError) R.drawable.lc_triangle_alert else R.drawable.lc_info),
+            contentDescription = null,
+            modifier = Modifier.size(Spacing.xl),
+            tint = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Text(
             text = message,
@@ -335,20 +335,19 @@ fun numberStyle(size: TextStyle): TextStyle = numberTextStyle(MaterialTheme.typo
 internal fun numberTextStyle(base: TextStyle, size: TextStyle): TextStyle =
     base.copy(fontSize = size.fontSize, lineHeight = size.lineHeight, fontFeatureSettings = "tnum")
 
-/** Aviso de IA compacto bajo el título: el texto completo, sin caja de color. */
+/** Aviso de IA (FR-037) bajo la cabecera: el texto completo, sin caja de color, y un hilo que lo separa de la lista. */
 @Composable
 fun AiNote(modifier: Modifier = Modifier) {
     Column(modifier.fillMaxWidth()) {
-        Row(Modifier.padding(horizontal = Spacing.m, vertical = Spacing.s)) {
+        Row(Modifier.padding(start = Spacing.m, end = Spacing.m, bottom = Spacing.sm), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
             Icon(
-                painterResource(R.drawable.ic_info),
+                painterResource(R.drawable.lc_info),
                 contentDescription = null,
                 modifier = Modifier.size(Spacing.m),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
                 text = stringResource(R.string.ai_disclaimer),
-                modifier = Modifier.padding(start = Spacing.s),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -367,26 +366,43 @@ fun OfflineHint(modifier: Modifier = Modifier) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Cabecera de pantalla (Figma `title-block`, `today-workout-title`): título Outfit 28 (20 con [onBack]),
+ * [subtitle] debajo y [trailing] a la derecha (etiqueta de IA o duración). El título se parte en líneas
+ * con fuente grande en vez de cortarse.
+ */
 @Composable
-fun AppTopBar(title: String, onBack: (() -> Unit)? = null) {
-    TopAppBar(
-        title = {
+fun ScreenHeader(
+    title: String,
+    subtitle: String? = null,
+    onBack: (() -> Unit)? = null,
+    trailing: (@Composable () -> Unit)? = null,
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
+            .padding(start = if (onBack != null) Spacing.xs else Spacing.m, end = Spacing.m, top = Spacing.s, bottom = Spacing.sm),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(Spacing.s),
+    ) {
+        if (onBack != null) {
+            IconButton(onClick = onBack) {
+                Icon(painterResource(R.drawable.lc_arrow_left), contentDescription = stringResource(R.string.action_back))
+            }
+        }
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(
                 text = title,
                 modifier = Modifier.semantics { heading() },
-                style = if (onBack == null) MaterialTheme.typography.headlineLarge else MaterialTheme.typography.titleLarge,
+                style = if (onBack == null) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.titleLarge,
             )
-        },
-        navigationIcon = {
-            if (onBack != null) {
-                IconButton(onClick = onBack) {
-                    Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.action_back))
-                }
+            if (subtitle != null) {
+                Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
-    )
+        }
+        trailing?.invoke()
+    }
 }
 
 /**

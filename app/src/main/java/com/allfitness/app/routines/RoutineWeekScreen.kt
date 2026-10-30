@@ -36,11 +36,11 @@ import com.allfitness.app.core.time.displayName
 import com.allfitness.app.core.time.shortLabel
 import com.allfitness.app.core.ui.AiGeneratingState
 import com.allfitness.app.core.ui.AiNote
-import com.allfitness.app.core.ui.AppTopBar
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
 import com.allfitness.app.core.ui.RouteRow
+import com.allfitness.app.core.ui.ScreenHeader
 import com.allfitness.app.core.ui.SectionTitle
 import com.allfitness.app.core.ui.SignPanel
 import com.allfitness.app.core.ui.StateContent
@@ -163,7 +163,7 @@ fun RoutineWeekScreen(
     MessageEffect(altDone, snackbar, alternatives::doneShown)
 
     Scaffold(
-        topBar = { AppTopBar(stringResource(R.string.routine_title)) },
+        topBar = { ScreenHeader(stringResource(R.string.routine_title)) },
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         if (generating) {

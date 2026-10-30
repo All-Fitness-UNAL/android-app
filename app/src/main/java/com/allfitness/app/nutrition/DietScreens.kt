@@ -67,12 +67,12 @@ import com.allfitness.app.core.ui.AiGeneratingState
 import com.allfitness.app.core.ui.AiNote
 import com.allfitness.app.core.ui.AlternativeButton
 import com.allfitness.app.core.ui.AppCard
-import com.allfitness.app.core.ui.AppTopBar
 import com.allfitness.app.core.ui.DataCell
 import com.allfitness.app.core.ui.DataStrip
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
+import com.allfitness.app.core.ui.ScreenHeader
 import com.allfitness.app.core.ui.SectionTitle
 import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.TonalActionButton
@@ -167,7 +167,7 @@ fun DietWeekScreen(
     MessageEffect(altDone, snackbar, alternatives::doneShown)
 
     Scaffold(
-        topBar = { AppTopBar(stringResource(R.string.diet_title)) },
+        topBar = { ScreenHeader(stringResource(R.string.diet_title)) },
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         if (generating) {
@@ -261,7 +261,7 @@ fun RecipeScreen(
 
     val title = (state as? UiState.Content)?.data?.type?.let { stringResource(it.labelRes()) } ?: stringResource(R.string.recipe_title)
     Scaffold(
-        topBar = { AppTopBar(title, onBack) },
+        topBar = { ScreenHeader(title, onBack = onBack) },
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         StateContent(

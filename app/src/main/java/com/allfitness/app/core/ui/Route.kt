@@ -57,11 +57,6 @@ import com.allfitness.app.core.ui.theme.DefaultAppColors
 import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.Spacing
 
-enum class StationState { PENDING, PAST, DONE, REST, TODAY, TODAY_DONE }
-
-fun sessionFraction(done: Int, total: Int): Float =
-    if (total <= 0) 0f else (done.toFloat() / total).coerceIn(0f, 1f)
-
 private val StationState.isToday get() = this == StationState.TODAY || this == StationState.TODAY_DONE
 private val StationState.isDone get() = this == StationState.DONE || this == StationState.TODAY_DONE
 

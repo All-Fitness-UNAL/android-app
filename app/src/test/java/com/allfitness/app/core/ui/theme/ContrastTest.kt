@@ -30,10 +30,13 @@ class ContrastTest {
 
     @Test
     fun textOnBackgroundAndCards() {
-        val cards = listOf(s.background, s.surface, s.surfaceContainerHigh)
+        val cards = listOf(s.background, s.surface, s.surfaceContainerHigh, a.surfaceInput)
         assertContrast(4.5f, s.onSurface, cards)
         assertContrast(4.5f, s.onSurfaceVariant, cards)
     }
+
+    // TonalActionButton.
+    @Test fun onSecondaryContainer() = assertContrast(4.5f, s.onSecondaryContainer, s.secondaryContainer)
 
     @Test
     fun primaryAsTextAndOnPrimary() {
