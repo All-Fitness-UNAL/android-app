@@ -1,0 +1,1012 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-30T12:00:00Z",
+  "title": "Design System: AllFitness",
+  "extensions": {
+    "colorMeta": {
+      "line-routine": {
+        "role": "primary",
+        "displayName": "Verde Línea Rutina",
+        "canonical": "#0A7A50",
+        "tonalRamp": [
+          "#010F07",
+          "#052D1C",
+          "#0F4E33",
+          "#1A724D",
+          "#43956D",
+          "#79B495",
+          "#ABD5BD",
+          "#DEF5E8"
+        ]
+      },
+      "line-routine-dark": {
+        "role": "primary",
+        "displayName": "Verde Línea Rutina (oscuro)",
+        "canonical": "#4CC38A",
+        "tonalRamp": [
+          "#001006",
+          "#002E19",
+          "#00502F",
+          "#007547",
+          "#2D9867",
+          "#6EB790",
+          "#A5D7BA",
+          "#DAF7E6"
+        ]
+      },
+      "on-primary": {
+        "role": "primary",
+        "displayName": "Tinta sobre primario",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "on-primary-dark": {
+        "role": "primary",
+        "displayName": "Tinta sobre primario (oscuro)",
+        "canonical": "#003822",
+        "tonalRamp": [
+          "#050E09",
+          "#162A20",
+          "#2B4A3A",
+          "#416C55",
+          "#628E76",
+          "#8CAF9B",
+          "#B8D0C2",
+          "#E4F3EA"
+        ]
+      },
+      "line-diet": {
+        "role": "secondary",
+        "displayName": "Naranja Línea Dieta",
+        "canonical": "#D9661F",
+        "tonalRamp": [
+          "#190500",
+          "#421500",
+          "#6F2900",
+          "#A03E00",
+          "#C76127",
+          "#DF8E66",
+          "#F5BA9E",
+          "#FFE6D6"
+        ]
+      },
+      "line-diet-dark": {
+        "role": "secondary",
+        "displayName": "Naranja Línea Dieta (oscuro)",
+        "canonical": "#F08A45",
+        "tonalRamp": [
+          "#180600",
+          "#3F1800",
+          "#6B2E00",
+          "#9A4600",
+          "#BF682A",
+          "#D89267",
+          "#F0BD9F",
+          "#FFE8D6"
+        ]
+      },
+      "line-diet-text": {
+        "role": "secondary",
+        "displayName": "Naranja Tostado de texto",
+        "canonical": "#A84A0E",
+        "tonalRamp": [
+          "#180601",
+          "#3E1804",
+          "#6A2E0B",
+          "#984615",
+          "#BE683B",
+          "#D79271",
+          "#EFBCA5",
+          "#FFE7D9"
+        ]
+      },
+      "line-diet-text-dark": {
+        "role": "secondary",
+        "displayName": "Naranja Tostado de texto (oscuro)",
+        "canonical": "#F08A45",
+        "tonalRamp": [
+          "#180600",
+          "#3F1800",
+          "#6B2E00",
+          "#9A4600",
+          "#BF682A",
+          "#D89267",
+          "#F0BD9F",
+          "#FFE8D6"
+        ]
+      },
+      "line-progress": {
+        "role": "secondary",
+        "displayName": "Azul Línea Progreso",
+        "canonical": "#2C5BD6",
+        "tonalRamp": [
+          "#020921",
+          "#0D2052",
+          "#1C3B88",
+          "#2D57C3",
+          "#4C7BEA",
+          "#7AA2FA",
+          "#ABC9FF",
+          "#DDEFFF"
+        ]
+      },
+      "line-progress-dark": {
+        "role": "secondary",
+        "displayName": "Azul Línea Progreso (oscuro)",
+        "canonical": "#8FAEFF",
+        "tonalRamp": [
+          "#060A19",
+          "#182341",
+          "#2E3F6E",
+          "#465D9F",
+          "#657FC4",
+          "#8EA4DB",
+          "#B8C9F0",
+          "#E5EEFF"
+        ]
+      },
+      "tonal": {
+        "role": "secondary",
+        "displayName": "Verde Tonal",
+        "canonical": "#C6E3D2",
+        "tonalRamp": [
+          "#080D0A",
+          "#1D2822",
+          "#36463D",
+          "#51685A",
+          "#71897B",
+          "#98AA9F",
+          "#BFCDC5",
+          "#E9F1EC"
+        ]
+      },
+      "tonal-dark": {
+        "role": "secondary",
+        "displayName": "Verde Tonal (oscuro)",
+        "canonical": "#2A4234",
+        "tonalRamp": [
+          "#080D09",
+          "#1E2822",
+          "#36463D",
+          "#51675A",
+          "#72897B",
+          "#98AA9F",
+          "#C0CDC5",
+          "#E9F1EC"
+        ]
+      },
+      "on-tonal": {
+        "role": "secondary",
+        "displayName": "Tinta tonal",
+        "canonical": "#0F2A1F",
+        "tonalRamp": [
+          "#070D0A",
+          "#1D2823",
+          "#35473E",
+          "#4F685C",
+          "#6F897D",
+          "#96ABA1",
+          "#BFCDC6",
+          "#E8F1ED"
+        ]
+      },
+      "on-tonal-dark": {
+        "role": "secondary",
+        "displayName": "Tinta tonal (oscuro)",
+        "canonical": "#D3E8DC",
+        "tonalRamp": [
+          "#090C0A",
+          "#202723",
+          "#39453F",
+          "#55665D",
+          "#76877D",
+          "#9BA9A1",
+          "#C2CCC6",
+          "#EAF0ED"
+        ]
+      },
+      "signal": {
+        "role": "neutral",
+        "displayName": "Señal",
+        "canonical": "#0F1F1A",
+        "tonalRamp": [
+          "#090C0B",
+          "#202724",
+          "#394541",
+          "#556560",
+          "#768781",
+          "#9BA9A4",
+          "#C2CCC8",
+          "#EAF0EE"
+        ]
+      },
+      "signal-dark": {
+        "role": "neutral",
+        "displayName": "Señal (oscuro)",
+        "canonical": "#1D2F28",
+        "tonalRamp": [
+          "#080C0B",
+          "#1F2724",
+          "#394540",
+          "#54665F",
+          "#758780",
+          "#9AA9A3",
+          "#C2CCC7",
+          "#EAF0ED"
+        ]
+      },
+      "on-signal": {
+        "role": "neutral",
+        "displayName": "Tinta de Señal",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "on-signal-dark": {
+        "role": "neutral",
+        "displayName": "Tinta de Señal (oscuro)",
+        "canonical": "#E6ECE9",
+        "tonalRamp": [
+          "#0A0B0B",
+          "#232625",
+          "#404341",
+          "#5E6260",
+          "#7F8481",
+          "#A2A6A4",
+          "#C7CAC8",
+          "#EDEFEE"
+        ]
+      },
+      "signal-outline": {
+        "role": "neutral",
+        "displayName": "Hilo de Señal",
+        "canonical": "transparent"
+      },
+      "signal-outline-dark": {
+        "role": "neutral",
+        "displayName": "Hilo de Señal (oscuro)",
+        "canonical": "#2A3531",
+        "tonalRamp": [
+          "#090C0B",
+          "#212624",
+          "#3C4441",
+          "#596460",
+          "#7A8581",
+          "#9EA7A4",
+          "#C4CBC8",
+          "#ECEFEE"
+        ]
+      },
+      "here": {
+        "role": "tertiary",
+        "displayName": "Amarillo Estás Aquí",
+        "canonical": "#F2C230",
+        "tonalRamp": [
+          "#120900",
+          "#342200",
+          "#593D00",
+          "#815A00",
+          "#A47C00",
+          "#C1A14E",
+          "#DDC790",
+          "#FAEECE"
+        ]
+      },
+      "here-dark": {
+        "role": "tertiary",
+        "displayName": "Amarillo Estás Aquí (oscuro)",
+        "canonical": "#F5CD4C",
+        "tonalRamp": [
+          "#110A00",
+          "#322300",
+          "#563E00",
+          "#7D5C00",
+          "#A07E00",
+          "#BDA355",
+          "#DAC894",
+          "#F8EED0"
+        ]
+      },
+      "macro-protein": {
+        "role": "tertiary",
+        "displayName": "Proteína",
+        "canonical": "#2C5BD6",
+        "tonalRamp": [
+          "#020921",
+          "#0D2052",
+          "#1C3B88",
+          "#2D57C3",
+          "#4C7BEA",
+          "#7AA2FA",
+          "#ABC9FF",
+          "#DDEFFF"
+        ]
+      },
+      "macro-protein-dark": {
+        "role": "tertiary",
+        "displayName": "Proteína (oscuro)",
+        "canonical": "#5E8BEF",
+        "tonalRamp": [
+          "#040A1D",
+          "#122349",
+          "#243E7B",
+          "#375CB0",
+          "#577ED6",
+          "#83A4E9",
+          "#B1C9FB",
+          "#E0EFFF"
+        ]
+      },
+      "macro-carbs": {
+        "role": "tertiary",
+        "displayName": "Carbohidratos",
+        "canonical": "#D9661F",
+        "tonalRamp": [
+          "#190500",
+          "#421500",
+          "#6F2900",
+          "#A03E00",
+          "#C76127",
+          "#DF8E66",
+          "#F5BA9E",
+          "#FFE6D6"
+        ]
+      },
+      "macro-carbs-dark": {
+        "role": "tertiary",
+        "displayName": "Carbohidratos (oscuro)",
+        "canonical": "#DD7434",
+        "tonalRamp": [
+          "#180500",
+          "#401700",
+          "#6C2C00",
+          "#9C4300",
+          "#C2662E",
+          "#DA9169",
+          "#F1BCA0",
+          "#FFE7D7"
+        ]
+      },
+      "macro-fat": {
+        "role": "tertiary",
+        "displayName": "Grasas",
+        "canonical": "#C2389A",
+        "tonalRamp": [
+          "#190211",
+          "#420A32",
+          "#6F1856",
+          "#9F267D",
+          "#C64DA0",
+          "#DF80BD",
+          "#F5B1DB",
+          "#FFE1F9"
+        ]
+      },
+      "macro-fat-dark": {
+        "role": "tertiary",
+        "displayName": "Grasas (oscuro)",
+        "canonical": "#CF4E9C",
+        "tonalRamp": [
+          "#19030F",
+          "#410E2E",
+          "#6E1D4F",
+          "#9E2E74",
+          "#C45296",
+          "#DD83B5",
+          "#F4B2D5",
+          "#FFE2F5"
+        ]
+      },
+      "platform": {
+        "role": "neutral",
+        "displayName": "Andén",
+        "canonical": "#F3F5F4",
+        "tonalRamp": [
+          "#090F0E",
+          "#121A17",
+          "#1B211F",
+          "#252B29",
+          "#303634",
+          "#D5DBD8",
+          "#E9EFEB",
+          "#F3F5F4"
+        ]
+      },
+      "platform-dark": {
+        "role": "neutral",
+        "displayName": "Andén (oscuro)",
+        "canonical": "#0B1210",
+        "tonalRamp": [
+          "#090F0E",
+          "#121A17",
+          "#1B211F",
+          "#252B29",
+          "#303634",
+          "#D5DBD8",
+          "#E9EFEB",
+          "#F3F5F4"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Tarjeta",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#090F0E",
+          "#121A17",
+          "#1B211F",
+          "#252B29",
+          "#303634",
+          "#D5DBD8",
+          "#E9EFEB",
+          "#F3F5F4"
+        ]
+      },
+      "surface-dark": {
+        "role": "neutral",
+        "displayName": "Tarjeta (oscuro)",
+        "canonical": "#121A17",
+        "tonalRamp": [
+          "#090F0E",
+          "#121A17",
+          "#1B211F",
+          "#252B29",
+          "#303634",
+          "#D5DBD8",
+          "#E9EFEB",
+          "#F3F5F4"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "#101816",
+        "tonalRamp": [
+          "#0A0C0B",
+          "#222625",
+          "#3D4442",
+          "#5B6361",
+          "#7C8582",
+          "#A0A7A5",
+          "#C5CAC9",
+          "#ECEFEE"
+        ]
+      },
+      "ink-dark": {
+        "role": "neutral",
+        "displayName": "Tinta (oscuro)",
+        "canonical": "#E6ECE9",
+        "tonalRamp": [
+          "#0A0B0B",
+          "#232625",
+          "#404341",
+          "#5E6260",
+          "#7F8481",
+          "#A2A6A4",
+          "#C7CAC8",
+          "#EDEFEE"
+        ]
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "Tinta secundaria",
+        "canonical": "#4A5551",
+        "tonalRamp": [
+          "#090C0B",
+          "#222625",
+          "#3D4441",
+          "#5A6460",
+          "#7B8581",
+          "#9FA7A4",
+          "#C5CBC8",
+          "#ECEFEE"
+        ]
+      },
+      "ink-secondary-dark": {
+        "role": "neutral",
+        "displayName": "Tinta secundaria (oscuro)",
+        "canonical": "#A9B5B0",
+        "tonalRamp": [
+          "#0A0C0B",
+          "#222624",
+          "#3D4441",
+          "#5A6460",
+          "#7B8581",
+          "#9FA7A4",
+          "#C5CBC8",
+          "#ECEFEE"
+        ]
+      },
+      "outline": {
+        "role": "neutral",
+        "displayName": "Contorno",
+        "canonical": "#76817C",
+        "tonalRamp": [
+          "#0A0C0B",
+          "#222624",
+          "#3D4441",
+          "#5A645F",
+          "#7B8580",
+          "#9FA7A4",
+          "#C5CBC8",
+          "#ECEFEE"
+        ]
+      },
+      "outline-dark": {
+        "role": "neutral",
+        "displayName": "Contorno (oscuro)",
+        "canonical": "#7F8B86",
+        "tonalRamp": [
+          "#090C0B",
+          "#222624",
+          "#3D4441",
+          "#5A6460",
+          "#7B8581",
+          "#9FA7A4",
+          "#C5CBC8",
+          "#ECEFEE"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hilo",
+        "canonical": "#D5DCD9",
+        "tonalRamp": [
+          "#0A0B0B",
+          "#232625",
+          "#3F4341",
+          "#5D6360",
+          "#7E8481",
+          "#A2A6A4",
+          "#C7CAC8",
+          "#EDEFEE"
+        ]
+      },
+      "hairline-dark": {
+        "role": "neutral",
+        "displayName": "Hilo (oscuro)",
+        "canonical": "#2A3531",
+        "tonalRamp": [
+          "#090C0B",
+          "#212624",
+          "#3C4441",
+          "#596460",
+          "#7A8581",
+          "#9EA7A4",
+          "#C4CBC8",
+          "#ECEFEE"
+        ]
+      },
+      "surface-container": {
+        "role": "neutral",
+        "displayName": "Contenedor (navegación)",
+        "canonical": "#E9EFEB",
+        "tonalRamp": [
+          "#090F0E",
+          "#121A17",
+          "#1B211F",
+          "#252B29",
+          "#303634",
+          "#D5DBD8",
+          "#E9EFEB",
+          "#F3F5F4"
+        ]
+      },
+      "surface-container-dark": {
+        "role": "neutral",
+        "displayName": "Contenedor (navegación) (oscuro)",
+        "canonical": "#1B211F",
+        "tonalRamp": [
+          "#090F0E",
+          "#121A17",
+          "#1B211F",
+          "#252B29",
+          "#303634",
+          "#D5DBD8",
+          "#E9EFEB",
+          "#F3F5F4"
+        ]
+      },
+      "surface-container-high": {
+        "role": "neutral",
+        "displayName": "Contenedor alto (hojas)",
+        "canonical": "#E3EAE6",
+        "tonalRamp": [
+          "#090F0E",
+          "#121A17",
+          "#1B211F",
+          "#252B29",
+          "#303634",
+          "#D5DBD8",
+          "#E9EFEB",
+          "#F3F5F4"
+        ]
+      },
+      "surface-container-high-dark": {
+        "role": "neutral",
+        "displayName": "Contenedor alto (hojas) (oscuro)",
+        "canonical": "#252B29",
+        "tonalRamp": [
+          "#090F0E",
+          "#121A17",
+          "#1B211F",
+          "#252B29",
+          "#303634",
+          "#D5DBD8",
+          "#E9EFEB",
+          "#F3F5F4"
+        ]
+      },
+      "error": {
+        "role": "neutral",
+        "displayName": "Error",
+        "canonical": "#C62828",
+        "tonalRamp": [
+          "#1D0202",
+          "#480A09",
+          "#791716",
+          "#AE2524",
+          "#D64E46",
+          "#ED8277",
+          "#FFB2A9",
+          "#FFE2DC"
+        ]
+      },
+      "error-dark": {
+        "role": "neutral",
+        "displayName": "Error (oscuro)",
+        "canonical": "#FFB4AB",
+        "tonalRamp": [
+          "#140706",
+          "#371C1A",
+          "#5F3530",
+          "#894F48",
+          "#AD7069",
+          "#C99791",
+          "#E4BFBA",
+          "#FFE9E6"
+        ]
+      },
+      "error-container": {
+        "role": "neutral",
+        "displayName": "Contenedor de error",
+        "canonical": "#FFDAD6",
+        "tonalRamp": [
+          "#100909",
+          "#2E2120",
+          "#503C3A",
+          "#755956",
+          "#987A77",
+          "#B79F9C",
+          "#D6C4C2",
+          "#F6ECEB"
+        ]
+      },
+      "error-container-dark": {
+        "role": "neutral",
+        "displayName": "Contenedor de error (oscuro)",
+        "canonical": "#93000E",
+        "tonalRamp": [
+          "#1B0303",
+          "#45100E",
+          "#74211D",
+          "#A6332E",
+          "#CE574F",
+          "#E5877D",
+          "#FAB5AD",
+          "#FFE3DE"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "\"AllFitness\" en BrandHeader y en la espera de IA a pantalla completa."
+      },
+      "display-small": {
+        "displayName": "Display small",
+        "purpose": "La cifra protagonista, una por pantalla."
+      },
+      "headline-large": {
+        "displayName": "Headline large",
+        "purpose": "Título de pestaña en AppTopBar."
+      },
+      "headline-medium": {
+        "displayName": "Headline medium",
+        "purpose": "Tipo de día en la Señal."
+      },
+      "headline-small": {
+        "displayName": "Headline small",
+        "purpose": "Mensaje de espera de IA y números de paso."
+      },
+      "title-large": {
+        "displayName": "Title large",
+        "purpose": "SectionTitle, título de detalle y valor de DataStrip."
+      },
+      "title-medium": {
+        "displayName": "Title medium",
+        "purpose": "Nombre de ejercicio, plato y día."
+      },
+      "title-small": {
+        "displayName": "Title small",
+        "purpose": "Rótulo de grupo de formulario."
+      },
+      "body-large": {
+        "displayName": "Body large",
+        "purpose": "Lectura: pasos, ingredientes, mensajes de estado."
+      },
+      "body-medium": {
+        "displayName": "Body medium",
+        "purpose": "Texto de apoyo e instrucciones."
+      },
+      "body-small": {
+        "displayName": "Body small",
+        "purpose": "Aviso de IA, unidades, sin conexión."
+      },
+      "label-large": {
+        "displayName": "Label large",
+        "purpose": "Botones."
+      },
+      "label-medium": {
+        "displayName": "Label medium",
+        "purpose": "Etiqueta de dato y tipo de comida."
+      },
+      "label-small": {
+        "displayName": "Label small",
+        "purpose": "Solo el rótulo de estación de la Señal, en mayúsculas."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "duration-short",
+        "value": "150ms",
+        "purpose": "Fundidos de estado (StateContent) y fallback de transiciones con movimiento reducido."
+      },
+      {
+        "name": "duration-medium",
+        "value": "300ms",
+        "purpose": "Lista → detalle, entrada escalonada por ítem y pulso de sesión terminada."
+      },
+      {
+        "name": "duration-long",
+        "value": "450ms",
+        "purpose": "Tramo que se llena en la SessionBar."
+      },
+      {
+        "name": "ease-emphasized",
+        "value": "cubic-bezier(0.2, 0, 0, 1)",
+        "purpose": "Easing por defecto de transiciones y del tramo de carga."
+      },
+      {
+        "name": "spring-gentle",
+        "value": "spring(dampingRatio 0.9, stiffness MediumLow)",
+        "purpose": "Escala 0,97 al pulsar; sin rebote."
+      },
+      {
+        "name": "tab-switch",
+        "value": "fadeOut 90ms; fadeIn 210ms delay 90ms + scaleIn 0.96",
+        "purpose": "Cambio de pestaña."
+      },
+      {
+        "name": "detail-slide",
+        "value": "slideHorizontally 10% + fade, 300ms emphasized",
+        "purpose": "Semana → día, dieta → receta, reversible con atrás predictivo."
+      },
+      {
+        "name": "entrance-stagger",
+        "value": "30ms × índice, primeros 6 ítems, fade + 8dp, 330ms total",
+        "purpose": "Primera carga de una lista, una vez por pantalla."
+      },
+      {
+        "name": "line-indicator",
+        "value": "1200ms loop emphasized",
+        "purpose": "Carga indeterminada; con movimiento reducido pasa al LinearProgressIndicator de M3."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "ANIMATOR_DURATION_SCALE == 0",
+        "purpose": "Desactiva todo salvo los indicadores de carga; fundidos de 150 ms en navegación."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "< 600dp (barra inferior)"
+      },
+      {
+        "name": "wide",
+        "value": "rail según currentWindowAdaptiveInfo (NavigationSuiteScaffold)"
+      },
+      {
+        "name": "content-max",
+        "value": "640dp"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón primario",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Acción principal de la pantalla; relleno en Línea Rutina, rectángulo de 8 dp.",
+      "html": "<button class=\"ds-btn-primary\">Ver sesión de hoy</button>",
+      "css": ".ds-btn-primary { background: #0A7A50; color: #FFFFFF; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-weight: 700; font-size: 14px; line-height: 20px; min-height: 48px; padding: 0 24px; border: none; border-radius: 8px; transition: transform 0.15s cubic-bezier(0.2,0,0,1); } .ds-btn-primary:hover { background: #0C8A5B; } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: 2px solid #0A7A50; outline-offset: 2px; } .ds-btn-primary:disabled { background: rgba(16,24,22,0.12); color: rgba(16,24,22,0.38); }"
+    },
+    {
+      "name": "Botón tonal / Pedir alternativa",
+      "kind": "button",
+      "refersTo": "button-tonal",
+      "description": "Única acción secundaria; \"Pedir alternativa\" lleva siempre el ícono de desvío.",
+      "html": "<button class=\"ds-btn-tonal\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21v-7c0-3-3-5-6-7\"/><path d=\"M12 14c0-3 3-5 6-7\"/><path d=\"M3 6l3 1 1-3\"/><path d=\"M21 6l-3 1-1-3\"/></svg><span>Pedir alternativa</span></button>",
+      "css": ".ds-btn-tonal { display: inline-flex; align-items: center; gap: 8px; background: #C6E3D2; color: #0F2A1F; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-weight: 700; font-size: 14px; line-height: 20px; min-height: 48px; padding: 0 24px 0 16px; border: none; border-radius: 8px; transition: transform 0.15s cubic-bezier(0.2,0,0,1); } .ds-btn-tonal:hover { background: #B9D9C6; } .ds-btn-tonal:active { transform: scale(0.97); } .ds-btn-tonal:focus-visible { outline: 2px solid #0A7A50; outline-offset: 2px; }"
+    },
+    {
+      "name": "Botón destructivo",
+      "kind": "button",
+      "refersTo": "button-destructive",
+      "description": "Eliminar cuenta: contorno de 1 dp y texto en error.",
+      "html": "<button class=\"ds-btn-danger\">Eliminar cuenta</button>",
+      "css": ".ds-btn-danger { background: transparent; color: #C62828; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-weight: 700; font-size: 14px; min-height: 48px; padding: 0 24px; border: 1px solid #C62828; border-radius: 8px; } .ds-btn-danger:hover { background: rgba(198,40,40,0.08); } .ds-btn-danger:focus-visible { outline: 2px solid #C62828; outline-offset: 2px; }"
+    },
+    {
+      "name": "Señal de hoy (SignPanel)",
+      "kind": "card",
+      "refersTo": "sign-panel",
+      "description": "Panel oscuro con el único amarillo de la pantalla: rótulo de estación, tipo de día, estado y CTA.",
+      "html": "<section class=\"ds-sign\"><p class=\"ds-sign-label\">HOY · VIERNES 30 OCT</p><h2 class=\"ds-sign-title\">Cuerpo completo</h2><p class=\"ds-sign-status\">6 ejercicios · Sin empezar</p><button class=\"ds-sign-cta\">Ver sesión de hoy</button></section>",
+      "css": ".ds-sign { background: #0F1F1A; color: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 8px; max-width: 360px; } .ds-sign-label { margin: 0; color: #F2C230; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-weight: 700; font-size: 11px; line-height: 14px; letter-spacing: 0.8px; } .ds-sign-title { margin: 0; font-family: 'Archivo', sans-serif; font-stretch: 87.5%; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 28px; line-height: 34px; } .ds-sign-status { margin: 0; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-size: 14px; line-height: 20px; } .ds-sign-cta { margin-top: 4px; background: #0A7A50; color: #FFFFFF; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-weight: 700; font-size: 14px; min-height: 48px; border: none; border-radius: 8px; } .ds-sign-cta:hover { background: #0C8A5B; } .ds-sign-cta:focus-visible { outline: 2px solid #F2C230; outline-offset: 2px; }"
+    },
+    {
+      "name": "Línea de la semana (RouteRow)",
+      "kind": "custom",
+      "refersTo": "route-row",
+      "description": "Filas de 56 dp con estación sobre una línea vertical continua de 3 dp; pasado, descanso, hecho, hoy y pendiente.",
+      "html": "<ol class=\"ds-route\"><li class=\"ds-route-row ds-past\"><span class=\"ds-st ds-st-past\"></span><span><b>Lunes 26 oct</b><small>Tren superior</small></span></li><li class=\"ds-route-row ds-past\"><span class=\"ds-st ds-st-rest\"></span><span><b>Martes 27 oct</b><small>Descanso</small></span></li><li class=\"ds-route-row\"><span class=\"ds-st ds-st-done\"><svg width=\"8\" height=\"8\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12l5 5L20 7\"/></svg></span><span><b>Miércoles 28 oct</b><small>Tren inferior</small></span></li><li class=\"ds-route-row\"><span class=\"ds-st ds-st-today\"></span><span><b>Jueves 29 oct</b><small>Cuerpo completo</small></span></li><li class=\"ds-route-row\"><span class=\"ds-st ds-st-pending\"></span><span><b>Viernes 30 oct</b><small>Tren superior</small></span></li></ol>",
+      "css": ".ds-route { list-style: none; margin: 0; padding: 0; position: relative; max-width: 360px; background: #F3F5F4; } .ds-route::before { content: ''; position: absolute; left: 14.5px; top: 28px; bottom: 28px; width: 3px; background: #0A7A50; } .ds-route-row { position: relative; display: flex; align-items: center; min-height: 56px; cursor: pointer; } .ds-route-row:hover { background: rgba(16,24,22,0.04); } .ds-route-row:focus-visible { outline: 2px solid #0A7A50; } .ds-route-row > span:last-child { display: flex; flex-direction: column; padding: 8px 0 8px 12px; margin-left: 20px; font-family: 'Atkinson Hyperlegible Next', sans-serif; } .ds-route-row b { font-size: 16px; line-height: 22px; color: #101816; } .ds-route-row small { font-size: 14px; line-height: 20px; color: #4A5551; } .ds-past b { color: #4A5551; } .ds-st { position: absolute; left: 16px; transform: translateX(-50%); box-sizing: border-box; border-radius: 50%; display: grid; place-items: center; background: #F3F5F4; } .ds-st-pending { width: 12px; height: 12px; border: 2px solid #0A7A50; } .ds-st-past { width: 12px; height: 12px; border: 2px solid #76817C; } .ds-st-rest { width: 8px; height: 8px; border: 1px solid #76817C; } .ds-st-done { width: 12px; height: 12px; background: #0A7A50; } .ds-st-today { width: 16px; height: 16px; border: 2px solid #0A7A50; box-shadow: 0 0 0 4px rgba(10,122,80,0.24); }"
+    },
+    {
+      "name": "Tira de datos (DataStrip)",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Tarjeta blanca con hilo; celdas regladas con etiqueta arriba y cifra tabular abajo.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-strip\"><div><span class=\"ds-lbl\">SERIES</span><span class=\"ds-val\">3</span></div><div><span class=\"ds-lbl\">REPS</span><span class=\"ds-val\">10</span></div><div><span class=\"ds-lbl\">DESCANSO</span><span class=\"ds-val\">60<small>s</small></span></div></div></div>",
+      "css": ".ds-card { background: #FFFFFF; border: 1px solid #D5DCD9; border-radius: 12px; padding: 16px; max-width: 360px; } .ds-strip { display: flex; } .ds-strip > div { flex: 1; display: flex; flex-direction: column; padding: 0 8px 0 12px; border-left: 1px solid #D5DCD9; } .ds-strip > div:first-child { padding-left: 0; border-left: none; } .ds-lbl { font-family: 'Atkinson Hyperlegible Next', sans-serif; font-weight: 700; font-size: 12px; line-height: 16px; letter-spacing: 0.4px; color: #4A5551; } .ds-val { font-family: 'Archivo', sans-serif; font-stretch: 87.5%; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 20px; line-height: 26px; color: #101816; } .ds-val small { font-family: 'Atkinson Hyperlegible Next', sans-serif; font-size: 12px; color: #4A5551; margin-left: 4px; font-weight: 400; }"
+    },
+    {
+      "name": "Barra de sesión (SessionBar)",
+      "kind": "custom",
+      "refersTo": "session-bar",
+      "description": "Barra fija sobre la Señal: tramo que se llena en el verde del tema oscuro, \"N de M\" y Terminar siempre visible.",
+      "html": "<div class=\"ds-session\"><div class=\"ds-session-row\"><div class=\"ds-track\"><div class=\"ds-fill\"></div></div><span class=\"ds-count\">3 de 6</span></div><button class=\"ds-session-btn\">Terminar sesión de hoy</button></div>",
+      "css": ".ds-session { background: #0F1F1A; color: #FFFFFF; padding: 16px; display: flex; flex-direction: column; gap: 12px; max-width: 360px; } .ds-session-row { display: flex; align-items: center; gap: 12px; } .ds-track { flex: 1; height: 3px; background: rgba(255,255,255,0.24); } .ds-fill { width: 50%; height: 100%; background: #4CC38A; transition: width 0.45s cubic-bezier(0.2,0,0,1); } .ds-count { font-family: 'Archivo', sans-serif; font-stretch: 87.5%; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 20px; line-height: 26px; } .ds-session-btn { background: #0A7A50; color: #FFFFFF; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-weight: 700; font-size: 14px; min-height: 48px; border: none; border-radius: 8px; } .ds-session-btn:hover { background: #0C8A5B; } .ds-session-btn:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }"
+    },
+    {
+      "name": "Chip de grupo muscular",
+      "kind": "chip",
+      "refersTo": "chip-muscle",
+      "description": "Contorno y texto en Línea Rutina, radio 4 dp.",
+      "html": "<span class=\"ds-chip\">Piernas</span>",
+      "css": ".ds-chip { display: inline-block; padding: 2px 8px; border: 1px solid #0A7A50; border-radius: 4px; color: #0A7A50; background: #FFFFFF; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-weight: 700; font-size: 14px; line-height: 20px; }"
+    },
+    {
+      "name": "Campo con unidad",
+      "kind": "input",
+      "refersTo": "text-field",
+      "description": "OutlinedTextField de M3 con la unidad siempre visible a la derecha y el rango como apoyo.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-lbl\">Estatura</span><span class=\"ds-field-box\"><input value=\"170\" inputmode=\"numeric\"><span class=\"ds-unit\">cm</span></span><small>Entre 100 y 250 cm</small></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 4px; max-width: 320px; font-family: 'Atkinson Hyperlegible Next', sans-serif; } .ds-field-lbl { font-size: 12px; color: #4A5551; } .ds-field-box { display: flex; align-items: center; border: 1px solid #76817C; border-radius: 4px; min-height: 56px; padding: 0 0 0 16px; background: #F3F5F4; } .ds-field-box:focus-within { border: 2px solid #0A7A50; } .ds-field input { flex: 1; border: none; background: transparent; font: inherit; font-size: 16px; color: #101816; outline: none; } .ds-unit { padding: 0 12px; color: #4A5551; font-size: 16px; } .ds-field small { font-size: 12px; color: #4A5551; padding-left: 16px; }"
+    },
+    {
+      "name": "Navegación por sección",
+      "kind": "nav",
+      "refersTo": "nav-bar",
+      "description": "Barra en surface-container; el indicador activo es el color de la sección al 16 % y la etiqueta usa su tono de texto.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-item\"><span class=\"ds-ind\"></span>Rutina</a><a class=\"ds-nav-item ds-active\"><span class=\"ds-ind\"></span>Dieta</a><a class=\"ds-nav-item\"><span class=\"ds-ind\"></span>Progreso</a><a class=\"ds-nav-item\"><span class=\"ds-ind\"></span>Perfil</a></nav>",
+      "css": ".ds-nav { display: flex; background: #E9EFEB; padding: 12px 0 16px; max-width: 400px; } .ds-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-weight: 700; font-size: 12px; line-height: 16px; color: #4A5551; cursor: pointer; } .ds-ind { width: 64px; height: 32px; border-radius: 16px; } .ds-nav-item:hover .ds-ind { background: rgba(16,24,22,0.08); } .ds-nav-item:focus-visible { outline: 2px solid #0A7A50; } .ds-active { color: #A84A0E; } .ds-active .ds-ind { background: rgba(217,102,31,0.16); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La Línea",
+    "overview": "El plan es una ruta. La semana es una línea vertical con siete estaciones, hoy es \"estás aquí\" y cada sesión es un tramo que se llena. El sistema toma la gramática de la señalética de transporte (líneas de color que identifican, un panel oscuro con texto claro, puntos de estación y cifras grandes), pero no la marca de ningún sistema real. Es la forma más probada de que alguien con prisa, entre series y con una mano, sepa dónde está y qué sigue.\n\nEl aspecto premium sale de la exactitud, no de la decoración: cifras tabulares alineadas en columna, hilos de 1 dp, radios pequeños y un solo panel oscuro por pantalla. El color trabaja: tres colores de línea identifican Rutina, Dieta y Progreso, y el indicador de navegación toma el de la sección activa. La densidad es media y reglada: los datos van en tiras con etiqueta arriba y cifra abajo, nunca en prosa. La app es Material 3 en lo que es convención de Android (navegación, controles, hojas, diálogos); el mundo propio aporta la tipografía, la paleta, la densidad y el gesto de la línea con estaciones.\n\nClaro es el tema principal y oscuro es de primera clase; los dos siguen al sistema. Se descartan dos clichés de la categoría: el negro OLED con neón \"energético\" y el bienestar pastel con beige y lavanda (el lavanda de M3 por defecto quedó eliminado al definir los 48 roles del esquema).",
+    "keyCharacteristics": [
+      "Línea vertical de 3 dp con estaciones de 12 dp (16 dp hoy) como gesto distintivo, reutilizado en semana, progreso, onboarding, entrada y estados.",
+      "Señal: superficie oscura en los dos temas, única superficie \"elevada\", con el único amarillo de la pantalla.",
+      "Tres colores de línea por sección; el texto solo usa sus tonos de texto validados.",
+      "Archivo semicondensado con cifras tabulares para rótulos y números; Atkinson Hyperlegible Next para leer.",
+      "Plano: sin sombras; separación por andén gris, tarjeta blanca e hilo de 1 dp.",
+      "Movimiento corto que sigue la línea, con alternativa completa para \"Quitar animaciones\"."
+    ],
+    "rules": [
+      {
+        "name": "The Here Once Rule",
+        "body": "El amarillo `here` aparece como máximo una vez por pantalla y solo sobre la Señal. La estación de hoy en la línea lleva halo del color de la línea, no amarillo.",
+        "section": "colors"
+      },
+      {
+        "name": "The Text Tone Rule",
+        "body": "El texto nunca lleva un color de serie gráfico. Se usa `lineTextFor(section)`: en Dieta es `line-diet-text`; en Rutina y Progreso el color de línea ya pasa 4,5:1. Las marcas de leyenda (punto de 8 dp en `DataStrip`) llevan el color de la serie y la etiqueta sigue en tinta secundaria.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dark Signal Rule",
+        "body": "La Señal es oscura en los dos temas, así que todo lo que va encima en color de línea usa `DarkAppColors.lineRoutine` también en tema claro (`#0A7A50` sobre la Señal da 3,2:1).",
+        "section": "colors"
+      },
+      {
+        "name": "The Section Line Rule",
+        "body": "El color de línea solo identifica la sección o su acción principal. Perfil no tiene línea y usa la tinta.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular Figure Rule",
+        "body": "Toda cifra (series, reps, kg, kcal, \"N de M\") va en Archivo tabular. Fuera de los roles de Archivo se usa `numberStyle(size)`, que conserva el tamaño del rol y cambia a Archivo.",
+        "section": "typography"
+      },
+      {
+        "name": "The Label Above Rule",
+        "body": "Etiqueta pequeña arriba y cifra grande abajo. Nunca \"Etiqueta: valor\" en una línea.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Hero Number Rule",
+        "body": "Una sola cifra en `displaySmall` por pantalla.",
+        "section": "typography"
+      },
+      {
+        "name": "The Reduced Motion Rule",
+        "body": "Movimiento reducido = `ANIMATOR_DURATION_SCALE` igual a 0 (\"Quitar animaciones\"); se relee al volver a la app y se expone como `AppTheme.reducedMotion`. Todo componente animado tiene rama reducida; solo los indicadores de carga siguen moviéndose. Nada anima sin un cambio de estado, no hay parallax, ni rebote, ni bucles salvo la espera.",
+        "section": "layout"
+      },
+      {
+        "name": "The No Shadow Rule",
+        "body": "No se añaden sombras ni elevación tonal a tarjetas. Si una superficie necesita separarse, se usa el hilo de 1 dp o el siguiente nivel de la escala andén → tarjeta → Señal; no hay otros niveles.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** tomar todo color de `MaterialTheme.colorScheme` o `AppTheme.colors`; los hex solo existen en `core/ui/theme`.",
+      "**Do** usar `lineTextFor(section)` para texto e íconos pequeños en color de sección, y `lineFor(section)` solo para trazos, indicadores y marcas.",
+      "**Do** usar `DarkAppColors.lineRoutine` para cualquier línea, tramo o estación sobre la Señal, en los dos temas.",
+      "**Do** poner todo texto visible en `strings.xml`, en español; las etiquetas de dato en mayúsculas se escriben así en el recurso.",
+      "**Do** marcar con `semantics { heading() }` los títulos de pantalla, de sección (`SectionTitle`) y el tipo de día de la Señal.",
+      "**Do** anunciar con `liveRegion = Polite` las esperas de IA, los mensajes de carga y la sesión terminada (solo al terminarla, no al abrir una ya terminada).",
+      "**Do** dar 48 dp o más a todo objetivo táctil y hacer tocable la fila completa (`RouteRow`, `MealRow`, radios de la hoja: 56 dp).",
+      "**Do** comprobar cada pantalla al 130 % y al 200 % de fuente: las tiras pasan a varias filas y las columnas se miden, nunca se recortan.",
+      "**Do** dar a cada animación su rama de movimiento reducido leyendo `AppTheme.reducedMotion`.",
+      "**Do** poner `contentDescription = null` en íconos decorativos junto a texto y texto descriptivo en los que tienen significado propio.",
+      "**Do** mostrar los datos en `DataStrip` y las cifras en Archivo tabular.",
+      "**Do** usar el tonal para toda acción secundaria y `AlternativeButton` para \"Pedir alternativa\"."
+    ],
+    "donts": [
+      "**Don't** escribir texto en `line-diet` ni en el color de una serie de datos: no llega a 4,5:1.",
+      "**Don't** usar el amarillo `here` fuera del rótulo de la Señal ni más de una vez por pantalla; tampoco en la estación de hoy.",
+      "**Don't** usar `labelSmall` en mayúsculas como sobretítulo de sección o de tarjeta: es el rótulo de estación de la Señal y lleva un dato (día y fecha), no un adorno.",
+      "**Don't** pintar el verde claro `#0A7A50` sobre la Señal (3,2:1).",
+      "**Don't** añadir sombras, degradados, blur ni niveles de superficie fuera de andén → tarjeta → Señal.",
+      "**Don't** usar botones píldora ni radios mayores de 16 dp en contenido; los círculos son solo para estaciones y marcadores.",
+      "**Don't** escribir datos como \"Etiqueta: valor\" en una sola línea.",
+      "**Don't** dejar roles de color de M3 sin definir: reaparece el lavanda.",
+      "**Don't** mostrar checkbox en días que no son hoy: van con estación de solo lectura y el motivo como etiqueta de estado.",
+      "**Don't** marcar como hechas las etapas de la espera de IA ni prometer tiempos.",
+      "**Don't** usar texto visible fuera de `strings.xml` ni hex o `dp` sueltos en pantallas."
+    ]
+  }
+}
