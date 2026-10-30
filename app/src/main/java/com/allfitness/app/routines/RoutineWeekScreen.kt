@@ -1,13 +1,17 @@
 package com.allfitness.app.routines
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -15,10 +19,14 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
@@ -34,15 +42,16 @@ import com.allfitness.app.core.network.ConnectivityObserver
 import com.allfitness.app.core.time.Today
 import com.allfitness.app.core.time.displayName
 import com.allfitness.app.core.time.shortLabel
+import com.allfitness.app.core.ui.AiBadge
 import com.allfitness.app.core.ui.AiGeneratingState
 import com.allfitness.app.core.ui.AiNote
+import com.allfitness.app.core.ui.LinearProgress
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
+import com.allfitness.app.core.ui.PrimaryButton
 import com.allfitness.app.core.ui.Refresher
-import com.allfitness.app.core.ui.RouteRow
 import com.allfitness.app.core.ui.ScreenHeader
 import com.allfitness.app.core.ui.SectionTitle
-import com.allfitness.app.core.ui.SignPanel
 import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.StationState
 import com.allfitness.app.core.ui.TonalActionButton
@@ -51,14 +60,14 @@ import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.entrance
 import com.allfitness.app.core.ui.mapContent
 import com.allfitness.app.core.ui.messageRes
-import com.allfitness.app.core.ui.pressScale
 import com.allfitness.app.core.ui.rememberEntranceClock
-import com.allfitness.app.core.ui.theme.AppTheme
+import com.allfitness.app.core.ui.sessionFraction
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
+import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -114,6 +123,9 @@ fun WeekDayRow.workoutCta(): WorkoutCta = when {
 /** Primer ejercicio sin marcar; con todos marcados, el primero. */
 fun WeekDayRow.firstPendingIndex(): Int = day.exercises.indexOfFirst { it.id !in completed }.coerceAtLeast(0)
 
+/** Día elegido en la tira; sin elegir, o si la fecha ya no está en la semana, hoy. */
+private fun List<WeekDayRow>.shown(selected: LocalDate?): WeekDayRow = firstOrNull { it.date == selected } ?: first { it.isToday }
+
 @HiltViewModel
 class RoutineWeekViewModel @Inject constructor(
     private val repository: RoutineRepository,
@@ -159,7 +171,7 @@ class RoutineWeekViewModel @Inject constructor(
 
 @Composable
 fun RoutineWeekScreen(
-    onOpenDay: (LocalDate) -> Unit,
+    onOpenSession: (LocalDate, Int) -> Unit,
     viewModel: RoutineWeekViewModel = hiltViewModel(),
     alternatives: AlternativeViewModel = hiltViewModel(),
 ) {
@@ -169,6 +181,8 @@ fun RoutineWeekScreen(
     val message by viewModel.message.collectAsStateWithLifecycle()
     val altDone by alternatives.doneMessage.collectAsStateWithLifecycle()
     val snackbar = remember { SnackbarHostState() }
+    // Día elegido en la tira; null = hoy, así sigue a la fecha si cambia el día.
+    var selected by rememberSaveable { mutableStateOf<LocalDate?>(null) }
 
     LifecycleResumeEffect(Unit) {
         viewModel.onResume()
@@ -177,14 +191,37 @@ fun RoutineWeekScreen(
     MessageEffect(message, snackbar, viewModel::messageShown)
     MessageEffect(altDone, snackbar, alternatives::doneShown)
 
+    val rows = (state as? UiState.Content)?.data
+    val today = rows?.first { it.isToday }
+    // El botón sigue al entreno de hoy y solo se ve con hoy elegido (FR-013).
+    val cta = today?.workoutCta()?.takeIf { rows.shown(selected).isToday && !generating && (it == WorkoutCta.START || it == WorkoutCta.CONTINUE) }
+
     Scaffold(
-        topBar = { ScreenHeader(stringResource(R.string.routine_title)) },
+        topBar = { ScreenHeader(stringResource(R.string.routine_title), trailing = { AiBadge() }) },
+        bottomBar = {
+            if (today != null && cta != null) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Brush.verticalGradient(listOf(Color.Transparent, MaterialTheme.colorScheme.background)))
+                        .padding(horizontal = Spacing.screenEdge, vertical = Spacing.sm),
+                ) {
+                    PrimaryButton(
+                        text = stringResource(if (cta == WorkoutCta.START) R.string.action_start_workout else R.string.action_continue_workout),
+                        onClick = { onOpenSession(today.date, today.firstPendingIndex()) },
+                        modifier = Modifier.fillMaxWidth(),
+                        trailingIcon = R.drawable.lc_circle_play,
+                    )
+                }
+            }
+        },
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         if (generating) {
             AiGeneratingState(stringResource(R.string.generating_routine), Modifier.padding(padding))
             return@Scaffold
         }
+        val direction = LocalLayoutDirection.current
         StateContent(
             state = state,
             emptyMessage = stringResource(R.string.routine_empty),
@@ -193,41 +230,43 @@ fun RoutineWeekScreen(
             emptyActionLabel = stringResource(R.string.action_generate_routine),
             emptyActionEnabled = online,
             onEmptyAction = viewModel::generate,
-            modifier = Modifier.padding(padding),
-        ) { rows ->
-            val lineColor = AppTheme.colors.lineRoutine
+            // Sin el margen de abajo: la lista pasa bajo el degradado del botón y lo reserva con contentPadding.
+            modifier = Modifier.padding(
+                start = padding.calculateStartPadding(direction),
+                top = padding.calculateTopPadding(),
+                end = padding.calculateEndPadding(direction),
+            ),
+        ) { weekRows ->
+            val row = weekRows.shown(selected)
             val entrance = rememberEntranceClock()
+            val edge = Modifier.padding(horizontal = Spacing.m)
             Column {
                 AiNote()
-                LazyColumn(modifier = Modifier.weight(1f), contentPadding = PaddingValues(Spacing.m)) {
-                    rows.firstOrNull { it.isToday }?.let { today ->
-                        item { TodayPanel(today, onOpen = { onOpenDay(today.date) }) }
-                    }
-                    item {
-                        SectionTitle(
-                            stringResource(R.string.week_title),
-                            Modifier.padding(top = Spacing.l, bottom = Spacing.s),
-                        )
-                    }
-                    itemsIndexed(rows, key = { _, row -> row.date.toString() }) { index, row ->
-                        RouteRow(
-                            state = row.stationState(),
-                            title = stringResource(R.string.day_with_date, row.date.dayOfWeek.displayName(), row.date.shortLabel()),
-                            subtitle = row.dayTitle(),
-                            lineColor = lineColor,
-                            isFirst = index == 0,
-                            isLast = index == rows.lastIndex,
-                            onClick = { onOpenDay(row.date) },
-                            modifier = Modifier.entrance(entrance, index),
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(top = Spacing.m, bottom = padding.calculateBottomPadding() + Spacing.l),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.sm),
+                ) {
+                    // Margen menor que la lista: en 360 dp cada día sigue teniendo 48 dp de ancho para el dedo.
+                    item { WeekStrip(weekRows, row.date, onSelect = { selected = it }, Modifier.padding(horizontal = Spacing.s)) }
+                    item { DayHeader(row, edge.padding(vertical = Spacing.s)) }
+                    itemsIndexed(row.day.exercises, key = { _, exercise -> exercise.id }) { index, exercise ->
+                        ExerciseCard(
+                            exercise = exercise,
+                            // Hoy y días pasados muestran lo marcado; futuros y descanso no tienen estado.
+                            done = if (row.isToday || row.isPast) exercise.id in row.completed else null,
+                            onClick = { onOpenSession(row.date, index) },
+                            modifier = edge.entrance(entrance, index),
                         )
                     }
                     item {
-                        Column(Modifier.padding(top = Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                        Column(edge.padding(top = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                             TonalActionButton(
                                 text = stringResource(R.string.action_regenerate_routine),
                                 onClick = { alternatives.open(AlternativeTarget.WholeRoutine) },
                                 enabled = online,
                                 modifier = Modifier.fillMaxWidth(),
+                                icon = R.drawable.lc_refresh_cw,
                             )
                             if (!online) OfflineHint()
                         }
@@ -243,41 +282,32 @@ fun RoutineWeekScreen(
 internal fun WeekDayRow.dayTitle(): String =
     if (day.type == DayType.REST) stringResource(R.string.rest_day) else day.title ?: stringResource(R.string.training_day)
 
+/** Título, fecha y avance del día elegido (Figma `progress-bar-container`). Días que no son hoy: solo lectura (FR-013). */
 @Composable
-private fun TodayPanel(row: WeekDayRow, onOpen: () -> Unit) {
-    val training = row.day.type == DayType.TRAINING
-    val total = row.day.exercises.size
-    val status = if (!training) {
-        stringResource(R.string.rest_day_message)
-    } else {
-        val progress = when {
-            row.finished -> stringResource(R.string.session_finished)
-            row.doneCount > 0 -> stringResource(R.string.session_progress, row.doneCount, total)
-            else -> stringResource(R.string.session_status_not_started)
-        }
-        stringResource(R.string.status_pair, pluralStringResource(R.plurals.exercises_count, total, total), progress)
-    }
-    SignPanel(
-        label = stringResource(
-            R.string.today_station_label,
-            stringResource(R.string.day_with_date, row.date.dayOfWeek.displayName(), row.date.shortLabel()),
-        ),
-        title = row.dayTitle(),
-        status = status,
-        action = if (training) {
-            {
-                val interaction = remember { MutableInteractionSource() }
-                Button(
-                    onClick = onOpen,
-                    modifier = Modifier.fillMaxWidth().pressScale(interaction),
-                    shape = MaterialTheme.shapes.small,
-                    interactionSource = interaction,
-                ) {
-                    Text(stringResource(R.string.action_view_today_session))
-                }
-            }
+private fun DayHeader(row: WeekDayRow, modifier: Modifier) {
+    val scheme = MaterialTheme.colorScheme
+    val date = stringResource(R.string.day_with_date, row.date.dayOfWeek.displayName(), row.date.shortLabel())
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        SectionTitle(row.dayTitle())
+        Text(
+            if (row.finished) stringResource(R.string.status_pair, date, stringResource(R.string.session_finished)) else date,
+            style = MaterialTheme.typography.bodyMedium,
+            color = scheme.onSurfaceVariant,
+        )
+        if (row.day.type == DayType.REST) {
+            // "Hoy toca descansar" solo es cierto hoy; otro día de descanso ya se nombra en el título.
+            if (row.isToday) Text(stringResource(R.string.rest_day_message), style = MaterialTheme.typography.bodyLarge)
         } else {
-            null
-        },
-    )
+            val total = row.day.exercises.size
+            val fraction = sessionFraction(row.doneCount, total)
+            FlowRow(Modifier.fillMaxWidth().padding(top = Spacing.xs), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(stringResource(R.string.workout_percent, (fraction * 100).roundToInt()), style = MaterialTheme.typography.labelMedium, color = scheme.primary)
+                Text(stringResource(R.string.session_progress, row.doneCount, total), style = MaterialTheme.typography.labelMedium, color = scheme.onSurfaceVariant)
+            }
+            LinearProgress(fraction)
+            if (!row.isToday) {
+                Text(stringResource(R.string.only_today_message), style = MaterialTheme.typography.bodyMedium, color = scheme.onSurfaceVariant)
+            }
+        }
+    }
 }
