@@ -319,7 +319,7 @@ fun MacroBar(shares: MacroShares, modifier: Modifier = Modifier) {
 
 /** Gramos tal como los envía el servidor (FR-017); [legend] marca cada celda con el color de su segmento. */
 @Composable
-private fun macroCells(nutrition: Nutrition, legend: Boolean): List<DataCell> {
+internal fun macroCells(nutrition: Nutrition, legend: Boolean): List<DataCell> {
     val colors = AppTheme.colors
     val grams = stringResource(R.string.unit_grams)
     return listOf(

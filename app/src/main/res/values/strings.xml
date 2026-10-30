@@ -164,6 +164,24 @@
     <string name="tab_progress">Progreso</string>
     <string name="tab_profile">Perfil</string>
 
+    <!-- Inicio -->
+    <string name="home_greeting">Hola, %1$s</string>
+    <string name="home_today_workout">Entreno de hoy</string>
+    <string name="home_today_diet">Tu dieta de hoy</string>
+    <string name="workout_meta">%1$d min · %2$s</string>
+    <string name="stat_week_sessions">Semana</string>
+    <string name="stat_plan_kcal">Kcal plan</string>
+    <!-- Cifra de un indicador que aún no ha cargado: no es un 0. -->
+    <string name="value_missing" translatable="false">–</string>
+    <plurals name="streak_weeks">
+        <item quantity="one">%d semana de racha</item>
+        <item quantity="many">%d semanas de racha</item>
+        <item quantity="other">%d semanas de racha</item>
+    </plurals>
+    <string name="action_start_workout">Empezar entrenamiento</string>
+    <string name="action_continue_workout">Continuar entrenamiento</string>
+    <string name="meal_prep_minutes">%1$d min de preparación</string>
+
     <!-- Rutina -->
     <string name="routine_title">Tu rutina</string>
     <string name="routine_empty">Todavía no tienes una rutina.</string>
