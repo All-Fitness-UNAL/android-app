@@ -59,7 +59,6 @@ import com.allfitness.app.core.ui.EmptyState
 import com.allfitness.app.core.ui.ErrorState
 import com.allfitness.app.core.ui.LoadingState
 import com.allfitness.app.core.ui.OfflineBanner
-import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.PrimaryButton
 import com.allfitness.app.core.ui.ProgressRing
 import com.allfitness.app.core.ui.Refresher
@@ -174,28 +173,30 @@ fun HomeScreen(
 
     val todayRow = (week as? UiState.Content)?.data?.first { it.isToday }
     val edge = Modifier.padding(horizontal = Spacing.m)
-    LazyColumn(
-        Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)),
-        contentPadding = PaddingValues(bottom = Spacing.l),
-        verticalArrangement = Arrangement.spacedBy(Spacing.m),
-    ) {
-        // Con clave: al aparecer el aviso sin conexión la lista no salta un ítem.
-        if (!online) item(key = "offline") { OfflineBanner(savedAt = null) }
-        item(key = "greeting") { Greeting(name, edge.padding(top = Spacing.s)) }
-        item(key = "ai") { AiNote() }
-        item(key = "stats") { Indicators(todayRow, summary, (diet as? UiState.Content)?.data?.totals?.kcal, edge) }
-        item(key = "workout") {
-            Section(stringResource(R.string.home_today_workout), edge) {
-                SectionState(week, stringResource(R.string.routine_empty), stringResource(R.string.routine_empty_offline), viewModel::onResume) {
-                    WorkoutCard(it.first { row -> row.isToday }, profile, online, onOpenSession)
+    // El aviso sin conexión va fijo sobre la lista, como en StateContent: siempre a la vista y sin mover el scroll.
+    Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))) {
+        if (!online) OfflineBanner(savedAt = null)
+        LazyColumn(
+            Modifier.weight(1f),
+            contentPadding = PaddingValues(bottom = Spacing.l),
+            verticalArrangement = Arrangement.spacedBy(Spacing.m),
+        ) {
+            item { Greeting(name, edge.padding(top = Spacing.s)) }
+            item { AiNote() }
+            item { Indicators(todayRow, summary, (diet as? UiState.Content)?.data?.totals?.kcal, edge) }
+            item {
+                Section(stringResource(R.string.home_today_workout), edge) {
+                    SectionState(week, stringResource(R.string.routine_empty), stringResource(R.string.routine_empty_offline), viewModel::onResume) {
+                        WorkoutCard(it.first { row -> row.isToday }, profile, onOpenSession)
+                    }
                 }
             }
-        }
-        item(key = "diet") { DietSection(diet, onOpenMeal, viewModel::onResume, edge) }
-        item(key = "progress") {
-            Section(stringResource(R.string.progress_title), edge, trailing = { summary?.let { StreakBadge(it.weekStreak) } }) {
-                SectionState(week, stringResource(R.string.routine_empty), stringResource(R.string.routine_empty_offline), viewModel::onResume) { rows ->
-                    AppCard(Modifier.fillMaxWidth()) { WeekStrip(rows, selected = null, onSelect = null, Modifier.padding(Spacing.s)) }
+            item { DietSection(diet, onOpenMeal, viewModel::onResume, edge) }
+            item {
+                Section(stringResource(R.string.progress_title), edge, trailing = { summary?.let { StreakBadge(it.weekStreak) } }) {
+                    SectionState(week, stringResource(R.string.routine_empty), stringResource(R.string.routine_empty_offline), viewModel::onResume) { rows ->
+                        AppCard(Modifier.fillMaxWidth()) { WeekStrip(rows, selected = null, onSelect = null, Modifier.padding(Spacing.s)) }
+                    }
                 }
             }
         }
@@ -322,7 +323,7 @@ private fun Disc(@DrawableRes icon: Int, background: Color, tint: Color) {
 
 /** Tarjeta del entreno de hoy (Figma `workout-card`). Sin conexión se puede abrir, pero marcar pide red (FR-039). */
 @Composable
-private fun WorkoutCard(today: WeekDayRow, profile: Profile?, online: Boolean, onOpenSession: (LocalDate, Int) -> Unit) {
+private fun WorkoutCard(today: WeekDayRow, profile: Profile?, onOpenSession: (LocalDate, Int) -> Unit) {
     val scheme = MaterialTheme.colorScheme
     val training = today.day.type == DayType.TRAINING
     val count = today.day.exercises.size
@@ -352,15 +353,12 @@ private fun WorkoutCard(today: WeekDayRow, profile: Profile?, online: Boolean, o
                 }
             }
             when (val cta = today.workoutCta()) {
-                WorkoutCta.START, WorkoutCta.CONTINUE -> Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                    PrimaryButton(
-                        text = stringResource(if (cta == WorkoutCta.START) R.string.action_start_workout else R.string.action_continue_workout),
-                        onClick = { onOpenSession(today.date, today.firstPendingIndex()) },
-                        modifier = Modifier.fillMaxWidth(),
-                        trailingIcon = R.drawable.lc_circle_play,
-                    )
-                    if (!online) OfflineHint()
-                }
+                WorkoutCta.START, WorkoutCta.CONTINUE -> PrimaryButton(
+                    text = stringResource(if (cta == WorkoutCta.START) R.string.action_start_workout else R.string.action_continue_workout),
+                    onClick = { onOpenSession(today.date, today.firstPendingIndex()) },
+                    modifier = Modifier.fillMaxWidth(),
+                    trailingIcon = R.drawable.lc_circle_play,
+                )
                 WorkoutCta.FINISHED -> Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                     Icon(painterResource(R.drawable.lc_check), contentDescription = null, Modifier.size(Spacing.m), tint = scheme.primary)
                     Text(stringResource(R.string.session_finished_message), style = MaterialTheme.typography.bodyLarge)
