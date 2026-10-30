@@ -277,4 +277,13 @@
     <string name="hint_height">Entre 100 y 250 cm</string>
     <string name="hint_weight">Entre 30 y 300 kg</string>
     <string name="hint_minutes">Entre 15 y 120 minutos</string>
+    <string name="today_station_label">HOY · %1$s</string>
+    <string name="action_view_today_session">Ver sesión de hoy</string>
+    <string name="session_status_not_started">Sin empezar</string>
+    <string name="session_progress">%1$d de %2$d</string>
+    <plurals name="exercises_count">
+        <item quantity="one">%d ejercicio</item>
+        <item quantity="other">%d ejercicios</item>
+    </plurals>
+    <string name="week_title">Tu semana</string>
 </resources>
