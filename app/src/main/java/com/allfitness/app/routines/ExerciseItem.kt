@@ -30,11 +30,9 @@ import androidx.compose.ui.semantics.stateDescription
 import coil3.compose.AsyncImage
 import com.allfitness.app.R
 import com.allfitness.app.core.ui.AppCard
-import com.allfitness.app.core.ui.DataCell
 import com.allfitness.app.core.ui.DataStrip
 import com.allfitness.app.core.ui.RouteStation
 import com.allfitness.app.core.ui.StationState
-import com.allfitness.app.core.ui.formatNumber
 import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.Spacing
@@ -123,16 +121,3 @@ fun ExerciseItem(
     }
 }
 
-@Composable
-private fun Exercise.dataCells(): List<DataCell> = buildList {
-    add(DataCell(stringResource(R.string.label_sets), sets.toString()))
-    add(
-        if (reps != null) {
-            DataCell(stringResource(R.string.label_reps), reps.toString())
-        } else {
-            DataCell(stringResource(R.string.label_duration), (durationSeconds ?: 0).toString(), stringResource(R.string.unit_seconds))
-        },
-    )
-    add(DataCell(stringResource(R.string.label_rest), restSeconds.toString(), stringResource(R.string.unit_seconds)))
-    suggestedWeightKg?.let { add(DataCell(stringResource(R.string.label_weight), formatNumber(it), stringResource(R.string.unit_kg))) }
-}

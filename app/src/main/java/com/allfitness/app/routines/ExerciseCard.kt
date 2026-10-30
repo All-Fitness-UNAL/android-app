@@ -26,10 +26,13 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.unit.Dp
 import coil3.compose.AsyncImage
 import com.allfitness.app.R
 import com.allfitness.app.core.ui.AppCard
+import com.allfitness.app.core.ui.DataCell
 import com.allfitness.app.core.ui.IconTile
+import com.allfitness.app.core.ui.formatNumber
 import com.allfitness.app.core.ui.theme.Spacing
 
 /** Carga del ejercicio: con reps, "series × reps"; si no, "series × s". Sin ninguno, (reps, 0) y la tarjeta muestra solo las series. */
@@ -39,6 +42,45 @@ fun Exercise.loadRes(): Pair<Int, Int> = when {
     else -> R.string.exercise_sets_reps to 0
 }
 
+/** "4 × 12 reps", "3 × 30 s" o, sin reps ni tiempo, solo "3 series". */
+@Composable
+internal fun Exercise.setsText(): String {
+    val (loadRes, value) = loadRes()
+    return if (reps == null && durationSeconds == null) {
+        pluralStringResource(R.plurals.exercise_sets, sets, sets)
+    } else {
+        stringResource(loadRes, sets, value)
+    }
+}
+
+/** Series, reps o duración, descanso y peso sugerido (si lo hay) para un [DataStrip]. */
+@Composable
+internal fun Exercise.dataCells(): List<DataCell> = buildList {
+    add(DataCell(stringResource(R.string.label_sets), sets.toString()))
+    add(
+        if (reps != null) {
+            DataCell(stringResource(R.string.label_reps), reps.toString())
+        } else {
+            DataCell(stringResource(R.string.label_duration), (durationSeconds ?: 0).toString(), stringResource(R.string.unit_seconds))
+        },
+    )
+    add(DataCell(stringResource(R.string.label_rest), restSeconds.toString(), stringResource(R.string.unit_seconds)))
+    suggestedWeightKg?.let { add(DataCell(stringResource(R.string.label_weight), formatNumber(it), stringResource(R.string.unit_kg))) }
+}
+
+/** Etiqueta del músculo: verde sobre verde al 12 %. */
+@Composable
+internal fun MuscleTag(muscle: String) {
+    Text(
+        muscle,
+        Modifier
+            .background(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.shapes.extraSmall)
+            .padding(horizontal = Spacing.s, vertical = Spacing.hairline),
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.primary,
+    )
+}
+
 /**
  * Tarjeta de un ejercicio de la lista de Rutina (Figma `exercise-card-*`): toda ella abre el modo sesión.
  * La casilla solo muestra [done] (marcar se hace en el modo sesión); null la oculta (días futuros y descanso).
@@ -46,13 +88,7 @@ fun Exercise.loadRes(): Pair<Int, Int> = when {
 @Composable
 fun ExerciseCard(exercise: Exercise, done: Boolean?, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val scheme = MaterialTheme.colorScheme
-    val (loadRes, value) = exercise.loadRes()
-    val sets = if (exercise.reps == null && exercise.durationSeconds == null) {
-        pluralStringResource(R.plurals.exercise_sets, exercise.sets, exercise.sets)
-    } else {
-        stringResource(loadRes, exercise.sets, value)
-    }
-    val load = stringResource(R.string.status_pair, sets, stringResource(R.string.exercise_rest, exercise.restSeconds))
+    val load = stringResource(R.string.status_pair, exercise.setsText(), stringResource(R.string.exercise_rest, exercise.restSeconds))
     val description = "${exercise.name}, ${exercise.muscleGroup}, $load"
     val doneLabel = stringResource(R.string.exercise_done)
     AppCard(modifier.fillMaxWidth()) {
@@ -69,34 +105,32 @@ fun ExerciseCard(exercise: Exercise, done: Boolean?, onClick: () -> Unit, modifi
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
         ) {
-            // Sin imagen del servidor, una placa con ícono: nunca una foto inventada (spec §3).
-            if (exercise.imageUrl != null) {
-                AsyncImage(
-                    model = exercise.imageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(Spacing.thumbExercise)
-                        .clip(MaterialTheme.shapes.medium)
-                        .background(scheme.surfaceContainerHigh),
-                )
-            } else {
-                IconTile(R.drawable.lc_dumbbell, Spacing.thumbExercise)
-            }
+            ExerciseThumb(exercise, Spacing.thumbExercise)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                Text(
-                    exercise.muscleGroup,
-                    Modifier
-                        .background(scheme.primaryContainer, MaterialTheme.shapes.extraSmall)
-                        .padding(horizontal = Spacing.s, vertical = Spacing.hairline),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = scheme.primary,
-                )
+                MuscleTag(exercise.muscleGroup)
                 Text(exercise.name, style = MaterialTheme.typography.titleSmall)
                 Text(load, style = MaterialTheme.typography.labelMedium, color = scheme.onSurfaceVariant)
             }
             if (done != null) CheckCircle(done)
         }
+    }
+}
+
+/** Miniatura decorativa: la imagen del servidor o, sin ella, una placa con ícono; nunca una foto inventada (spec §3). */
+@Composable
+internal fun ExerciseThumb(exercise: Exercise, size: Dp) {
+    if (exercise.imageUrl != null) {
+        AsyncImage(
+            model = exercise.imageUrl,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(size)
+                .clip(MaterialTheme.shapes.medium)
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+        )
+    } else {
+        IconTile(R.drawable.lc_dumbbell, size)
     }
 }
 
