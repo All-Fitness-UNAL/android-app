@@ -64,7 +64,7 @@ fun ExerciseItem(
     )
     val haptics = LocalHapticFeedback.current
     val doneLabel = stringResource(R.string.exercise_done)
-    AppCard(modifier.fillMaxWidth(), color = container) {
+    AppCard(modifier.fillMaxWidth()) {
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             // Toda la cabecera es la casilla: área táctil grande y TalkBack lee el ejercicio con su estado.
             val toggle = if (checked != null && onCheckedChange != null) {

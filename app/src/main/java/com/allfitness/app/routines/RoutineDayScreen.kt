@@ -34,10 +34,10 @@ import com.allfitness.app.core.time.displayName
 import com.allfitness.app.core.time.shortLabel
 import com.allfitness.app.core.ui.AiNote
 import com.allfitness.app.core.ui.AlternativeButton
-import com.allfitness.app.core.ui.AppTopBar
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
+import com.allfitness.app.core.ui.ScreenHeader
 import com.allfitness.app.core.ui.SessionBar
 import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.UiState
@@ -167,7 +167,7 @@ fun RoutineDayScreen(
     val title = stringResource(R.string.day_with_date, viewModel.date.dayOfWeek.displayName(), viewModel.date.shortLabel())
     val loaded = (state as? UiState.Content)?.data
     Scaffold(
-        topBar = { AppTopBar(title, onBack) },
+        topBar = { ScreenHeader(title, onBack = onBack) },
         bottomBar = {
             // Fuera de la lista: "N de M" y "Terminar" siempre a la vista. El Scaffold reserva su alto.
             if (loaded != null && loaded.isToday && loaded.day.type == DayType.TRAINING) {

@@ -56,7 +56,6 @@ import com.allfitness.app.core.time.Today
 import com.allfitness.app.core.time.longLabel
 import com.allfitness.app.core.time.shortLabel
 import com.allfitness.app.core.ui.AppCard
-import com.allfitness.app.core.ui.AppTopBar
 import com.allfitness.app.core.ui.DataCell
 import com.allfitness.app.core.ui.DataStrip
 import com.allfitness.app.core.ui.FormTextField
@@ -64,6 +63,7 @@ import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
 import com.allfitness.app.core.ui.RouteStation
+import com.allfitness.app.core.ui.ScreenHeader
 import com.allfitness.app.core.ui.SectionTitle
 import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.StationProgress
@@ -214,7 +214,7 @@ fun ProgressScreen(viewModel: ProgressViewModel = hiltViewModel()) {
     MessageEffect(message, snackbar, viewModel::messageShown)
 
     Scaffold(
-        topBar = { AppTopBar(stringResource(R.string.progress_title)) },
+        topBar = { ScreenHeader(stringResource(R.string.progress_title)) },
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         StateContent(

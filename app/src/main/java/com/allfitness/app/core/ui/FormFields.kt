@@ -2,28 +2,37 @@ package com.allfitness.app.core.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.error
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import com.allfitness.app.R
+import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Spacing
 
 const val FREE_TEXT_MAX = 300
@@ -41,31 +50,71 @@ fun FormTextField(
     singleLine: Boolean = true,
     hint: String? = null,
 ) {
-    OutlinedTextField(
+    val scheme = MaterialTheme.colorScheme
+    val fill = AppTheme.colors.surfaceInput
+    val colors = OutlinedTextFieldDefaults.colors(
+        focusedContainerColor = fill,
+        unfocusedContainerColor = fill,
+        errorContainerColor = fill,
+        unfocusedBorderColor = scheme.outline,
+    )
+    val interaction = remember { MutableInteractionSource() }
+    val errorText = error?.let { stringResource(it) }
+    val shape = MaterialTheme.shapes.medium
+    // Etiqueta encima del borde (Figma `input-wrapper`) pero dentro del campo: TalkBack la lee con él,
+    // como la etiqueta de OutlinedTextField, y tocarla enfoca el campo.
+    BasicTextField(
         value = value,
         // Se corta también lo que se pega (caso límite de la spec).
         onValueChange = { onValueChange(if (maxLength != null) it.take(maxLength) else it) },
-        label = { Text(label) },
-        modifier = modifier.fillMaxWidth(),
-        isError = error != null,
+        modifier = modifier.fillMaxWidth().semantics(mergeDescendants = true) { if (errorText != null) error(errorText) },
+        textStyle = MaterialTheme.typography.bodyLarge.copy(color = scheme.onSurface),
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         singleLine = singleLine,
         minLines = if (singleLine) 1 else 3,
-        // La unidad va como trailingIcon porque suffix solo se ve con el campo enfocado.
-        // El hueco de trailingIcon está pensado para un ícono de 24 dp: sin margen, el texto toca el borde.
-        trailingIcon = suffix?.let {
-            { Text(it, Modifier.padding(horizontal = Spacing.sm), color = MaterialTheme.colorScheme.onSurfaceVariant) }
-        },
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-        supportingText = when {
-            error != null -> { { Text(stringResource(error)) } }
-            hint != null -> { { Text(hint) } }
-            // En los campos numéricos el contador "0/3" no aporta: el límite lo da el rango.
-            maxLength != null && keyboardType == KeyboardType.Text -> {
-                { Text(stringResource(R.string.char_counter, value.length, maxLength)) }
+        interactionSource = interaction,
+        cursorBrush = SolidColor(if (errorText != null) scheme.error else scheme.primary),
+    ) { field ->
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            Text(label, style = MaterialTheme.typography.titleSmall, color = scheme.onSurfaceVariant)
+            // La Column suelta el ancho mínimo: sin esto la caja se encoge al texto.
+            Box(Modifier.fillMaxWidth(), propagateMinConstraints = true) {
+                OutlinedTextFieldDefaults.DecorationBox(
+                    value = value,
+                    innerTextField = field,
+                    enabled = true,
+                    singleLine = singleLine,
+                    visualTransformation = VisualTransformation.None,
+                    interactionSource = interaction,
+                    isError = errorText != null,
+                    // La unidad va como trailingIcon porque suffix solo se ve con el campo enfocado.
+                    // El hueco de trailingIcon está pensado para un ícono de 24 dp: sin margen, el texto toca el borde.
+                    trailingIcon = suffix?.let {
+                        { Text(it, Modifier.padding(horizontal = Spacing.sm), color = scheme.onSurfaceVariant) }
+                    },
+                    supportingText = when {
+                        errorText != null -> { { Text(errorText) } }
+                        hint != null -> { { Text(hint) } }
+                        // En los campos numéricos el contador "0/3" no aporta: el límite lo da el rango.
+                        maxLength != null && keyboardType == KeyboardType.Text -> {
+                            { Text(stringResource(R.string.char_counter, value.length, maxLength)) }
+                        }
+                        else -> null
+                    },
+                    colors = colors,
+                    container = {
+                        OutlinedTextFieldDefaults.Container(
+                            enabled = true,
+                            isError = errorText != null,
+                            interactionSource = interaction,
+                            colors = colors,
+                            shape = shape,
+                        )
+                    },
+                )
             }
-            else -> null
-        },
-    )
+        }
+    }
 }
 
 @Composable
@@ -107,7 +156,7 @@ fun <T> SegmentedChoice(
     @StringRes error: Int? = null,
 ) {
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-        Text(label, style = MaterialTheme.typography.titleSmall)
+        Text(label, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
             options.forEachIndexed { index, option ->
                 SegmentedButton(
@@ -143,7 +192,7 @@ private fun CheckChip(selected: Boolean, onClick: () -> Unit, label: String) {
 @Composable
 private fun ChipGroup(label: String, @StringRes error: Int?, modifier: Modifier = Modifier, chips: @Composable () -> Unit) {
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-        Text(label, style = MaterialTheme.typography.titleSmall)
+        Text(label, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         FlowRow(modifier, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) { chips() }
         if (error != null) {
             Text(stringResource(error), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)

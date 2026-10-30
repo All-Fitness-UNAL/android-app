@@ -5,17 +5,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -50,8 +47,9 @@ fun stripWeights(widths: List<Float>, available: Float): List<Float>? {
 }
 
 /**
- * Fila reglada de datos: etiqueta pequeña arriba y cifra tabular abajo, nunca "Etiqueta: valor". Con
- * fuente grande, si las celdas no caben enteras, pasan a varias filas en lugar de cortar "DESCA-NSO".
+ * Fila de datos: etiqueta pequeña arriba y cifra tabular abajo, nunca "Etiqueta: valor"; las celdas se
+ * separan por aire, sin hilos. Con fuente grande, si no caben enteras, pasan a varias filas en lugar de
+ * cortar "DESCA-NSO".
  */
 @Composable
 fun DataStrip(cells: List<DataCell>, modifier: Modifier = Modifier) {
@@ -66,7 +64,7 @@ fun DataStrip(cells: List<DataCell>, modifier: Modifier = Modifier) {
                 (cell.unit?.let { measurer.measure(it, typography.bodySmall).size.width + with(density) { Spacing.xs.roundToPx() } } ?: 0)
             val label = measurer.measure(cell.label, typography.labelMedium).size.width +
                 (if (cell.color != null) with(density) { (Spacing.s + Spacing.xs).roundToPx() } else 0)
-            maxOf(label, value) + with(density) { (Spacing.sm + Spacing.s + Spacing.hairline).toPx() }
+            maxOf(label, value) + with(density) { (Spacing.sm + Spacing.s).toPx() }
         }
     }
     BoxWithConstraints(modifier.fillMaxWidth()) {
@@ -85,9 +83,8 @@ fun DataStrip(cells: List<DataCell>, modifier: Modifier = Modifier) {
 
 @Composable
 private fun StripRow(cells: List<DataCell>, weights: List<Float>) {
-    Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
+    Row(Modifier.fillMaxWidth()) {
         cells.forEachIndexed { index, cell ->
-            if (index > 0) VerticalDivider(thickness = Spacing.hairline, color = MaterialTheme.colorScheme.outlineVariant)
             DataCellView(cell, first = index == 0, Modifier.weight(weights[index]))
         }
         // La última fila conserva el ancho de columna de las demás.

@@ -40,6 +40,7 @@
     <string name="requires_connection">Necesitas conexión a internet para hacer esto.</string>
     <string name="empty_offline">No hay datos guardados. Conéctate a internet para cargarlos.</string>
     <string name="ai_disclaimer">Este contenido lo genera una IA y es orientativo. No reemplaza la valoración de un profesional de la salud.</string>
+    <string name="ai_badge">Plan de IA</string>
     <string name="char_counter">%1$d/%2$d</string>
 
     <!-- Errores -->

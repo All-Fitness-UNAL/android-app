@@ -60,7 +60,6 @@ import com.allfitness.app.core.time.Today
 import com.allfitness.app.core.ui.AiGeneratingState
 import com.allfitness.app.core.ui.AiNote
 import com.allfitness.app.core.ui.AppCard
-import com.allfitness.app.core.ui.AppTopBar
 import com.allfitness.app.core.ui.DataCell
 import com.allfitness.app.core.ui.DataStrip
 import com.allfitness.app.core.ui.ErrorState
@@ -69,12 +68,14 @@ import com.allfitness.app.core.ui.LoadingState
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
+import com.allfitness.app.core.ui.ScreenHeader
 import com.allfitness.app.core.ui.SectionTitle
 import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.formatNumber
+import com.allfitness.app.core.ui.initialOf
 import com.allfitness.app.core.ui.mapContent
 import com.allfitness.app.core.ui.messageRes
 import com.allfitness.app.core.ui.theme.AppTheme
@@ -149,7 +150,7 @@ fun ProfileScreen(
         onPauseOrDispose { }
     }
 
-    Scaffold(topBar = { AppTopBar(stringResource(R.string.profile_title)) }) { padding ->
+    Scaffold(topBar = { ScreenHeader(stringResource(R.string.profile_title)) }) { padding ->
         StateContent(
             state = state,
             emptyMessage = stringResource(R.string.profile_empty),
@@ -231,7 +232,7 @@ private fun ProfileHeader(name: String, email: String) {
             Modifier.size(Spacing.avatar).background(colors.signal, CircleShape).border(Spacing.hairline, colors.signalOutline, CircleShape).clearAndSetSemantics {},
             contentAlignment = Alignment.Center,
         ) {
-            Text(name.trim().take(1).uppercase(Today.locale), style = MaterialTheme.typography.titleLarge, color = colors.onSignal)
+            Text(initialOf(name), style = MaterialTheme.typography.titleLarge, color = colors.onSignal)
         }
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(name, style = MaterialTheme.typography.headlineSmall)
@@ -409,7 +410,7 @@ fun ProfileEditScreen(onDone: () -> Unit, viewModel: ProfileEditViewModel = hilt
     }
 
     Scaffold(
-        topBar = { AppTopBar(stringResource(viewModel.section.titleRes()), onBack = attemptBack) },
+        topBar = { ScreenHeader(stringResource(viewModel.section.titleRes()), onBack = attemptBack) },
         snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         val modifier = Modifier.padding(padding)
@@ -501,7 +502,7 @@ class DeleteAccountViewModel @Inject constructor(
 fun DeleteAccountScreen(onBack: () -> Unit, viewModel: DeleteAccountViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val online by viewModel.isOnline.collectAsStateWithLifecycle()
-    Scaffold(topBar = { AppTopBar(stringResource(R.string.delete_title), onBack) }) { padding ->
+    Scaffold(topBar = { ScreenHeader(stringResource(R.string.delete_title), onBack = onBack) }) { padding ->
         Column(
             Modifier.padding(padding).fillMaxSize().imePadding().verticalScroll(rememberScrollState()).padding(Spacing.m),
             verticalArrangement = Arrangement.spacedBy(Spacing.m),
