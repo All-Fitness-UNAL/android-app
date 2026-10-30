@@ -322,16 +322,18 @@ fun OfflineBanner(savedAt: Long?, modifier: Modifier = Modifier) {
     }
 }
 
-/** Título de sección: Archivo y marcado como encabezado para TalkBack. */
+/** Título de sección: Outfit y marcado como encabezado para TalkBack. */
 @Composable
 fun SectionTitle(text: String, modifier: Modifier = Modifier) {
     Text(text, modifier.semantics { heading() }, style = MaterialTheme.typography.titleLarge)
 }
 
-/** Cifra en Archivo tabular (kg, kcal) con el tamaño de [size]: las columnas de números se alinean. */
+/** Cifra en Outfit tabular (kg, kcal) con el tamaño de [size]: las columnas de números se alinean. */
 @Composable
-fun numberStyle(size: TextStyle): TextStyle =
-    MaterialTheme.typography.titleLarge.copy(fontSize = size.fontSize, lineHeight = size.lineHeight)
+fun numberStyle(size: TextStyle): TextStyle = numberTextStyle(MaterialTheme.typography.titleLarge, size)
+
+internal fun numberTextStyle(base: TextStyle, size: TextStyle): TextStyle =
+    base.copy(fontSize = size.fontSize, lineHeight = size.lineHeight, fontFeatureSettings = "tnum")
 
 /** Aviso de IA compacto bajo el título: el texto completo, sin caja de color. */
 @Composable

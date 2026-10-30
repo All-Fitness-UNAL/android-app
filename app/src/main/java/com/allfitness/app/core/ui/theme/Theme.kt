@@ -31,6 +31,20 @@ object Spacing {
     val chartHeight = 180.dp
     val chartPoint = 8.dp
     val contentMaxWidth = 640.dp
+    val screenEdge = 24.dp
+    val buttonHeight = 56.dp
+    val thumbExercise = 76.dp
+    val thumbNext = 56.dp
+    val thumbMeal = 64.dp
+    val ring = 60.dp
+    val ringLarge = 72.dp
+    val iconTile = 36.dp
+    val weekDot = 28.dp
+    val checkCircle = 32.dp
+    val avatarSmall = 40.dp
+    val avatarLarge = 104.dp
+    val logoMark = 28.dp
+    val progressHeight = 6.dp
 }
 
 object AppTheme {
