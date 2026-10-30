@@ -1,0 +1,244 @@
+{
+  "id": "r_demo",
+  "version": 1,
+  "updatedAt": "2026-10-27T05:00:00Z",
+  "days": [
+    {
+      "dayOfWeek": "MONDAY",
+      "type": "TRAINING",
+      "title": "Tren superior",
+      "exercises": [
+        {
+          "id": "e_101",
+          "name": "Press de banca con mancuernas",
+          "muscleGroup": "Pecho",
+          "sets": 4,
+          "reps": 10,
+          "durationSeconds": null,
+          "restSeconds": 90,
+          "suggestedWeightKg": 14.0,
+          "instructions": "Baja las mancuernas hasta la altura del pecho y empuja sin bloquear los codos.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_102",
+          "name": "Remo con mancuerna a una mano",
+          "muscleGroup": "Espalda",
+          "sets": 4,
+          "reps": 12,
+          "durationSeconds": null,
+          "restSeconds": 90,
+          "suggestedWeightKg": 16.0,
+          "instructions": "Apoya una mano en el banco y lleva el codo hacia la cadera.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_103",
+          "name": "Press militar sentado",
+          "muscleGroup": "Hombros",
+          "sets": 3,
+          "reps": 10,
+          "durationSeconds": null,
+          "restSeconds": 75,
+          "suggestedWeightKg": 10.0,
+          "instructions": "Empuja hacia arriba sin arquear la espalda baja.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_104",
+          "name": "Flexiones de brazos",
+          "muscleGroup": "Pecho",
+          "sets": 3,
+          "reps": 12,
+          "durationSeconds": null,
+          "restSeconds": 60,
+          "suggestedWeightKg": null,
+          "instructions": "Mantén el cuerpo recto de la cabeza a los talones.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_105",
+          "name": "Plancha frontal",
+          "muscleGroup": "Core",
+          "sets": 3,
+          "reps": null,
+          "durationSeconds": 40,
+          "restSeconds": 45,
+          "suggestedWeightKg": null,
+          "instructions": "Apoya antebrazos y puntas de los pies; no dejes caer la cadera.",
+          "imageUrl": null
+        }
+      ]
+    },
+    {
+      "dayOfWeek": "TUESDAY",
+      "type": "REST",
+      "title": null,
+      "exercises": []
+    },
+    {
+      "dayOfWeek": "WEDNESDAY",
+      "type": "TRAINING",
+      "title": "Tren inferior",
+      "exercises": [
+        {
+          "id": "e_201",
+          "name": "Sentadilla goblet",
+          "muscleGroup": "Piernas",
+          "sets": 4,
+          "reps": 12,
+          "durationSeconds": null,
+          "restSeconds": 90,
+          "suggestedWeightKg": 18.0,
+          "instructions": "Sostén la mancuerna junto al pecho y baja con la espalda recta.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_202",
+          "name": "Peso muerto rumano",
+          "muscleGroup": "Isquiotibiales",
+          "sets": 4,
+          "reps": 10,
+          "durationSeconds": null,
+          "restSeconds": 90,
+          "suggestedWeightKg": 20.0,
+          "instructions": "Lleva la cadera hacia atrás con las rodillas apenas flexionadas.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_203",
+          "name": "Zancadas alternas",
+          "muscleGroup": "Glúteos",
+          "sets": 3,
+          "reps": 10,
+          "durationSeconds": null,
+          "restSeconds": 75,
+          "suggestedWeightKg": 8.0,
+          "instructions": "Da un paso largo y baja hasta que ambas rodillas formen 90 grados.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_204",
+          "name": "Elevación de talones",
+          "muscleGroup": "Pantorrillas",
+          "sets": 3,
+          "reps": 15,
+          "durationSeconds": null,
+          "restSeconds": 45,
+          "suggestedWeightKg": null,
+          "instructions": "Sube despacio sobre la punta de los pies y baja controlado.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_205",
+          "name": "Puente de glúteos",
+          "muscleGroup": "Glúteos",
+          "sets": 3,
+          "reps": 15,
+          "durationSeconds": null,
+          "restSeconds": 60,
+          "suggestedWeightKg": null,
+          "instructions": "Empuja con los talones y aprieta los glúteos arriba.",
+          "imageUrl": null
+        }
+      ]
+    },
+    {
+      "dayOfWeek": "THURSDAY",
+      "type": "REST",
+      "title": null,
+      "exercises": []
+    },
+    {
+      "dayOfWeek": "FRIDAY",
+      "type": "TRAINING",
+      "title": "Cuerpo completo",
+      "exercises": [
+        {
+          "id": "e_301",
+          "name": "Sentadilla con salto",
+          "muscleGroup": "Piernas",
+          "sets": 3,
+          "reps": 10,
+          "durationSeconds": null,
+          "restSeconds": 60,
+          "suggestedWeightKg": null,
+          "instructions": "Baja a media sentadilla y salta; aterriza suave.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_302",
+          "name": "Remo invertido en mesa",
+          "muscleGroup": "Espalda",
+          "sets": 3,
+          "reps": 10,
+          "durationSeconds": null,
+          "restSeconds": 75,
+          "suggestedWeightKg": null,
+          "instructions": "Tira del pecho hacia el borde manteniendo el cuerpo recto.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_303",
+          "name": "Press de hombros con mancuernas",
+          "muscleGroup": "Hombros",
+          "sets": 3,
+          "reps": 12,
+          "durationSeconds": null,
+          "restSeconds": 75,
+          "suggestedWeightKg": 8.0,
+          "instructions": "Sube las mancuernas desde las orejas hasta estirar los brazos.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_304",
+          "name": "Escaladores",
+          "muscleGroup": "Core",
+          "sets": 3,
+          "reps": null,
+          "durationSeconds": 30,
+          "restSeconds": 45,
+          "suggestedWeightKg": null,
+          "instructions": "En posición de plancha, lleva las rodillas al pecho de forma alternada.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_305",
+          "name": "Burpees",
+          "muscleGroup": "Cuerpo completo",
+          "sets": 3,
+          "reps": 8,
+          "durationSeconds": null,
+          "restSeconds": 60,
+          "suggestedWeightKg": null,
+          "instructions": "Baja a plancha, haz una flexión, vuelve de pie y salta.",
+          "imageUrl": null
+        },
+        {
+          "id": "e_306",
+          "name": "Superman",
+          "muscleGroup": "Espalda baja",
+          "sets": 3,
+          "reps": 12,
+          "durationSeconds": null,
+          "restSeconds": 45,
+          "suggestedWeightKg": null,
+          "instructions": "Boca abajo, eleva brazos y piernas a la vez y sostén un segundo.",
+          "imageUrl": null
+        }
+      ]
+    },
+    {
+      "dayOfWeek": "SATURDAY",
+      "type": "REST",
+      "title": null,
+      "exercises": []
+    },
+    {
+      "dayOfWeek": "SUNDAY",
+      "type": "REST",
+      "title": null,
+      "exercises": []
+    }
+  ]
+}

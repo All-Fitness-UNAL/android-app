@@ -1,0 +1,259 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
+    <string name="app_name">All Fitness</string>
+
+    <!-- Acciones -->
+    <string name="action_retry">Reintentar</string>
+    <string name="action_back">Volver</string>
+    <string name="action_next">Siguiente</string>
+    <string name="action_finish">Terminar</string>
+    <string name="action_login">Iniciar sesión</string>
+    <string name="action_register">Crear cuenta</string>
+    <string name="action_send">Enviar</string>
+    <string name="action_continue">Continuar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_accept">Aceptar</string>
+    <string name="action_change">Cambiar</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_update">Actualizar</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_discard">Descartar</string>
+    <string name="action_keep_editing">Seguir editando</string>
+    <string name="action_keep_current">Mantener la actual</string>
+    <string name="action_use_this">Usar esta</string>
+    <string name="action_request_alternative">Pedir alternativa</string>
+    <string name="action_regenerate_routine">Regenerar rutina</string>
+    <string name="action_regenerate_diet">Regenerar dieta</string>
+    <string name="action_generate_routine">Generar rutina</string>
+    <string name="action_generate_diet">Generar dieta</string>
+    <string name="action_finish_session">Terminar sesión de hoy</string>
+    <string name="action_add_weight">Registrar peso</string>
+    <string name="action_logout">Cerrar sesión</string>
+    <string name="action_delete_account">Eliminar cuenta</string>
+    <string name="action_delete_my_account">Eliminar mi cuenta</string>
+
+    <!-- Estados comunes -->
+    <string name="loading">Cargando…</string>
+    <string name="offline_banner">Sin conexión. Lo que ves puede no estar actualizado.</string>
+    <string name="offline_banner_with_date">Sin conexión. Datos del %1$s; pueden no estar actualizados.</string>
+    <string name="requires_connection">Necesitas conexión a internet para hacer esto.</string>
+    <string name="empty_offline">No hay datos guardados. Conéctate a internet para cargarlos.</string>
+    <string name="ai_disclaimer">Este contenido lo genera una IA y es orientativo. No reemplaza la valoración de un profesional de la salud.</string>
+    <string name="char_counter">%1$d/%2$d</string>
+
+    <!-- Errores -->
+    <string name="error_no_connection">No hay conexión a internet. Revisa tu red e inténtalo de nuevo.</string>
+    <string name="error_timeout">La respuesta está tardando demasiado. Inténtalo de nuevo.</string>
+    <string name="error_future_date">No puedes registrar una fecha futura.</string>
+    <string name="error_invalid_date">Solo puedes registrar la sesión del día de hoy.</string>
+    <string name="error_validation">Revisa los datos ingresados.</string>
+    <string name="error_invalid_credentials">El correo o la contraseña no son correctos.</string>
+    <string name="error_session_expired">Tu sesión expiró. Vuelve a iniciar sesión.</string>
+    <string name="error_no_active_plan">Todavía no tienes un plan activo.</string>
+    <string name="error_not_found">No encontramos esta información.</string>
+    <string name="error_email_taken">Ya existe una cuenta con este correo.</string>
+    <string name="error_proposal_expired">Esta propuesta ya no está disponible. Pide una nueva.</string>
+    <string name="error_ai_unavailable">No pudimos generar el contenido en este momento. Inténtalo de nuevo.</string>
+    <string name="error_server">Algo salió mal. Inténtalo de nuevo en unos minutos.</string>
+    <string name="error_invalid_response">Recibimos información incompleta. Inténtalo de nuevo.</string>
+    <string name="error_required_field">Este campo es obligatorio.</string>
+    <string name="error_email_format">Escribe un correo válido.</string>
+    <string name="error_password_length">La contraseña debe tener al menos 8 caracteres.</string>
+    <string name="error_accept_legal">Debes aceptar los términos y la política de privacidad.</string>
+    <string name="error_age_range">La edad debe estar entre 16 y 100 años.</string>
+    <string name="error_height_range">La estatura debe estar entre 100 y 250 cm.</string>
+    <string name="error_weight_range">El peso debe estar entre 30 y 300 kg, con máximo un decimal.</string>
+    <string name="error_days_range">Elige entre 1 y 7 días.</string>
+    <string name="error_minutes_range">La duración debe estar entre 15 y 120 minutos.</string>
+    <string name="error_equipment_required">Elige al menos una opción de equipo.</string>
+    <string name="error_required_choice">Elige una opción.</string>
+    <string name="error_other_allergy">Escribe cuál es tu otra alergia.</string>
+    <string name="error_text_too_long">El texto es demasiado largo.</string>
+    <string name="error_meals_range">Elige entre 3 y 5 comidas.</string>
+
+    <!-- Login y registro -->
+    <string name="login_title">Inicia sesión</string>
+    <string name="login_subtitle">Tu rutina y tu dieta personalizadas te esperan.</string>
+    <string name="login_go_register">¿No tienes cuenta? Regístrate</string>
+    <string name="register_title">Crea tu cuenta</string>
+    <string name="register_accept_legal">Acepto los términos y condiciones y autorizo el tratamiento de mis datos personales y de salud según la política de privacidad.</string>
+    <string name="register_read_terms">Leer términos y condiciones</string>
+    <string name="register_read_privacy">Leer política de privacidad</string>
+    <string name="password_hint">Mínimo 8 caracteres.</string>
+
+    <!-- Campos -->
+    <string name="field_name">Nombre</string>
+    <string name="field_email">Correo electrónico</string>
+    <string name="field_password">Contraseña</string>
+    <string name="field_age">Edad</string>
+    <string name="field_sex">Sexo</string>
+    <string name="field_height">Estatura</string>
+    <string name="field_weight">Peso actual</string>
+    <string name="field_goal">Objetivo</string>
+    <string name="field_level">Nivel</string>
+    <string name="field_days">Días por semana</string>
+    <string name="field_minutes">Duración por sesión</string>
+    <string name="field_location">Lugar de entrenamiento</string>
+    <string name="field_equipment">Equipo disponible</string>
+    <string name="field_injuries">Lesiones o limitaciones (opcional)</string>
+    <string name="field_diet_type">Tipo de dieta</string>
+    <string name="field_allergies">Alergias o intolerancias</string>
+    <string name="field_other_allergy">¿Cuál otra alergia?</string>
+    <string name="field_disliked_foods">Alimentos que no te gustan (opcional)</string>
+    <string name="field_meals">Comidas al día</string>
+
+    <!-- Unidades -->
+    <string name="unit_cm">cm</string>
+    <string name="unit_kg">kg</string>
+    <string name="unit_minutes">min</string>
+    <string name="unit_years">años</string>
+
+    <!-- Secciones del perfil -->
+    <string name="section_physical">Datos físicos</string>
+    <string name="section_goal">Objetivo</string>
+    <string name="section_training">Entrenamiento</string>
+    <string name="section_nutrition">Alimentación</string>
+
+    <!-- Opciones -->
+    <string name="sex_male">Hombre</string>
+    <string name="sex_female">Mujer</string>
+    <string name="goal_lose_fat">Perder grasa</string>
+    <string name="goal_gain_muscle">Ganar masa muscular</string>
+    <string name="goal_general_fitness">Mejorar mi condición física</string>
+    <string name="level_beginner">Principiante</string>
+    <string name="level_intermediate">Intermedio</string>
+    <string name="level_advanced">Avanzado</string>
+    <string name="location_home">Casa</string>
+    <string name="location_gym">Gimnasio</string>
+    <string name="equipment_bodyweight">Solo peso corporal</string>
+    <string name="equipment_dumbbells">Mancuernas</string>
+    <string name="equipment_barbell">Barra</string>
+    <string name="equipment_kettlebell">Pesa rusa</string>
+    <string name="equipment_bands">Bandas elásticas</string>
+    <string name="equipment_bench">Banco</string>
+    <string name="equipment_pull_up_bar">Barra de dominadas</string>
+    <string name="equipment_machines">Máquinas de gimnasio</string>
+    <string name="diet_omnivore">Omnívora</string>
+    <string name="diet_vegetarian">Vegetariana</string>
+    <string name="diet_vegan">Vegana</string>
+    <string name="allergy_gluten">Gluten</string>
+    <string name="allergy_lactose">Lactosa</string>
+    <string name="allergy_tree_nuts">Frutos secos</string>
+    <string name="allergy_peanuts">Maní</string>
+    <string name="allergy_shellfish">Mariscos</string>
+    <string name="allergy_egg">Huevo</string>
+    <string name="allergy_soy">Soya</string>
+    <string name="allergy_other">Otra</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_step">Paso %1$d de %2$d</string>
+    <string name="onboarding_generating">Estamos creando tu rutina y tu dieta. Esto puede tardar hasta un minuto.</string>
+    <string name="onboarding_generation_failed">No pudimos terminar de preparar tu plan. Inténtalo de nuevo.</string>
+    <string name="generating_plan">Generando tu plan…</string>
+    <string name="generating_routine">Generando tu rutina…</string>
+    <string name="generating_diet">Generando tu dieta…</string>
+
+    <!-- Navegación -->
+    <string name="tab_routine">Rutina</string>
+    <string name="tab_diet">Dieta</string>
+    <string name="tab_progress">Progreso</string>
+    <string name="tab_profile">Perfil</string>
+
+    <!-- Rutina -->
+    <string name="routine_title">Tu rutina</string>
+    <string name="routine_empty">Todavía no tienes una rutina.</string>
+    <string name="routine_empty_offline">No hay una rutina guardada. Conéctate a internet para cargarla.</string>
+    <string name="day_with_date">%1$s %2$s</string>
+    <string name="today">Hoy</string>
+    <string name="rest_day">Descanso</string>
+    <string name="rest_day_message">Hoy toca descansar. La recuperación también es parte del progreso.</string>
+    <string name="training_day">Entrenamiento</string>
+    <string name="only_today_message">Solo puedes marcar ejercicios y terminar la sesión del día de hoy.</string>
+    <string name="session_finished">Terminada</string>
+    <string name="session_finished_message">¡Sesión terminada! Buen trabajo.</string>
+    <string name="exercise_sets_reps">Series: %1$d · Repeticiones: %2$d</string>
+    <string name="exercise_sets_duration">Series: %1$d · Duración: %2$d s</string>
+    <string name="exercise_rest">Descanso: %1$d s</string>
+    <string name="exercise_weight">Peso sugerido: %1$s kg</string>
+
+    <!-- Dieta -->
+    <string name="diet_title">Tu dieta</string>
+    <string name="diet_empty">Todavía no tienes una dieta.</string>
+    <string name="diet_empty_offline">No hay una dieta guardada. Conéctate a internet para cargarla.</string>
+    <string name="diet_day_totals">Total del %1$s</string>
+    <string name="meal_breakfast">Desayuno</string>
+    <string name="meal_lunch">Almuerzo</string>
+    <string name="meal_dinner">Cena</string>
+    <string name="meal_snack">Snack</string>
+    <string name="kcal_value" tools:ignore="PluralsCandidate">%1$d kcal</string>
+    <string name="macros_value">Proteína %1$s g · Carbohidratos %2$s g · Grasas %3$s g</string>
+    <string name="recipe_title">Receta</string>
+    <string name="recipe_ingredients">Ingredientes</string>
+    <string name="recipe_steps">Preparación</string>
+    <string name="recipe_prep_time">Tiempo aproximado: %1$d min</string>
+    <string name="recipe_per_serving">Por porción</string>
+    <string name="recipe_step">%1$d. %2$s</string>
+    <string name="ingredient_grams">%1$s g de %2$s</string>
+    <string name="ingredient_ml">%1$s ml de %2$s</string>
+
+    <!-- Alternativas -->
+    <string name="reason_dislike">No me gusta</string>
+    <string name="reason_no_equipment">No tengo el equipo</string>
+    <string name="reason_pain">Me causa molestia o dolor</string>
+    <string name="reason_too_hard">Muy difícil</string>
+    <string name="reason_too_easy">Muy fácil</string>
+    <string name="reason_no_ingredients">No tengo los ingredientes</string>
+    <string name="reason_too_elaborate">Es muy elaborada</string>
+    <string name="reason_diet_mismatch">No encaja con mi dieta o alergias</string>
+    <string name="alt_reason_required">Elige un motivo.</string>
+    <string name="alt_comment_label">¿Cómo lo preferirías? (opcional)</string>
+    <string name="alt_pain_warning">Si sientes dolor, consulta a un profesional de la salud antes de seguir entrenando.</string>
+    <string name="alt_whole_plan_hint">Se generará un plan completo nuevo. El actual se mantiene hasta que el nuevo esté listo.</string>
+    <string name="alt_loading">La IA está preparando una alternativa. Puede tardar hasta un minuto.</string>
+    <string name="alt_proposal_title">Propuesta</string>
+    <string name="alt_confirm_title">¿Reemplazar el plan actual?</string>
+    <string name="alt_confirm_message">El plan nuevo reemplazará al actual. Tus sesiones ya terminadas se conservan.</string>
+    <string name="alt_done_element">Listo, se actualizó tu plan.</string>
+    <string name="alt_done_routine">Tu nueva rutina está lista.</string>
+    <string name="alt_done_diet">Tu nueva dieta está lista.</string>
+
+    <!-- Progreso -->
+    <string name="progress_title">Tu progreso</string>
+    <string name="progress_empty">Aún no hay datos. Registra tu primer peso o termina tu primera sesión.</string>
+    <string name="summary_title">Esta semana</string>
+    <string name="summary_sessions">Sesiones completadas: %1$d de %2$d</string>
+    <string name="summary_streak">Semanas cumplidas seguidas: %1$d</string>
+    <string name="summary_empty">Termina tu primera sesión para ver tu resumen.</string>
+    <string name="summary_unavailable">El resumen no está disponible en este momento.</string>
+    <string name="summary_age">Edad: %1$d</string>
+    <string name="summary_height">%1$d cm</string>
+    <string name="summary_days">Días por semana: %1$d</string>
+    <string name="summary_minutes">Minutos por sesión: %1$d</string>
+    <string name="summary_meals">Comidas al día: %1$d</string>
+    <string name="chart_description">Gráfica de peso: de %1$s kg el %3$s a %2$s kg el %4$s</string>
+    <string name="chart_range">Entre %1$s y %2$s kg</string>
+    <string name="weight_history">Historial de peso</string>
+    <string name="weight_empty">Aún no has registrado tu peso.</string>
+    <string name="weight_value">%1$s kg</string>
+    <string name="weight_date">Fecha: %1$s</string>
+    <string name="weight_saved">Peso guardado.</string>
+    <string name="weight_overwrite_title">Ya hay un registro ese día</string>
+    <string name="weight_overwrite_message">Ya registraste tu peso el %1$s. ¿Quieres actualizarlo?</string>
+
+    <!-- Perfil -->
+    <string name="profile_title">Tu perfil</string>
+    <string name="profile_empty">No pudimos cargar tu perfil.</string>
+    <string name="profile_email_readonly">El correo no se puede cambiar desde la app.</string>
+    <string name="logout_confirm_title">¿Cerrar sesión?</string>
+    <string name="logout_confirm_message">Se borrarán los datos guardados en este dispositivo.</string>
+    <string name="discard_title">¿Descartar los cambios?</string>
+    <string name="discard_message">Tienes cambios sin guardar en esta sección.</string>
+    <string name="regenerate_title">Perfil guardado</string>
+    <string name="regenerate_message">¿Quieres generar un plan nuevo con tus datos actualizados?</string>
+    <string name="regenerate_routine">Solo la rutina</string>
+    <string name="regenerate_diet">Solo la dieta</string>
+    <string name="regenerate_both">Rutina y dieta</string>
+    <string name="regenerate_none">Ninguno por ahora</string>
+    <string name="delete_title">Eliminar cuenta</string>
+    <string name="delete_message">Se eliminarán tu cuenta y todos tus datos de forma permanente. Esta acción no se puede deshacer.</string>
+    <string name="delete_field">Escribe %1$s para confirmar</string>
+</resources>

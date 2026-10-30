@@ -1,0 +1,23 @@
+{
+  "age": 29,
+  "sex": "MALE",
+  "heightCm": 175,
+  "currentWeightKg": 77.5,
+  "goal": "LOSE_FAT",
+  "level": "INTERMEDIATE",
+  "daysPerWeek": 3,
+  "sessionMinutes": 50,
+  "location": "HOME",
+  "equipment": [
+    "DUMBBELLS",
+    "BENCH"
+  ],
+  "injuries": null,
+  "dietType": "OMNIVORE",
+  "allergies": [
+    "LACTOSE"
+  ],
+  "otherAllergy": null,
+  "dislikedFoods": "Hígado",
+  "mealsPerDay": 4
+}
