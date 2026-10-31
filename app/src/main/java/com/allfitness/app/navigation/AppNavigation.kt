@@ -42,7 +42,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -65,6 +64,7 @@ import com.allfitness.app.core.session.SessionState
 import com.allfitness.app.core.ui.LoadingState
 import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Motion
+import com.allfitness.app.core.ui.theme.NavLabelMinSize
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.home.HomeScreen
 import com.allfitness.app.nutrition.DietWeekScreen
@@ -143,14 +143,15 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.enter(reduced: Boo
     reduced -> fadeIn(tween(Motion.SHORT))
     isDetailMove() -> slideInHorizontally(tween(Motion.MEDIUM, easing = Motion.Emphasized)) { if (pop) -it / 10 else it / 10 } +
         fadeIn(tween(Motion.MEDIUM, easing = Motion.Emphasized))
-    else -> fadeIn(tween(210, delayMillis = 90)) + scaleIn(tween(210, delayMillis = 90), initialScale = 0.96f)
+    else -> fadeIn(tween(Motion.FADE_THROUGH_IN, delayMillis = Motion.FADE_THROUGH_OUT)) +
+        scaleIn(tween(Motion.FADE_THROUGH_IN, delayMillis = Motion.FADE_THROUGH_OUT), initialScale = 0.96f)
 }
 
 private fun AnimatedContentTransitionScope<NavBackStackEntry>.exit(reduced: Boolean, pop: Boolean): ExitTransition = when {
     reduced -> fadeOut(tween(Motion.SHORT))
     isDetailMove() -> slideOutHorizontally(tween(Motion.MEDIUM, easing = Motion.Emphasized)) { if (pop) it / 10 else -it / 10 } +
         fadeOut(tween(Motion.MEDIUM, easing = Motion.Emphasized))
-    else -> fadeOut(tween(90))
+    else -> fadeOut(tween(Motion.FADE_THROUGH_OUT))
 }
 
 @Composable
@@ -231,7 +232,7 @@ private fun MainScaffold() {
                                     stringResource(tab.label),
                                     style = style,
                                     maxLines = 1,
-                                    autoSize = TextAutoSize.StepBased(minFontSize = 6.sp, maxFontSize = style.fontSize),
+                                    autoSize = TextAutoSize.StepBased(minFontSize = NavLabelMinSize, maxFontSize = style.fontSize),
                                 )
                             },
                             colors = itemColors,

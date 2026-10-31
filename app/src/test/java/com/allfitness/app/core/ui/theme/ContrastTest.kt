@@ -60,12 +60,20 @@ class ContrastTest {
 
     @Test fun outlineBoundsControls() = assertContrast(3f, s.outline, listOf(s.surface, a.surfaceInput, s.surfaceContainerHigh))
 
+    // MacroBar va sobre AppCard (surface); las placas de la receta y las hojas son surfaceContainerHigh.
     @Test
     fun macrosAreGraphics() {
-        assertContrast(3f, a.macroProtein, s.surface)
-        assertContrast(3f, a.macroCarbs, s.surface)
-        assertContrast(3f, a.macroFat, s.surface)
+        val grounds = listOf(s.surface, s.surfaceContainerHigh)
+        assertContrast(3f, a.macroProtein, grounds)
+        assertContrast(3f, a.macroCarbs, grounds)
+        assertContrast(3f, a.macroFat, grounds)
     }
+
+    /**
+     * Arco del anillo, barra, línea y puntos del gráfico de peso: verde sobre AppCard y sobre la pista
+     * `surfaceContainerHigh`. La pista misma es decorativa (el valor lo lleva el arco contra ella).
+     */
+    @Test fun primaryGraphicsOnCardsAndTrack() = assertContrast(3f, s.primary, listOf(s.surface, s.surfaceContainerHigh))
 
     /** `muted` solo es decorativo: si algún día llega a 4,5:1 este test avisa de que ya puede ser texto. */
     @Test fun mutedIsNeverText() = assertTrue(contrastRatio(a.muted, s.surface) < 4.5f)
@@ -81,12 +89,5 @@ class ContrastTest {
     fun contrastRatioMatchesWcag() {
         assertEquals(21f, contrastRatio(Color.Black, Color.White), 0.01f)
         assertEquals(1f, contrastRatio(Color.White, Color.White), 0.001f)
-    }
-
-    // Línea: se borra en la Task 12 junto con lineFor.
-    @Test
-    fun lineForProfileIsInk() {
-        assertEquals(s.onSurface, a.lineFor(AppSection.PROFILE, s.onSurface))
-        assertEquals(a.lineRoutine, a.lineFor(AppSection.ROUTINE, s.onSurface))
     }
 }

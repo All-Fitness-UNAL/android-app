@@ -23,8 +23,8 @@ object Spacing {
     val l = 24.dp
     val xl = 32.dp
     val xxl = 48.dp
-    val routeRowHeight = 56.dp
-    val avatar = 56.dp
+    /** Fila seleccionable de una lista (radio): 56 dp, por encima de los 48 dp táctiles. */
+    val listRow = 56.dp
     val chartHeight = 180.dp
     val chartPoint = 8.dp
     val chartLine = 2.dp

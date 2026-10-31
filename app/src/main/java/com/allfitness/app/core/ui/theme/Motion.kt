@@ -11,6 +11,11 @@ object Motion {
     const val SHORT = 150
     const val MEDIUM = 300
     const val LONG = 450
+    /** Fundido entre pestañas (M3 fade through): entra en 210 ms tras 90 ms de salida. */
+    const val FADE_THROUGH_IN = 210
+    const val FADE_THROUGH_OUT = 90
+    /** Una vuelta del indicador de carga. */
+    const val LOADER_CYCLE = 1200
     val Emphasized: Easing = CubicBezierEasing(0.2f, 0f, 0f, 1f)
     fun <T> gentle(): SpringSpec<T> = spring(dampingRatio = 0.9f, stiffness = Spring.StiffnessMediumLow)
 }
