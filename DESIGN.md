@@ -233,9 +233,9 @@ Dos familias variables empaquetadas en `res/font`, con el eje de peso fijado por
 | Rol | Familia | Tamaño / línea | Uso |
 |---|---|---|---|
 | displaySmall | Outfit 800 | 32/40 | Cifra protagonista (kcal del día, peso) |
-| headlineMedium | Outfit 800 | 28/35 | Título de pantalla ("Tu dieta", "Hola, …") |
+| headlineMedium | Outfit 800 | 28/35 | Título de pantalla ("Tu dieta") |
 | headlineSmall | Outfit 800 | 24/30 | Nombre del ejercicio en sesión, título de paso |
-| titleLarge | Outfit 800 | 20/26 | Títulos de sección, logo "AllFitness" |
+| titleLarge | Outfit 800 | 20/26 | Títulos de sección, logo "AllFitness", saludo "Hola, …" de Inicio |
 | titleMedium | Outfit 700 | 16/20 | Botón principal, nombre de comida, cifras de tarjeta |
 | titleSmall | Outfit 700 | 15/19 | Etiquetas de grupo de formulario, cifras pequeñas |
 | bodyLarge / bodyMedium | Manrope 500 | 15/21, 14/19 | Lectura |
@@ -282,6 +282,7 @@ Profundidad tonal, sin sombras: `background` → `surface` (tarjetas) → `surfa
 - **Deshabilitado:** contenedor `surface-container-high`, texto `on-surface-variant` (legible, 5,9:1) y un hilo `outline`, para que la píldora no desaparezca dentro de una hoja del mismo color.
 - **TonalActionButton:** píldora `secondary-container` con ícono delante, para acciones secundarias que no deben leerse como deshabilitadas.
 - **AlternativeButton:** "Pedir alternativa" con el ícono de desvío, en ejercicio y receta.
+- **"Editar" de Perfil:** chip compacto de 32 dp visuales (48 táctiles), `surface-container-high`, radio 8, texto verde `labelMedium` sin ícono; cada uno anuncia qué sección abre.
 - **Destructivo:** "Eliminar mi cuenta", píldora en `error`; deshabilitado sigue rojo al 12 % / 38 %.
 
 ### Cards (`Components.kt`, `Cards.kt`)
@@ -290,7 +291,7 @@ Profundidad tonal, sin sombras: `background` → `surface` (tarjetas) → `surfa
 - **ChoiceCard:** opción grande con placa de ícono (objetivo del onboarding), seleccionada con hilo y placa verdes.
 - **PreferenceRow:** fila de 56 dp con ícono, rótulo y valor (Perfil).
 - **IconTile:** placa `surface-container-high` de 36 dp con ícono verde; también miniatura de comida (64 dp) y de ejercicio (76 dp) cuando no hay imagen.
-- **MealCard:** placa por tipo de comida, tipo en verde, nombre, kcal y minutos de preparación.
+- **MealCard:** placa por tipo de comida, tipo en `on-surface-variant` `labelMedium` (el verde queda para lo que se toca), nombre, kcal y minutos de preparación.
 
 ### Progreso (`Progress.kt`)
 - **ProgressRing:** anillo de trazo 6 dp, pista `surface-container-high`, arco verde desde las 12 (60 y 72 dp).
@@ -305,6 +306,7 @@ Profundidad tonal, sin sombras: `background` → `surface` (tarjetas) → `surfa
 - **FormTextField:** rótulo `titleSmall` arriba, campo `surface-input` de radio 12 con borde `outline` (verde con foco, rojo con error), unidad a la derecha, rango o contador como apoyo.
 - **SingleChoiceChips / MultiChoiceChips:** píldoras de 33 dp visuales (48 táctiles), seleccionadas en `primary-container` con texto y borde verdes.
 - **SegmentedChoice:** conteos cortos (días por semana, comidas) como segmentos iguales.
+- **Selector de días de Dieta:** 7 columnas iguales con la abreviatura del día, el elegido en verde con subrayado; solo se desplaza si una columna quedara por debajo de 48 dp o de su rótulo (fuente grande).
 
 ### Marca (`Brand.kt`)
 - **LogoMark:** placa verde redondeada con el rayo (`lc_zap`) y "AllFitness" en `titleLarge` (28 dp; 48 dp en la entrada).

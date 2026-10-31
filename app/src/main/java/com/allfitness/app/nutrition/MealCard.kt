@@ -49,7 +49,8 @@ fun MealCard(meal: Meal, onClick: () -> Unit, modifier: Modifier = Modifier) {
                         stringResource(meal.type.labelRes()),
                         Modifier.weight(1f).alignByBaseline(),
                         style = MaterialTheme.typography.labelMedium,
-                        color = scheme.primary,
+                        // El verde queda para lo que se toca (spec §4.1).
+                        color = scheme.onSurfaceVariant,
                     )
                     Text(
                         stringResource(R.string.kcal_value, meal.recipe.perServing.kcal),

@@ -3,6 +3,7 @@ package com.allfitness.app.nutrition
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -17,26 +18,29 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -52,6 +56,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -390,30 +395,43 @@ fun ringArcs(fractions: List<Float>): List<Pair<Float, Float>> {
     }
 }
 
-/** Selector de días: desplaza a la pestaña elegida y deja ver que hay más días. */
+/**
+ * Selector de días: 7 columnas iguales con los 7 días a la vista. Solo si una columna quedara por debajo de
+ * 48 dp o de su rótulo (fuente grande) pasa a desplazarse, y entonces lleva el día elegido a la vista.
+ */
 @Composable
 private fun DayTabs(selected: DayOfWeek, onSelect: (DayOfWeek) -> Unit) {
     val scheme = MaterialTheme.colorScheme
-    val index = DayOfWeek.entries.indexOf(selected)
-    SecondaryScrollableTabRow(
-        selectedTabIndex = index,
-        containerColor = scheme.background,
-        edgePadding = Spacing.m,
-        // Más estrechas que los 90 dp por defecto: a los lados se asoman días cortados y se ve que hay más.
-        minTabWidth = Spacing.xxl + Spacing.l,
-        indicator = {
-            TabRowDefaults.SecondaryIndicator(Modifier.tabIndicatorOffset(index, matchContentSize = false), color = scheme.primary)
-        },
-    ) {
-        DayOfWeek.entries.forEach { day ->
-            Tab(
-                selected = day == selected,
-                onClick = { onSelect(day) },
-                text = { Text(day.displayName(java.time.format.TextStyle.SHORT)) },
-                selectedContentColor = scheme.primary,
-                unselectedContentColor = scheme.onSurfaceVariant,
-            )
+    val style = MaterialTheme.typography.labelLarge
+    val labels = DayOfWeek.entries.map { it.displayName(java.time.format.TextStyle.SHORT) }
+    val measurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+    val widest = with(density) { labels.maxOf { measurer.measure(it, style).size.width }.toDp() } + Spacing.s * 2
+    val column = maxOf(Spacing.xxl, widest)
+    Column {
+        BoxWithConstraints(Modifier.fillMaxWidth().padding(horizontal = Spacing.s)) {
+            val fixed = maxWidth / DayOfWeek.entries.size >= column
+            val scroll = rememberScrollState()
+            if (!fixed) {
+                val offset = with(density) { (column * DayOfWeek.entries.indexOf(selected)).roundToPx() }
+                LaunchedEffect(offset) { scroll.animateScrollTo(offset) }
+            }
+            Row(Modifier.fillMaxWidth().then(if (fixed) Modifier else Modifier.horizontalScroll(scroll)).selectableGroup()) {
+                DayOfWeek.entries.forEachIndexed { index, day ->
+                    val isSelected = day == selected
+                    Box(
+                        (if (fixed) Modifier.weight(1f) else Modifier.width(column))
+                            .heightIn(min = Spacing.xxl)
+                            .selectable(isSelected, role = Role.Tab, onClick = { onSelect(day) }),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(labels[index], style = style, color = if (isSelected) scheme.primary else scheme.onSurfaceVariant, maxLines = 1)
+                        if (isSelected) TabRowDefaults.SecondaryIndicator(Modifier.align(Alignment.BottomCenter), color = scheme.primary)
+                    }
+                }
+            }
         }
+        HorizontalDivider(thickness = Spacing.hairline, color = scheme.outlineVariant)
     }
 }
 

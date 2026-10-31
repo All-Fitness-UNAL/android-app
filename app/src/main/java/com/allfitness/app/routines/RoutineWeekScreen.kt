@@ -123,6 +123,16 @@ fun WeekDayRow.workoutCta(): WorkoutCta = when {
 /** Primer ejercicio sin marcar; con todos marcados, el primero. */
 fun WeekDayRow.firstPendingIndex(): Int = day.exercises.indexOfFirst { it.id !in completed }.coerceAtLeast(0)
 
+/** Casilla de [exerciseId]: hoy marcada o vacía; un día pasado solo el visto de lo hecho (spec §5); otro día, nada. */
+fun WeekDayRow.doneMark(exerciseId: String): Boolean? = when {
+    isToday -> exerciseId in completed
+    isPast && exerciseId in completed -> true
+    else -> null
+}
+
+/** Lo que se guarda al tocar [date] en la tira: hoy se guarda como null para seguir a la fecha tras medianoche. */
+internal fun List<WeekDayRow>.selectionOf(date: LocalDate): LocalDate? = date.takeUnless { d -> any { it.isToday && it.date == d } }
+
 /** Día elegido en la tira; sin elegir, o si la fecha ya no está en la semana, hoy. */
 private fun List<WeekDayRow>.shown(selected: LocalDate?): WeekDayRow = firstOrNull { it.date == selected } ?: first { it.isToday }
 
@@ -248,13 +258,12 @@ fun RoutineWeekScreen(
                     verticalArrangement = Arrangement.spacedBy(Spacing.sm),
                 ) {
                     // Margen menor que la lista: en 360 dp cada día sigue teniendo 48 dp de ancho para el dedo.
-                    item { WeekStrip(weekRows, row.date, onSelect = { selected = it }, Modifier.padding(horizontal = Spacing.s)) }
+                    item { WeekStrip(weekRows, row.date, onSelect = { selected = weekRows.selectionOf(it) }, Modifier.padding(horizontal = Spacing.s)) }
                     item { DayHeader(row, edge.padding(vertical = Spacing.s)) }
                     itemsIndexed(row.day.exercises, key = { _, exercise -> exercise.id }) { index, exercise ->
                         ExerciseCard(
                             exercise = exercise,
-                            // Hoy y días pasados muestran lo marcado; futuros y descanso no tienen estado.
-                            done = if (row.isToday || row.isPast) exercise.id in row.completed else null,
+                            done = row.doneMark(exercise.id),
                             onClick = { onOpenSession(row.date, index) },
                             modifier = edge.entrance(entrance, index),
                         )
