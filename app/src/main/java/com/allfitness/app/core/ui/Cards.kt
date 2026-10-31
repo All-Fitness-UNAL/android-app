@@ -121,9 +121,12 @@ fun ChoiceCard(text: String, @DrawableRes icon: Int, selected: Boolean, onClick:
     }
 }
 
-/** Píldora de selección múltiple (Figma `pill-*`): elegida lleva check y texto verdes sobre verde al 12 %. */
+/**
+ * Píldora de selección (Figma `pill-*`): elegida lleva check y texto verdes sobre verde al 12 %.
+ * [role] es Checkbox en selección múltiple y RadioButton en única (dentro de un `selectableGroup`).
+ */
 @Composable
-fun PillChip(text: String, selected: Boolean, onClick: () -> Unit, enabled: Boolean = true) {
+fun PillChip(text: String, selected: Boolean, onClick: () -> Unit, enabled: Boolean = true, role: Role = Role.Checkbox) {
     val scheme = MaterialTheme.colorScheme
     Row(
         Modifier
@@ -133,7 +136,7 @@ fun PillChip(text: String, selected: Boolean, onClick: () -> Unit, enabled: Bool
             .clip(PillShape)
             .background(if (selected) scheme.primaryContainer else AppTheme.colors.surfaceInput)
             .border(Spacing.hairline, if (selected) scheme.primary else scheme.outline, PillShape)
-            .selectable(selected, enabled = enabled, role = Role.Checkbox, onClick = onClick)
+            .selectable(selected, enabled = enabled, role = role, onClick = onClick)
             .padding(horizontal = Spacing.m),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing.xs),

@@ -19,14 +19,11 @@ object Spacing {
     val xs = 4.dp
     val s = 8.dp
     val sm = 12.dp
-    val stationSize = 12.dp
     val m = 16.dp
-    val stationToday = 16.dp
     val l = 24.dp
     val xl = 32.dp
     val xxl = 48.dp
     val routeRowHeight = 56.dp
-    val imageSize = 64.dp
     val avatar = 56.dp
     val chartHeight = 180.dp
     val chartPoint = 8.dp
@@ -45,6 +42,7 @@ object Spacing {
     val avatarSmall = 40.dp
     val avatarLarge = 104.dp
     val logoMark = 28.dp
+    val logoMarkLarge = 48.dp
     val progressHeight = 6.dp
 
     /** Figma `diff-meters` de Inicio: los 3 segmentos del nivel. */

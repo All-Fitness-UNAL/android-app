@@ -7,14 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SegmentedButton
@@ -25,8 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
@@ -49,6 +45,7 @@ fun FormTextField(
     maxLength: Int? = null,
     singleLine: Boolean = true,
     hint: String? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     val scheme = MaterialTheme.colorScheme
     val fill = AppTheme.colors.surfaceInput
@@ -72,6 +69,7 @@ fun FormTextField(
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         singleLine = singleLine,
         minLines = if (singleLine) 1 else 3,
+        visualTransformation = visualTransformation,
         interactionSource = interaction,
         cursorBrush = SolidColor(if (errorText != null) scheme.error else scheme.primary),
     ) { field ->
@@ -84,7 +82,7 @@ fun FormTextField(
                     innerTextField = field,
                     enabled = true,
                     singleLine = singleLine,
-                    visualTransformation = VisualTransformation.None,
+                    visualTransformation = visualTransformation,
                     interactionSource = interaction,
                     isError = errorText != null,
                     // La unidad va como trailingIcon porque suffix solo se ve con el campo enfocado.
@@ -127,7 +125,7 @@ fun <T> SingleChoiceChips(
     @StringRes error: Int? = null,
 ) {
     ChipGroup(label, error, Modifier.selectableGroup()) {
-        options.forEach { option -> CheckChip(option == selected, { onSelect(option) }, optionLabel(option)) }
+        options.forEach { option -> PillChip(optionLabel(option), option == selected, { onSelect(option) }, role = Role.RadioButton) }
     }
 }
 
@@ -141,7 +139,7 @@ fun <T> MultiChoiceChips(
     @StringRes error: Int? = null,
 ) {
     ChipGroup(label, error) {
-        options.forEach { option -> CheckChip(option in selected, { onToggle(option) }, optionLabel(option)) }
+        options.forEach { option -> PillChip(optionLabel(option), option in selected, { onToggle(option) }) }
     }
 }
 
@@ -157,12 +155,23 @@ fun <T> SegmentedChoice(
 ) {
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
         Text(label, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        val scheme = MaterialTheme.colorScheme
+        // Como PillChip: elegido en verde sobre verde al 12 %; sin elegir, relleno de campo y borde `outline`.
+        val colors = SegmentedButtonDefaults.colors(
+            activeContainerColor = scheme.primaryContainer,
+            activeContentColor = scheme.primary,
+            activeBorderColor = scheme.primary,
+            inactiveContainerColor = AppTheme.colors.surfaceInput,
+            inactiveContentColor = scheme.onSurfaceVariant,
+            inactiveBorderColor = scheme.outline,
+        )
         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
             options.forEachIndexed { index, option ->
                 SegmentedButton(
                     selected = option == selected,
                     onClick = { onSelect(option) },
                     shape = SegmentedButtonDefaults.itemShape(index, options.size, MaterialTheme.shapes.small),
+                    colors = colors,
                     // Sin check: con 7 segmentos no cabe y el relleno ya marca la selección.
                     icon = {},
                     label = { Text(optionLabel(option)) },
@@ -173,20 +182,6 @@ fun <T> SegmentedChoice(
             Text(stringResource(error), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
         }
     }
-}
-
-@Composable
-private fun CheckChip(selected: Boolean, onClick: () -> Unit, label: String) {
-    FilterChip(
-        selected = selected,
-        onClick = onClick,
-        label = { Text(label) },
-        leadingIcon = if (selected) {
-            { Icon(painterResource(R.drawable.ic_check), contentDescription = null, modifier = Modifier.size(FilterChipDefaults.IconSize)) }
-        } else {
-            null
-        },
-    )
 }
 
 @Composable

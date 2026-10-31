@@ -1,18 +1,34 @@
 package com.allfitness.app.onboarding
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.rememberTextMeasurer
 import com.allfitness.app.R
+import com.allfitness.app.core.ui.ChoiceCard
 import com.allfitness.app.core.ui.FREE_TEXT_MAX
 import com.allfitness.app.core.ui.FormTextField
 import com.allfitness.app.core.ui.MultiChoiceChips
 import com.allfitness.app.core.ui.SegmentedChoice
 import com.allfitness.app.core.ui.SingleChoiceChips
+import com.allfitness.app.core.ui.stripColumns
 import com.allfitness.app.core.ui.theme.Spacing
 
 @StringRes
@@ -72,16 +88,58 @@ fun ProfileSectionForm(
     Column(modifier, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
         when (section) {
             ProfileSection.PHYSICAL -> PhysicalSection(form, errors, onChange)
-            ProfileSection.GOAL -> SingleChoiceChips(
-                label = stringResource(R.string.field_goal),
-                options = Goal.entries,
-                selected = form.goal,
-                onSelect = { onChange(form.copy(goal = it)) },
-                optionLabel = { it.label() },
-                error = errors[ProfileField.GOAL],
-            )
+            ProfileSection.GOAL -> GoalGrid(form.goal, { onChange(form.copy(goal = it)) }, errors[ProfileField.GOAL])
             ProfileSection.TRAINING -> TrainingSection(form, errors, onChange)
             ProfileSection.NUTRITION -> NutritionSection(form, errors, onChange)
+        }
+    }
+}
+
+@DrawableRes
+private fun Goal.iconRes(): Int = when (this) {
+    Goal.LOSE_FAT -> R.drawable.lc_trending_down
+    Goal.GAIN_MUSCLE -> R.drawable.lc_trophy
+    Goal.GENERAL_FITNESS -> R.drawable.lc_heart
+}
+
+/**
+ * Figma `goals-grid`: tarjetas de elección única en 2 columnas (la tercera sola en su fila). Si con fuente
+ * grande una palabra no cabe en media fila, pasa a 1 columna en vez de partirla.
+ */
+@Composable
+private fun GoalGrid(selected: Goal?, onSelect: (Goal) -> Unit, @StringRes error: Int?) {
+    val labels = Goal.entries.map { it.label() }
+    val measurer = rememberTextMeasurer()
+    val typography = MaterialTheme.typography
+    val density = LocalDensity.current
+    val widest = remember(labels, typography, density) {
+        // Margen de la tarjeta a cada lado más el hueco entre tarjetas.
+        val padding = with(density) { (Spacing.m * 2 + Spacing.sm).toPx() }
+        labels.flatMap { it.split(' ') }.maxOf { measurer.measure(it, typography.titleMedium).size.width } + padding
+    }
+    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        Text(stringResource(R.string.field_goal), style = typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        BoxWithConstraints(Modifier.fillMaxWidth()) {
+            val columns = minOf(2, stripColumns(Goal.entries.size, constraints.maxWidth.toFloat(), widest))
+            Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                Goal.entries.chunked(columns).forEach { row ->
+                    Row(Modifier.height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                        row.forEach { goal ->
+                            ChoiceCard(
+                                text = labels[goal.ordinal],
+                                icon = goal.iconRes(),
+                                selected = goal == selected,
+                                onClick = { onSelect(goal) },
+                                modifier = Modifier.weight(1f).fillMaxHeight(),
+                            )
+                        }
+                        repeat(columns - row.size) { Spacer(Modifier.weight(1f)) }
+                    }
+                }
+            }
+        }
+        if (error != null) {
+            Text(stringResource(error), color = MaterialTheme.colorScheme.error, style = typography.bodySmall)
         }
     }
 }

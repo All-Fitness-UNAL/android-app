@@ -3,6 +3,7 @@ package com.allfitness.app.auth
 import android.util.Patterns
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -14,16 +15,13 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -47,8 +45,10 @@ import com.allfitness.app.BuildConfig
 import com.allfitness.app.R
 import com.allfitness.app.core.network.AppResult
 import com.allfitness.app.core.network.ConnectivityObserver
-import com.allfitness.app.core.ui.BrandHeader
+import com.allfitness.app.core.ui.FormTextField
+import com.allfitness.app.core.ui.LogoMark
 import com.allfitness.app.core.ui.OfflineHint
+import com.allfitness.app.core.ui.PrimaryButton
 import com.allfitness.app.core.ui.messageRes
 import com.allfitness.app.core.ui.theme.Spacing
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -143,10 +143,9 @@ class AuthViewModel @Inject constructor(
 fun LoginScreen(sessionExpired: Boolean, onRegister: () -> Unit, viewModel: AuthViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val online by viewModel.isOnline.collectAsStateWithLifecycle()
-    AuthScaffold(title = stringResource(R.string.login_title)) {
-        Text(stringResource(R.string.login_subtitle), style = MaterialTheme.typography.bodyLarge)
+    AuthScaffold(title = stringResource(R.string.login_title), subtitle = stringResource(R.string.login_subtitle)) {
         if (sessionExpired) {
-            Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
+            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
                 Text(
                     stringResource(R.string.error_session_expired),
                     modifier = Modifier.padding(Spacing.m),
@@ -170,14 +169,11 @@ fun RegisterScreen(onBack: () -> Unit, viewModel: AuthViewModel = hiltViewModel(
     val online by viewModel.isOnline.collectAsStateWithLifecycle()
     val uriHandler = LocalUriHandler.current
     AuthScaffold(title = stringResource(R.string.register_title), onBack = onBack) {
-        OutlinedTextField(
+        FormTextField(
             value = state.name,
             onValueChange = viewModel::onName,
-            label = { Text(stringResource(R.string.field_name)) },
-            isError = state.nameError != null,
-            supportingText = state.nameError?.let { { Text(stringResource(it)) } },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
+            label = stringResource(R.string.field_name),
+            error = state.nameError,
         )
         EmailField(state.email, state.emailError, viewModel::onEmail)
         PasswordField(state.password, state.passwordError, viewModel::onPassword, showHint = true)
@@ -201,22 +197,34 @@ fun RegisterScreen(onBack: () -> Unit, viewModel: AuthViewModel = hiltViewModel(
 }
 
 @Composable
-private fun AuthScaffold(title: String, onBack: (() -> Unit)? = null, content: @Composable ColumnScope.() -> Unit) {
+private fun AuthScaffold(
+    title: String,
+    subtitle: String? = null,
+    onBack: (() -> Unit)? = null,
+    content: @Composable ColumnScope.() -> Unit,
+) {
     Scaffold { padding ->
         BoxWithConstraints(Modifier.padding(padding).fillMaxSize().imePadding()) {
-            // La marca ocupa ~30 % del alto visible: con el teclado abierto se encoge y el formulario sube.
-            val brandHeight = maxHeight * 0.3f
+            // La marca ocupa ~25 % del alto visible: con el teclado abierto se encoge y el formulario sube.
+            val brandHeight = maxHeight * 0.25f
             Column(
-                Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.m),
+                Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = Spacing.screenEdge, vertical = Spacing.m),
                 verticalArrangement = Arrangement.spacedBy(Spacing.m),
             ) {
                 if (onBack != null) {
                     IconButton(onClick = onBack) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.action_back))
+                        Icon(painterResource(R.drawable.lc_arrow_left), contentDescription = stringResource(R.string.action_back))
                     }
                 }
-                BrandHeader(Modifier.heightIn(min = brandHeight))
-                Text(title, Modifier.semantics { heading() }, style = MaterialTheme.typography.headlineLarge)
+                Box(Modifier.fillMaxWidth().heightIn(min = brandHeight), contentAlignment = Alignment.Center) {
+                    LogoMark(large = true)
+                }
+                Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                    Text(title, Modifier.semantics { heading() }, style = MaterialTheme.typography.headlineMedium)
+                    if (subtitle != null) {
+                        Text(subtitle, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
                 content()
             }
         }
@@ -225,30 +233,25 @@ private fun AuthScaffold(title: String, onBack: (() -> Unit)? = null, content: @
 
 @Composable
 private fun EmailField(value: String, @StringRes error: Int?, onChange: (String) -> Unit) {
-    OutlinedTextField(
+    FormTextField(
         value = value,
         onValueChange = onChange,
-        label = { Text(stringResource(R.string.field_email)) },
-        isError = error != null,
-        supportingText = error?.let { { Text(stringResource(it)) } },
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        modifier = Modifier.fillMaxWidth(),
+        label = stringResource(R.string.field_email),
+        error = error,
+        keyboardType = KeyboardType.Email,
     )
 }
 
 @Composable
 private fun PasswordField(value: String, @StringRes error: Int?, onChange: (String) -> Unit, showHint: Boolean) {
-    OutlinedTextField(
+    FormTextField(
         value = value,
         onValueChange = onChange,
-        label = { Text(stringResource(R.string.field_password)) },
-        isError = error != null,
-        supportingText = (error ?: R.string.password_hint.takeIf { showHint })?.let { { Text(stringResource(it)) } },
-        singleLine = true,
+        label = stringResource(R.string.field_password),
+        error = error,
+        keyboardType = KeyboardType.Password,
+        hint = if (showHint) stringResource(R.string.password_hint) else null,
         visualTransformation = PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        modifier = Modifier.fillMaxWidth(),
     )
 }
 
@@ -256,7 +259,10 @@ private fun PasswordField(value: String, @StringRes error: Int?, onChange: (Stri
 private fun SubmitArea(state: AuthFormState, online: Boolean, label: String, onSubmit: () -> Unit) {
     state.error?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error) }
     if (!online) OfflineHint()
-    Button(onClick = onSubmit, enabled = online && !state.loading, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.small) {
-        Text(if (state.loading) stringResource(R.string.loading) else label)
-    }
+    PrimaryButton(
+        text = if (state.loading) stringResource(R.string.loading) else label,
+        onClick = onSubmit,
+        modifier = Modifier.fillMaxWidth(),
+        enabled = online && !state.loading,
+    )
 }
