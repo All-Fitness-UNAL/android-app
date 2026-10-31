@@ -293,7 +293,7 @@
     <string name="delete_message">Se eliminarán tu cuenta y todos tus datos de forma permanente. Esta acción no se puede deshacer.</string>
     <string name="delete_field">Escribe %1$s para confirmar</string>
 
-    <!-- Rediseño Línea: etiquetas de dato (DataStrip) y etapas de generación -->
+    <!-- Etiquetas de dato (DataStrip) y etapas de generación -->
     <string name="label_sets">SERIES</string>
     <string name="label_reps">REPS</string>
     <string name="label_duration">DURACIÓN</string>

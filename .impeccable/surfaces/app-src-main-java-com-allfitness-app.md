@@ -7,22 +7,20 @@ related_targets: []
 
 # Surface brief: AllFitness app (Android)
 
-Scope: toda la app Android (Compose). Mode: Operate. Audiencia: adultos principiantes/intermedios en Colombia/LatAm; uso diario, corto, con una mano. Tarea: saber qué toca hoy, entrenar marcando ejercicios, leer recetas, registrar peso. Restricciones: FR-001..FR-043, constitución v1.1.0, PRODUCT.md. Documento completo: docs/superpowers/specs/2026-10-30-rediseno-visual-design.md.
+Scope: toda la app Android (Compose). Mode: Operate. Audiencia: adultos principiantes/intermedios en Colombia/LatAm; uso diario, corto, con una mano. Tarea: saber qué toca hoy, entrenar marcando ejercicios, leer recetas, registrar peso. Restricciones: FR-001..FR-043, constitución v1.1.0, PRODUCT.md. Documento completo: docs/superpowers/specs/2026-10-30-interfaz-figma-design.md (sustituye a la dirección "Línea" de 2026-10-30-rediseno-visual-design.md).
 
 ## Direction contract
 
-THESIS: El plan es una ruta: la semana es una línea con estaciones y hoy es "estás aquí". Rechaza la lista plana de tarjetas iguales de M3 y el negro neón de fitness.
+THESIS: La app es el prototipo de Figma `All Fitness_prototype.fig` traducido a Material 3: tema oscuro único con acento verde, lo de hoy primero. Rechaza las funciones y datos del Figma que el producto no tiene (kcal consumidas, temporizador, notificaciones, unidades, fotos inventadas, favoritos).
 
-OWN-WORLD: Andén #F3F5F4, tarjetas blancas con hilos de 1 dp, panel Señal #0F1F1A, amarillo #F2C230 solo para "estás aquí", líneas de sección: verde #0A7A50 (Rutina), naranja #D9661F (Dieta), azul #2C5BD6 (Progreso). Archivo semicondensada para rótulos y cifras tabulares; Atkinson Hyperlegible Next para la lectura. Radios de 4/8/12/16, sin sombras.
+OWN-WORLD: Fondo #11111E, tarjetas #1C1C2C con hilo #2A2A3E, hojas #25253A, campos #121B2A. Un solo verde #2ECC71 para acción y hecho, con brillo solo en el botón principal. Ámbar #FFB300 solo para la racha; macros #22A85E / #5B8DEF / #E8607A solo como gráfico. Outfit 700/800 tabular para títulos y cifras; Manrope para leer. Radios 6/8/12/16/20 y píldoras para botones y chips.
 
-STORY: La persona abre la app y ve de inmediato qué toca hoy y en qué punto de la semana está, recorre la sesión viendo cuánto lleva y la cierra con un gesto claro. Cree que el plan es suyo y alcanzable.
+STORY: La persona abre la app y en Inicio ve sus anillos de hoy y de la semana, el entreno de hoy y la dieta de hoy; entra a la sesión, recorre un ejercicio por página y la termina con un solo primario. Cree que el plan es suyo y alcanzable.
 
-FIRST VIEWPORT: Rutina: título "Tu rutina", AiNote compacto, SignPanel oscuro (rótulo amarillo HOY · fecha, tipo de día en headline, tira "N ejercicios · estado", CTA "Ver sesión de hoy") y debajo la RouteLine de 7 estaciones; barra de navegación con el indicador en el color de la línea.
+FIRST VIEWPORT: Inicio: avatar con inicial y "Hola, {nombre}", AiNote completo, tarjeta de 4 anillos (Hoy, Semana, Racha, Kcal plan), "Entreno de hoy" con su CTA o el descanso, y "Tu dieta de hoy" con la barra de macros; barra inferior con el destino activo en verde.
 
-FORM: candidata 3 de 7 (Línea, señalética de transporte y ciclovía). seed:47113a5602c126fb
+FORM: Figma (7 frames, `docs/design/figma/miniatura.png`, valores en `arbol-nodos.txt`).
 
-Signature interaction: el tramo de la SessionBar se llena al marcar ejercicios; al terminar, la estación de hoy se rellena con un único pulso. Gramática de movimiento: lo que avanza se desplaza hacia adelante.
-
-Raises: modo sesión de un ejercicio a la vez (feed vertical) → se mantiene como lista con barra fija; nada desaparece, se marca (billetera de tiquetes); una cifra protagonista por pantalla (espécimen); tiras de datos regladas (alta densidad); nada se etiqueta dos veces (catálogo); estados pendiente con contorno / hecho relleno / pasado atenuado (riel central).
+Signature interaction: los anillos y barras se llenan en verde (450 ms, enfatizado); el modo sesión avanza página a página.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
