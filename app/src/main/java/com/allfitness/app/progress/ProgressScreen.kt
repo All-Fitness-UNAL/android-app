@@ -270,8 +270,15 @@ private fun SummaryCard(summary: TrainingSummary?) {
             }
             // Sin sesiones programadas el anillo queda vacío, pero "0/0" se sigue mostrando (FR-027).
             val sessions = stringResource(R.string.summary_sessions, summary.completedSessions, summary.scheduledSessions)
+            val empty = summary.completedSessions == 0 && summary.weekStreak == 0
+            val detail = if (empty) {
+                stringResource(R.string.summary_empty)
+            } else {
+                pluralStringResource(R.plurals.streak_weeks, summary.weekStreak, summary.weekStreak)
+            }
             Row(
-                Modifier.clearAndSetSemantics { contentDescription = sessions },
+                // Una sola lectura para TalkBack: sesiones y luego racha o aviso de vacío.
+                Modifier.clearAndSetSemantics { contentDescription = "$sessions. $detail" },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(Spacing.m),
             ) {
@@ -287,15 +294,12 @@ private fun SummaryCard(summary: TrainingSummary?) {
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    if (summary.completedSessions == 0 && summary.weekStreak == 0) {
-                        Text(stringResource(R.string.summary_empty), style = MaterialTheme.typography.bodyMedium)
+                    if (empty) {
+                        Text(detail, style = MaterialTheme.typography.bodyMedium)
                     } else {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                             Icon(painterResource(R.drawable.lc_flame), contentDescription = null, Modifier.size(Spacing.m), tint = colors.accent)
-                            Text(
-                                pluralStringResource(R.plurals.streak_weeks, summary.weekStreak, summary.weekStreak),
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
+                            Text(detail, style = MaterialTheme.typography.bodyMedium)
                         }
                     }
                 }
