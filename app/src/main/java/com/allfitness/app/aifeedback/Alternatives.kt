@@ -325,13 +325,13 @@ private fun RequestForm(state: AlternativeUiState, target: AlternativeTarget, on
     (state.phase as? AlternativePhase.Failed)?.let {
         Text(stringResource(it.message), color = MaterialTheme.colorScheme.error)
     }
-    if (!online) OfflineHint()
     PrimaryButton(
         text = stringResource(if (state.phase is AlternativePhase.Failed) R.string.action_retry else R.string.action_send),
         onClick = viewModel::submit,
         modifier = Modifier.fillMaxWidth(),
         enabled = online,
     )
+    if (!online) OfflineHint()
 }
 
 @Composable
@@ -374,7 +374,6 @@ private fun ProposalView(
         }
     }
     error?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error) }
-    if (!online) OfflineHint()
     // Apilados: con fuente grande, dos píldoras a media fila parten "Mantener".
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
         PrimaryButton(
@@ -390,6 +389,7 @@ private fun ProposalView(
             enabled = !accepting,
         )
     }
+    if (!online) OfflineHint()
 }
 
 /** El ejercicio propuesto con todo lo necesario para decidir: carga, descanso, peso e instrucciones. */

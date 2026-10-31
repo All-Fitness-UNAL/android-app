@@ -178,7 +178,7 @@ class RoutineDayViewModel @Inject constructor(
         viewModelScope.launch {
             val result = repository.finishSession(date)
             _finishing.value = false
-            // El éxito lo muestra (y anuncia) la SessionBar; un snackbar lo repetiría.
+            // El éxito lo muestra (y anuncia) el mensaje de sesión terminada; un snackbar lo repetiría.
             if (result is AppResult.Failure) _message.value = UserMessage(result.error.messageRes(), ::finishSession)
         }
     }

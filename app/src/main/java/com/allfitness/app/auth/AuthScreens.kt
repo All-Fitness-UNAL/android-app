@@ -258,11 +258,11 @@ private fun PasswordField(value: String, @StringRes error: Int?, onChange: (Stri
 @Composable
 private fun SubmitArea(state: AuthFormState, online: Boolean, label: String, onSubmit: () -> Unit) {
     state.error?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error) }
-    if (!online) OfflineHint()
     PrimaryButton(
         text = if (state.loading) stringResource(R.string.loading) else label,
         onClick = onSubmit,
         modifier = Modifier.fillMaxWidth(),
         enabled = online && !state.loading,
     )
+    if (!online) OfflineHint()
 }

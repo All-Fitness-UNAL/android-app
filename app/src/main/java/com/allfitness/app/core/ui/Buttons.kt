@@ -2,6 +2,7 @@ package com.allfitness.app.core.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Spacer
@@ -75,6 +76,8 @@ private fun PillButton(
             disabledContainerColor = scheme.surfaceContainerHigh,
             disabledContentColor = scheme.onSurfaceVariant,
         ),
+        // Deshabilitado sobre una hoja surfaceContainerHigh el relleno desaparece: el contorno mantiene la píldora (≥ 3:1).
+        border = if (enabled) null else BorderStroke(Spacing.hairline, scheme.outline),
         interactionSource = interaction,
     ) {
         // weight(fill = false): con fuente grande el texto se parte y deja sitio al ícono en vez de echarlo.

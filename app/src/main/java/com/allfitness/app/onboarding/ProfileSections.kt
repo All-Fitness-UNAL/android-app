@@ -112,7 +112,7 @@ private fun GoalGrid(selected: Goal?, onSelect: (Goal) -> Unit, @StringRes error
     val measurer = rememberTextMeasurer()
     val typography = MaterialTheme.typography
     val density = LocalDensity.current
-    val widest = remember(labels, typography, density) {
+    val widest = remember(labels, typography, density, measurer) {
         // Margen de la tarjeta a cada lado más el hueco entre tarjetas.
         val padding = with(density) { (Spacing.m * 2 + Spacing.sm).toPx() }
         labels.flatMap { it.split(' ') }.maxOf { measurer.measure(it, typography.titleMedium).size.width } + padding

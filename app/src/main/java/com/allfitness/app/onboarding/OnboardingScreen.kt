@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -207,7 +208,8 @@ private fun OnboardingForm(state: OnboardingUiState, online: Boolean, viewModel:
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     // Volver va arriba, como en las demás pantallas: abajo queda una sola acción (Figma `bottom-sticky-cta`).
                     if (state.step > 0) {
-                        IconButton(onClick = viewModel::back) {
+                        // El 48 dp táctil deja la flecha 12 dp dentro del margen: se desplaza para alinearla con él.
+                        IconButton(onClick = viewModel::back, Modifier.offset(x = -Spacing.sm)) {
                             Icon(painterResource(R.drawable.lc_arrow_left), contentDescription = stringResource(R.string.action_back))
                         }
                     }
