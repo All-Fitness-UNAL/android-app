@@ -512,13 +512,13 @@ fun ProfileEditScreen(onDone: () -> Unit, viewModel: ProfileEditViewModel = hilt
                 verticalArrangement = Arrangement.spacedBy(Spacing.m),
             ) {
                 ProfileSectionForm(viewModel.section, state.form, state.errors, viewModel::update)
-                if (!online) OfflineHint()
                 PrimaryButton(
                     text = stringResource(if (state.saving) R.string.loading else R.string.action_save),
                     onClick = viewModel::save,
                     modifier = Modifier.fillMaxWidth(),
                     enabled = online && !state.saving,
                 )
+                if (!online) OfflineHint()
             }
         }
     }
@@ -607,7 +607,6 @@ fun DeleteAccountScreen(onBack: () -> Unit, viewModel: DeleteAccountViewModel = 
                 modifier = Modifier.fillMaxWidth(),
             )
             state.error?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error) }
-            if (!online) OfflineHint()
             val error = MaterialTheme.colorScheme.error
             Button(
                 onClick = viewModel::delete,
@@ -622,6 +621,7 @@ fun DeleteAccountScreen(onBack: () -> Unit, viewModel: DeleteAccountViewModel = 
                 ),
                 modifier = Modifier.fillMaxWidth().heightIn(min = Spacing.buttonHeight),
             ) { Text(stringResource(if (state.deleting) R.string.loading else R.string.action_delete_my_account), style = MaterialTheme.typography.titleMedium) }
+            if (!online) OfflineHint()
         }
     }
 }
