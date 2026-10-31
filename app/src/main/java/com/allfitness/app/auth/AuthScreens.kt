@@ -189,8 +189,9 @@ fun RegisterScreen(onBack: () -> Unit, viewModel: AuthViewModel = hiltViewModel(
         }
         state.legalError?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
         Column {
-            TextButton(onClick = { uriHandler.openUri(BuildConfig.TERMS_URL) }) { Text(stringResource(R.string.register_read_terms)) }
-            TextButton(onClick = { uriHandler.openUri(BuildConfig.PRIVACY_URL) }) { Text(stringResource(R.string.register_read_privacy)) }
+            // Sin navegador openUri lanza ActivityNotFoundException: se ignora en vez de cerrar la app.
+            TextButton(onClick = { runCatching { uriHandler.openUri(BuildConfig.TERMS_URL) } }) { Text(stringResource(R.string.register_read_terms)) }
+            TextButton(onClick = { runCatching { uriHandler.openUri(BuildConfig.PRIVACY_URL) } }) { Text(stringResource(R.string.register_read_privacy)) }
         }
         SubmitArea(state, online, stringResource(R.string.action_register), viewModel::register)
     }

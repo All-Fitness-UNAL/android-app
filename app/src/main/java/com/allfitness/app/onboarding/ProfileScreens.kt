@@ -215,7 +215,8 @@ fun ProfileScreen(
                     item {
                         Group(stringResource(R.string.profile_section_account)) {
                             AppCard(Modifier.fillMaxWidth()) {
-                                AccountRow(R.drawable.lc_shield, stringResource(R.string.register_read_privacy)) { uriHandler.openUri(BuildConfig.PRIVACY_URL) }
+                                // Sin navegador openUri lanza ActivityNotFoundException: se ignora en vez de cerrar la app.
+                                AccountRow(R.drawable.lc_shield, stringResource(R.string.register_read_privacy)) { runCatching { uriHandler.openUri(BuildConfig.PRIVACY_URL) } }
                                 HorizontalDivider(thickness = Spacing.hairline, color = MaterialTheme.colorScheme.outlineVariant)
                                 AccountRow(R.drawable.lc_log_out, stringResource(R.string.action_logout)) { confirmLogout = true }
                                 HorizontalDivider(thickness = Spacing.hairline, color = MaterialTheme.colorScheme.outlineVariant)
