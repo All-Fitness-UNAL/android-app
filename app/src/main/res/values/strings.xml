@@ -186,11 +186,6 @@
     <string name="exercise_rest">Descanso: %1$d s</string>
     <string name="exercise_sets_reps">%1$d × %2$d reps</string>
     <string name="exercise_sets_seconds">%1$d × %2$d s</string>
-    <plurals name="exercise_sets">
-        <item quantity="one">%d serie</item>
-        <item quantity="many">%d series</item>
-        <item quantity="other">%d series</item>
-    </plurals>
     <string name="action_open_exercise">Ver el ejercicio</string>
     <string name="session_exercise_of">Ejercicio %1$d de %2$d</string>
     <string name="session_up_next">A continuación</string>

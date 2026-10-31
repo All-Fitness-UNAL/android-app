@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -35,22 +34,15 @@ import com.allfitness.app.core.ui.IconTile
 import com.allfitness.app.core.ui.formatNumber
 import com.allfitness.app.core.ui.theme.Spacing
 
-/** Carga del ejercicio: con reps, "series × reps"; si no, "series × s". Sin ninguno, (reps, 0) y la tarjeta muestra solo las series. */
-fun Exercise.loadRes(): Pair<Int, Int> = when {
-    reps != null -> R.string.exercise_sets_reps to reps
-    durationSeconds != null -> R.string.exercise_sets_seconds to durationSeconds
-    else -> R.string.exercise_sets_reps to 0
-}
+/** Carga del ejercicio: con reps, "series × reps"; si no, "series × s" (el mapeo descarta los que no traen ninguno). */
+fun Exercise.loadRes(): Pair<Int, Int> =
+    reps?.let { R.string.exercise_sets_reps to it } ?: (R.string.exercise_sets_seconds to checkNotNull(durationSeconds))
 
-/** "4 × 12 reps", "3 × 30 s" o, sin reps ni tiempo, solo "3 series". */
+/** "4 × 12 reps" o "3 × 30 s". */
 @Composable
 internal fun Exercise.setsText(): String {
     val (loadRes, value) = loadRes()
-    return if (reps == null && durationSeconds == null) {
-        pluralStringResource(R.plurals.exercise_sets, sets, sets)
-    } else {
-        stringResource(loadRes, sets, value)
-    }
+    return stringResource(loadRes, sets, value)
 }
 
 /** Series, reps o duración, descanso y peso sugerido (si lo hay) para un [DataStrip]. */
@@ -61,7 +53,7 @@ internal fun Exercise.dataCells(): List<DataCell> = buildList {
         if (reps != null) {
             DataCell(stringResource(R.string.label_reps), reps.toString())
         } else {
-            DataCell(stringResource(R.string.label_duration), (durationSeconds ?: 0).toString(), stringResource(R.string.unit_seconds))
+            DataCell(stringResource(R.string.label_duration), checkNotNull(durationSeconds).toString(), stringResource(R.string.unit_seconds))
         },
     )
     add(DataCell(stringResource(R.string.label_rest), restSeconds.toString(), stringResource(R.string.unit_seconds)))
@@ -83,7 +75,7 @@ internal fun MuscleTag(muscle: String) {
 
 /**
  * Tarjeta de un ejercicio de la lista de Rutina (Figma `exercise-card-*`): toda ella abre el modo sesión.
- * La casilla solo muestra [done] (marcar se hace en el modo sesión); null la oculta (días futuros y descanso).
+ * La casilla solo muestra [done] (marcar se hace en el modo sesión); null la oculta ([WeekDayRow.doneMark]).
  */
 @Composable
 fun ExerciseCard(exercise: Exercise, done: Boolean?, onClick: () -> Unit, modifier: Modifier = Modifier) {

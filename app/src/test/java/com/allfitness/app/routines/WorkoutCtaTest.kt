@@ -14,7 +14,7 @@ class WorkoutCtaTest {
         finished: Boolean = false,
         completed: Set<String> = emptySet(),
         exercises: List<Exercise> = this.exercises,
-    ) = WeekDayRow(date, RoutineDay(date.dayOfWeek, type, null, if (type == DayType.REST) emptyList() else exercises), isToday, finished, completed)
+    ) = WeekDayRow(date, RoutineDay(date.dayOfWeek, type, null, exercises), isToday, finished, completed)
 
     @Test fun todayTrainingWithoutMarksStarts() = assertEquals(WorkoutCta.START, row().workoutCta())
 
@@ -22,6 +22,7 @@ class WorkoutCtaTest {
 
     @Test fun finishedIsFinished() = assertEquals(WorkoutCta.FINISHED, row(finished = true, completed = setOf("a")).workoutCta())
 
+    // Con ejercicios: así falla por la regla de descanso y no por la de lista vacía.
     @Test fun restTodayIsNone() = assertEquals(WorkoutCta.NONE, row(type = DayType.REST).workoutCta())
 
     @Test fun trainingAnotherDayIsNone() = assertEquals(WorkoutCta.NONE, row(isToday = false).workoutCta())
