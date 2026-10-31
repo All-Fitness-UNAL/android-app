@@ -110,7 +110,7 @@ fun LineIndicator(modifier: Modifier = Modifier, color: Color = MaterialTheme.co
     val progress by rememberInfiniteTransition(label = "line").animateFloat(
         initialValue = 0f,
         targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(1200, easing = Motion.Emphasized)),
+        animationSpec = infiniteRepeatable(tween(Motion.LOADER_CYCLE, easing = Motion.Emphasized)),
         label = "segment",
     )
     Canvas(

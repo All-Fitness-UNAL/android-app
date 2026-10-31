@@ -60,3 +60,6 @@ val AppTypography = Typography(
     labelMedium = text(600, 12, 16),
     labelSmall = text(700, 10, 14),
 )
+
+/** Suelo del auto-tamaño de la etiqueta de la barra inferior: con fuente al 200 % "Progreso" se reduce en vez de cortarse (6 sp × 2 > 10 sp × 1). */
+val NavLabelMinSize = 6.sp

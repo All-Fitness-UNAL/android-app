@@ -21,15 +21,6 @@ data class AppColors(
     val surfaceInput: Color,
     /** Solo decorativo (< 4,5:1): viñetas, puntos y bordes de pendiente. Nunca texto. */
     val muted: Color,
-    // Línea: se borra en la Task 12.
-    val lineRoutine: Color,
-    val lineDiet: Color,
-    val lineDietText: Color,
-    val lineProgress: Color,
-    val here: Color,
-    val signal: Color,
-    val onSignal: Color,
-    val signalOutline: Color,
 )
 
 val DefaultAppColors = AppColors(
@@ -41,34 +32,9 @@ val DefaultAppColors = AppColors(
     accentContainer = Color(0xFF2E241A),
     surfaceInput = Color(0xFF121B2A),
     muted = Color(0xFF5F6175),
-    // Línea: se borra en la Task 12. Sin color de sección: el verde es el único acento.
-    lineRoutine = AppColorScheme.primary,
-    lineDiet = AppColorScheme.primary,
-    lineDietText = AppColorScheme.primary,
-    lineProgress = AppColorScheme.primary,
-    here = AppColorScheme.primary,
-    // Línea: se borra en la Task 12. La Señal pasa a ser un panel oscuro (no verde) para que el verde de línea se vea sobre ella.
-    signal = AppColorScheme.surfaceContainerHigh,
-    onSignal = AppColorScheme.onSurface,
-    signalOutline = AppColorScheme.outlineVariant,
 )
 
 val LocalAppColors = staticCompositionLocalOf { DefaultAppColors }
-
-// Línea: se borra en la Task 12.
-enum class AppSection { ROUTINE, DIET, PROGRESS, PROFILE }
-
-/** Perfil no tiene línea propia y usa la tinta. */
-fun AppColors.lineFor(section: AppSection, ink: Color): Color = when (section) {
-    AppSection.ROUTINE -> lineRoutine
-    AppSection.DIET -> lineDiet
-    AppSection.PROGRESS -> lineProgress
-    AppSection.PROFILE -> ink
-}
-
-/** Color de línea para texto e íconos pequeños (Dieta tenía un tono de texto propio). */
-fun AppColors.lineTextFor(section: AppSection, ink: Color): Color =
-    if (section == AppSection.DIET) lineDietText else lineFor(section, ink)
 
 /** Contraste WCAG 2.x entre dos colores opacos. */
 fun contrastRatio(a: Color, b: Color): Float {

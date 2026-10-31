@@ -341,7 +341,7 @@ private fun <T> ReasonList(options: List<T>, selected: T?, label: (T) -> Int, on
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .heightIn(min = Spacing.routeRowHeight)
+                    .heightIn(min = Spacing.listRow)
                     .selectable(selected = option == selected, role = Role.RadioButton, onClick = { onSelect(option) }),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
