@@ -1,6 +1,5 @@
 package com.allfitness.app.core.ui
 
-import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -33,7 +32,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
@@ -50,7 +48,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -71,16 +68,12 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.allfitness.app.R
 import com.allfitness.app.core.network.AppError
 import com.allfitness.app.core.time.Today
-import androidx.core.view.WindowCompat
 import com.allfitness.app.core.ui.theme.AppTheme
-import com.allfitness.app.core.ui.theme.DefaultAppColors
 import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.Spacing
 import java.time.Instant
@@ -156,9 +149,8 @@ fun LoadingState(modifier: Modifier = Modifier, message: String? = null) {
 }
 
 /**
- * Espera de la IA sobre la Señal. Las etapas son orientativas: ninguna se marca como hecha,
- * porque no hay progreso real que mostrar. Con [fullBleed] (primera generación, sin barra superior)
- * la Señal llega bajo las barras del sistema y lleva el wordmark; [summary] son pares etiqueta/valor.
+ * Espera de la IA: marca, mensaje vivo, indicador y etapas. Las etapas son orientativas: ninguna se marca
+ * como hecha, porque no hay progreso real que mostrar. [summary] son pares etiqueta/valor de lo elegido.
  */
 @Composable
 fun AiGeneratingState(
@@ -166,43 +158,28 @@ fun AiGeneratingState(
     modifier: Modifier = Modifier,
     stages: List<String> = emptyList(),
     summary: List<Pair<String?, String>> = emptyList(),
-    fullBleed: Boolean = false,
 ) {
-    val colors = AppTheme.colors
-    // La Señal es oscura en los dos temas: la línea va en su tono para fondo oscuro.
-    val line = DefaultAppColors.lineRoutine
-    if (fullBleed) LightSystemBarIcons()
+    val scheme = MaterialTheme.colorScheme
     Column(
-        modifier = modifier.fillMaxSize().background(colors.signal)
-            .then(if (fullBleed) Modifier.safeDrawingPadding() else Modifier)
-            .padding(Spacing.l),
+        modifier = modifier.fillMaxSize().background(scheme.background).padding(Spacing.l),
         verticalArrangement = Arrangement.Center,
     ) {
-        if (fullBleed) {
-            Text(
-                stringResource(R.string.app_wordmark),
-                Modifier.padding(bottom = Spacing.xl),
-                style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.ExtraBold),
-                color = colors.onSignal,
-            )
-        }
+        LogoMark(Modifier.padding(bottom = Spacing.xl))
         Text(
             text = message,
             modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
             style = MaterialTheme.typography.headlineSmall,
-            color = colors.onSignal,
         )
-        LineIndicator(Modifier.padding(top = Spacing.l), color = line)
+        LineIndicator(Modifier.padding(top = Spacing.l))
         if (stages.isNotEmpty()) {
             Column(Modifier.padding(top = Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 stages.forEach { stage ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(Spacing.stationSize).border(Spacing.hairline * 2, line, CircleShape))
+                        Box(Modifier.size(Spacing.sm).border(Spacing.hairline * 2, scheme.primary, CircleShape))
                         Text(
                             text = stage,
                             modifier = Modifier.padding(start = Spacing.sm),
                             style = MaterialTheme.typography.bodyLarge,
-                            color = colors.onSignal,
                         )
                     }
                 }
@@ -213,30 +190,12 @@ fun AiGeneratingState(
                 summary.forEach { (label, value) ->
                     Column(Modifier.semantics(mergeDescendants = true) {}) {
                         if (label != null) {
-                            Text(label, style = MaterialTheme.typography.labelMedium, color = colors.onSignal.copy(alpha = 0.72f))
+                            Text(label, style = MaterialTheme.typography.labelMedium, color = scheme.onSurfaceVariant)
                         }
-                        Text(value, style = MaterialTheme.typography.bodyLarge, color = colors.onSignal)
+                        Text(value, style = MaterialTheme.typography.bodyLarge)
                     }
                 }
             }
-        }
-    }
-}
-
-/** Íconos claros en las barras del sistema mientras la Señal está debajo; al salir vuelven los del tema. */
-@Composable
-private fun LightSystemBarIcons() {
-    val window = LocalActivity.current?.window ?: return
-    val view = LocalView.current
-    DisposableEffect(window, view) {
-        val controller = WindowCompat.getInsetsController(window, view)
-        val status = controller.isAppearanceLightStatusBars
-        val navigation = controller.isAppearanceLightNavigationBars
-        controller.isAppearanceLightStatusBars = false
-        controller.isAppearanceLightNavigationBars = false
-        onDispose {
-            controller.isAppearanceLightStatusBars = status
-            controller.isAppearanceLightNavigationBars = navigation
         }
     }
 }

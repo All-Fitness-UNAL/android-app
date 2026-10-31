@@ -13,7 +13,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -40,9 +39,12 @@ import androidx.lifecycle.viewModelScope
 import com.allfitness.app.R
 import com.allfitness.app.core.network.AppError
 import com.allfitness.app.core.network.AppResult
+import com.allfitness.app.core.ui.AppCard
+import com.allfitness.app.core.ui.DataStrip
 import com.allfitness.app.core.ui.FREE_TEXT_MAX
 import com.allfitness.app.core.ui.FormTextField
 import com.allfitness.app.core.ui.OfflineHint
+import com.allfitness.app.core.ui.PrimaryButton
 import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.messageRes
@@ -50,7 +52,10 @@ import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.nutrition.DietRepository
 import com.allfitness.app.nutrition.RecipeContent
 import com.allfitness.app.nutrition.RecipeProposal
-import com.allfitness.app.routines.ExerciseItem
+import com.allfitness.app.routines.Exercise
+import com.allfitness.app.routines.ExerciseThumb
+import com.allfitness.app.routines.MuscleTag
+import com.allfitness.app.routines.dataCells
 import com.allfitness.app.routines.ExerciseProposal
 import com.allfitness.app.routines.RoutineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -244,6 +249,7 @@ fun AlternativeHost(viewModel: AlternativeViewModel, online: Boolean) {
         onDismissRequest = viewModel::dismiss,
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         Column(
             Modifier
@@ -267,7 +273,10 @@ fun AlternativeHost(viewModel: AlternativeViewModel, online: Boolean) {
             when (val phase = state.phase) {
                 AlternativePhase.Loading -> Row(horizontalArrangement = Arrangement.spacedBy(Spacing.m), verticalAlignment = Alignment.CenterVertically) {
                     CircularProgressIndicator()
-                    Text(stringResource(R.string.alt_loading), style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        stringResource(if (target.isWholePlan) R.string.alt_loading_plan else R.string.alt_loading),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
                 }
                 is AlternativePhase.Proposed -> ProposalView(phase.proposal, phase.error, accepting = false, online, viewModel)
                 is AlternativePhase.Accepting -> ProposalView(phase.proposal, null, accepting = true, online, viewModel)
@@ -301,7 +310,7 @@ private fun RequestForm(state: AlternativeUiState, target: AlternativeTarget, on
         // FR-019
         Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
             Row(Modifier.padding(Spacing.m), horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                Icon(painterResource(R.drawable.ic_info), contentDescription = null, tint = MaterialTheme.colorScheme.onErrorContainer)
+                Icon(painterResource(R.drawable.lc_info), contentDescription = null, tint = MaterialTheme.colorScheme.onErrorContainer)
                 Text(stringResource(R.string.alt_pain_warning), color = MaterialTheme.colorScheme.onErrorContainer)
             }
         }
@@ -317,9 +326,12 @@ private fun RequestForm(state: AlternativeUiState, target: AlternativeTarget, on
         Text(stringResource(it.message), color = MaterialTheme.colorScheme.error)
     }
     if (!online) OfflineHint()
-    Button(onClick = viewModel::submit, enabled = online, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.small) {
-        Text(stringResource(if (state.phase is AlternativePhase.Failed) R.string.action_retry else R.string.action_send))
-    }
+    PrimaryButton(
+        text = stringResource(if (state.phase is AlternativePhase.Failed) R.string.action_retry else R.string.action_send),
+        onClick = viewModel::submit,
+        modifier = Modifier.fillMaxWidth(),
+        enabled = online,
+    )
 }
 
 @Composable
@@ -349,19 +361,49 @@ private fun ProposalView(
     viewModel: AlternativeViewModel,
 ) {
     Text(stringResource(R.string.alt_proposal_title), style = MaterialTheme.typography.titleMedium)
-    when (proposal) {
-        is Proposal.ForExercise -> ExerciseItem(proposal.value.exercise)
-        is Proposal.ForRecipe -> {
-            Text(proposal.value.recipe.name, style = MaterialTheme.typography.titleMedium)
-            RecipeContent(proposal.value.recipe)
+    // En tarjeta: las placas y pistas `surfaceContainerHigh` del contenido no se pierden sobre la hoja del mismo color.
+    AppCard {
+        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+            when (proposal) {
+                is Proposal.ForExercise -> ExerciseProposalContent(proposal.value.exercise)
+                is Proposal.ForRecipe -> {
+                    Text(proposal.value.recipe.name, style = MaterialTheme.typography.titleMedium)
+                    RecipeContent(proposal.value.recipe)
+                }
+            }
         }
     }
     error?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error) }
     if (!online) OfflineHint()
-    Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-        TonalActionButton(stringResource(R.string.action_keep_current), viewModel::dismiss, Modifier.weight(1f), enabled = !accepting)
-        Button(onClick = viewModel::accept, enabled = online && !accepting, modifier = Modifier.weight(1f), shape = MaterialTheme.shapes.small) {
-            Text(stringResource(if (accepting) R.string.loading else R.string.action_use_this))
+    // Apilados: con fuente grande, dos píldoras a media fila parten "Mantener".
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        PrimaryButton(
+            text = stringResource(if (accepting) R.string.loading else R.string.action_use_this),
+            onClick = viewModel::accept,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = online && !accepting,
+        )
+        TonalActionButton(
+            stringResource(R.string.action_keep_current),
+            viewModel::dismiss,
+            Modifier.fillMaxWidth().heightIn(min = Spacing.buttonHeight),
+            enabled = !accepting,
+        )
+    }
+}
+
+/** El ejercicio propuesto con todo lo necesario para decidir: carga, descanso, peso e instrucciones. */
+@Composable
+private fun ExerciseProposalContent(exercise: Exercise) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        ExerciseThumb(exercise, Spacing.thumbNext)
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            MuscleTag(exercise.muscleGroup)
+            Text(exercise.name, style = MaterialTheme.typography.titleMedium)
         }
+    }
+    DataStrip(exercise.dataCells())
+    if (exercise.instructions.isNotBlank()) {
+        Text(exercise.instructions, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

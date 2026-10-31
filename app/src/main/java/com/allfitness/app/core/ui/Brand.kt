@@ -30,17 +30,19 @@ fun initialOf(name: String): String {
     return trimmed.substring(0, trimmed.offsetByCodePoints(0, 1)).uppercase(Today.locale)
 }
 
-/** Cuadro verde con el rayo y el nombre de la app (Figma `logo-mark`). */
+/** Cuadro verde con el rayo y el nombre de la app (Figma `logo-mark`); [large] en login y registro. */
 @Composable
-fun LogoMark(modifier: Modifier = Modifier) {
-    Row(modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+fun LogoMark(modifier: Modifier = Modifier, large: Boolean = false) {
+    val box = if (large) Spacing.logoMarkLarge else Spacing.logoMark
+    Row(modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(if (large) Spacing.sm else Spacing.s)) {
         Box(
-            Modifier.size(Spacing.logoMark).background(MaterialTheme.colorScheme.primary, MaterialTheme.shapes.small),
+            Modifier.size(box).background(MaterialTheme.colorScheme.primary, if (large) MaterialTheme.shapes.medium else MaterialTheme.shapes.small),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(painterResource(R.drawable.lc_zap), contentDescription = null, Modifier.size(Spacing.m), tint = MaterialTheme.colorScheme.onPrimary)
+            // El rayo ocupa 16 de 28 dp, como en el Figma.
+            Icon(painterResource(R.drawable.lc_zap), contentDescription = null, Modifier.size(box * 4 / 7), tint = MaterialTheme.colorScheme.onPrimary)
         }
-        Text(stringResource(R.string.app_wordmark), style = MaterialTheme.typography.titleLarge)
+        Text(stringResource(R.string.app_wordmark), style = if (large) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.titleLarge)
     }
 }
 

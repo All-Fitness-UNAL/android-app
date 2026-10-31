@@ -151,6 +151,7 @@
 
     <!-- Onboarding -->
     <string name="onboarding_step">Paso %1$d de %2$d</string>
+    <string name="onboarding_subtitle">Con estos datos la IA arma tu rutina y tu dieta.</string>
     <string name="onboarding_generating">Estamos creando tu rutina y tu dieta. Esto puede tardar hasta un minuto.</string>
     <string name="onboarding_generation_failed">No pudimos terminar de preparar tu plan. Inténtalo de nuevo.</string>
     <string name="generating_plan">Generando tu plan…</string>
@@ -245,6 +246,7 @@
     <string name="alt_pain_warning">Si sientes dolor, consulta a un profesional de la salud antes de seguir entrenando.</string>
     <string name="alt_whole_plan_hint">Se generará un plan completo nuevo. El actual se mantiene hasta que el nuevo esté listo.</string>
     <string name="alt_loading">La IA está preparando una alternativa. Puede tardar hasta un minuto.</string>
+    <string name="alt_loading_plan">La IA está preparando tu nuevo plan. Puede tardar hasta un minuto.</string>
     <string name="alt_proposal_title">Propuesta</string>
     <string name="alt_confirm_title">¿Reemplazar el plan actual?</string>
     <string name="alt_confirm_message">El plan nuevo reemplazará al actual. Tus sesiones ya terminadas se conservan.</string>
