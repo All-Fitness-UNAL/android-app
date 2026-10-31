@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,24 +56,22 @@ import com.allfitness.app.core.time.Today
 import com.allfitness.app.core.time.longLabel
 import com.allfitness.app.core.time.shortLabel
 import com.allfitness.app.core.ui.AppCard
-import com.allfitness.app.core.ui.DataCell
-import com.allfitness.app.core.ui.DataStrip
 import com.allfitness.app.core.ui.FormTextField
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
 import com.allfitness.app.core.ui.Refresher
-import com.allfitness.app.core.ui.RouteStation
+import com.allfitness.app.core.ui.PrimaryButton
+import com.allfitness.app.core.ui.ProgressRing
 import com.allfitness.app.core.ui.ScreenHeader
 import com.allfitness.app.core.ui.SectionTitle
 import com.allfitness.app.core.ui.StateContent
-import com.allfitness.app.core.ui.StationProgress
-import com.allfitness.app.core.ui.StationState
 import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.formatNumber
 import com.allfitness.app.core.ui.messageRes
 import com.allfitness.app.core.ui.numberStyle
 import com.allfitness.app.core.ui.parseOneDecimal
+import com.allfitness.app.core.ui.sessionFraction
 import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.Spacing
@@ -235,15 +233,12 @@ fun ProgressScreen(viewModel: ProgressViewModel = hiltViewModel()) {
                                 // Un punto suelto no es una tendencia.
                                 else -> NeedMoreWeights()
                             }
-                            Button(
+                            PrimaryButton(
+                                text = stringResource(R.string.action_add_weight),
                                 onClick = viewModel::openDialog,
-                                enabled = online,
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = MaterialTheme.shapes.small,
-                            ) {
-                                Icon(painterResource(R.drawable.ic_add), contentDescription = null)
-                                Text(stringResource(R.string.action_add_weight), modifier = Modifier.padding(start = Spacing.s))
-                            }
+                                enabled = online,
+                            )
                             if (!online) OfflineHint()
                         }
                     }
@@ -273,34 +268,37 @@ private fun SummaryCard(summary: TrainingSummary?) {
                 Text(stringResource(R.string.summary_unavailable), style = MaterialTheme.typography.bodyMedium)
                 return@Column
             }
-            // Sin sesiones programadas no hay estaciones, pero "0/0" se sigue mostrando (FR-027).
-            StationProgress(summary.scheduledSessions, summary.completedSessions, colors.lineProgress)
+            // Sin sesiones programadas el anillo queda vacío, pero "0/0" se sigue mostrando (FR-027).
             val sessions = stringResource(R.string.summary_sessions, summary.completedSessions, summary.scheduledSessions)
-            Row(Modifier.clearAndSetSemantics { contentDescription = sessions }) {
-                Text(
-                    stringResource(R.string.value_fraction, summary.completedSessions, summary.scheduledSessions),
-                    Modifier.alignByBaseline(),
-                    style = MaterialTheme.typography.displaySmall,
-                )
-                Text(
-                    stringResource(R.string.label_sessions),
-                    Modifier.alignByBaseline().padding(start = Spacing.s),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            if (summary.completedSessions == 0 && summary.weekStreak == 0) {
-                Text(stringResource(R.string.summary_empty), style = MaterialTheme.typography.bodyMedium)
-            } else {
-                DataStrip(
-                    listOf(
-                        DataCell(
-                            stringResource(R.string.label_streak),
-                            summary.weekStreak.toString(),
-                            pluralStringResource(R.plurals.unit_weeks, summary.weekStreak),
-                        ),
-                    ),
-                )
+            Row(
+                Modifier.clearAndSetSemantics { contentDescription = sessions },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+            ) {
+                ProgressRing(sessionFraction(summary.completedSessions, summary.scheduledSessions), Spacing.ringLarge) {
+                    Text(
+                        stringResource(R.string.value_fraction, summary.completedSessions, summary.scheduledSessions),
+                        style = numberStyle(MaterialTheme.typography.labelLarge),
+                    )
+                }
+                Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                    Text(
+                        stringResource(R.string.label_sessions),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    if (summary.completedSessions == 0 && summary.weekStreak == 0) {
+                        Text(stringResource(R.string.summary_empty), style = MaterialTheme.typography.bodyMedium)
+                    } else {
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                            Icon(painterResource(R.drawable.lc_flame), contentDescription = null, Modifier.size(Spacing.m), tint = colors.accent)
+                            Text(
+                                pluralStringResource(R.plurals.streak_weeks, summary.weekStreak, summary.weekStreak),
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -313,7 +311,6 @@ private fun NeedMoreWeights() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(Spacing.sm),
     ) {
-        RouteStation(StationState.PENDING, AppTheme.colors.lineProgress)
         Text(
             stringResource(R.string.chart_need_more),
             style = MaterialTheme.typography.bodyMedium,
@@ -359,7 +356,6 @@ fun WeightChart(weights: List<WeightEntry>) {
     val last = points.last()
     val min = points.minOf { it.weightKg }
     val max = points.maxOf { it.weightKg }
-    val colors = AppTheme.colors
     val scheme = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
 
@@ -387,7 +383,7 @@ fun WeightChart(weights: List<WeightEntry>) {
     }
     val axisLabel = rememberAxisLabelComponent(style = numberStyle(typography.labelMedium).copy(color = scheme.onSurfaceVariant))
     val rule = rememberAxisGuidelineComponent(fill = Fill(scheme.outlineVariant))
-    val line = Fill(colors.lineProgress)
+    val line = Fill(scheme.primary)
     val reduced = AppTheme.reducedMotion
 
     val description = stringResource(
@@ -408,6 +404,7 @@ fun WeightChart(weights: List<WeightEntry>) {
                     lineProvider = LineCartesianLayer.LineProvider.series(
                         LineCartesianLayer.rememberLine(
                             fill = remember(line) { LineCartesianLayer.LineFill.single(line) },
+                            stroke = LineCartesianLayer.LineStroke.Continuous(Spacing.chartLine),
                             pointProvider = LineCartesianLayer.PointProvider.single(
                                 LineCartesianLayer.Point(rememberShapeComponent(line, CircleShape), Spacing.chartPoint),
                             ),
@@ -433,9 +430,9 @@ fun WeightChart(weights: List<WeightEntry>) {
                 ),
                 marker = rememberDefaultCartesianMarker(
                     label = rememberTextComponent(
-                        style = typography.labelLarge.copy(color = scheme.inverseOnSurface),
+                        style = numberStyle(typography.labelLarge).copy(color = scheme.onSurface),
                         padding = Insets(start = Spacing.s, top = Spacing.xs, end = Spacing.s, bottom = Spacing.xs),
-                        background = rememberShapeComponent(Fill(scheme.inverseSurface), MaterialTheme.shapes.extraSmall),
+                        background = rememberShapeComponent(Fill(scheme.surfaceContainerHigh), MaterialTheme.shapes.extraSmall),
                     ),
                     valueFormatter = markerText,
                     guideline = rule,
