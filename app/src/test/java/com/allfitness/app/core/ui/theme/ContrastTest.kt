@@ -54,6 +54,8 @@ class ContrastTest {
     fun primaryContainerIsPrimaryTint() {
         assertBlend(s.primary, s.background, s.primaryContainer)
         assertContrast(4.5f, s.onPrimaryContainer, s.primaryContainer)
+        // MuscleTag y PillChip elegido: texto primary sobre primaryContainer.
+        assertContrast(4.5f, s.primary, s.primaryContainer)
     }
 
     @Test fun errorOnCard() = assertContrast(4.5f, s.error, s.surface)
