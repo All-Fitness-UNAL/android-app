@@ -291,7 +291,7 @@ private fun Session(
                 onSkip = { go(index + 1) },
             )
         }
-        SessionFooter(view, page, online, finishing, go, onToggle, onFinish)
+        SessionFooter(view, page, online, pager.isScrollInProgress, finishing, go, onToggle, onFinish)
     }
 }
 
@@ -362,6 +362,7 @@ private fun SessionFooter(
     view: DayView,
     page: Int,
     online: Boolean,
+    scrolling: Boolean,
     finishing: Boolean,
     go: (Int) -> Unit,
     onToggle: (String, Boolean) -> Unit,
@@ -388,11 +389,13 @@ private fun SessionFooter(
                 onToggle(current.id, !done)
                 if (!done) go(nextPageAfterMark(page, exercises.size))
             }
+            // Mientras el pager se desplaza `page` cambia a mitad de gesto: un segundo toque marcaría otro ejercicio.
+            val markEnabled = online && !scrolling
             // Desmarcar deshace: va en secundario para que la acción principal siga siendo una sola.
             if (done) {
-                SecondaryButton(stringResource(R.string.action_unmark_done), toggle, Modifier.fillMaxWidth(), enabled = online)
+                SecondaryButton(stringResource(R.string.action_unmark_done), toggle, Modifier.fillMaxWidth(), enabled = markEnabled)
             } else {
-                PrimaryButton(stringResource(R.string.action_mark_done), toggle, Modifier.fillMaxWidth(), enabled = online)
+                PrimaryButton(stringResource(R.string.action_mark_done), toggle, Modifier.fillMaxWidth(), enabled = markEnabled)
             }
         }
         if (controls.canFinish) {
