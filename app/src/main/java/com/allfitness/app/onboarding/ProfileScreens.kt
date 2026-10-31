@@ -1,30 +1,33 @@
 package com.allfitness.app.onboarding
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -38,10 +41,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -49,6 +59,7 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.allfitness.app.BuildConfig
 import com.allfitness.app.R
 import com.allfitness.app.auth.AuthRepository
 import com.allfitness.app.core.network.AppError
@@ -60,25 +71,28 @@ import com.allfitness.app.core.time.Today
 import com.allfitness.app.core.ui.AiGeneratingState
 import com.allfitness.app.core.ui.AiNote
 import com.allfitness.app.core.ui.AppCard
+import com.allfitness.app.core.ui.Avatar
 import com.allfitness.app.core.ui.DataCell
-import com.allfitness.app.core.ui.DataStrip
 import com.allfitness.app.core.ui.ErrorState
 import com.allfitness.app.core.ui.FormTextField
+import com.allfitness.app.core.ui.IconTile
 import com.allfitness.app.core.ui.LoadingState
 import com.allfitness.app.core.ui.MessageEffect
 import com.allfitness.app.core.ui.OfflineHint
+import com.allfitness.app.core.ui.PreferenceRow
+import com.allfitness.app.core.ui.PrimaryButton
 import com.allfitness.app.core.ui.Refresher
 import com.allfitness.app.core.ui.ScreenHeader
-import com.allfitness.app.core.ui.SectionTitle
+import com.allfitness.app.core.ui.StatCard
 import com.allfitness.app.core.ui.StateContent
 import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.formatNumber
-import com.allfitness.app.core.ui.initialOf
 import com.allfitness.app.core.ui.mapContent
 import com.allfitness.app.core.ui.messageRes
-import com.allfitness.app.core.ui.theme.AppTheme
+import com.allfitness.app.core.ui.stripColumns
+import com.allfitness.app.core.ui.theme.PillShape
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.core.ui.uiStateOf
 import com.allfitness.app.navigation.ProfileSectionRoute
@@ -144,6 +158,7 @@ fun ProfileScreen(
     val online by viewModel.isOnline.collectAsStateWithLifecycle()
     val user by viewModel.user.collectAsStateWithLifecycle()
     var confirmLogout by remember { mutableStateOf(false) }
+    val uriHandler = LocalUriHandler.current
 
     LifecycleResumeEffect(Unit) {
         viewModel.onResume()
@@ -162,44 +177,50 @@ fun ProfileScreen(
                 LazyColumn(
                     modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(Spacing.m),
-                    verticalArrangement = Arrangement.spacedBy(Spacing.s),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.l),
                 ) {
                     item { ProfileHeader(user?.name.orEmpty(), user?.email.orEmpty()) }
-                    items(ProfileSection.entries) { section ->
-                        AppCard(Modifier.fillMaxWidth()) {
-                            Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                                val title = stringResource(section.titleRes())
-                                // Cuatro botones "Editar": cada uno dice qué sección abre.
-                                val editLabel = stringResource(R.string.action_edit_section, title)
-                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                                    SectionTitle(title, Modifier.weight(1f))
-                                    TonalActionButton(
-                                        text = stringResource(R.string.action_edit),
-                                        onClick = { onEdit(section) },
-                                        modifier = Modifier.semantics { contentDescription = editLabel },
-                                        enabled = online,
-                                        icon = R.drawable.ic_edit,
-                                    )
+                    // Los cuatro "Editar" se deshabilitan sin conexión (FR-039).
+                    if (!online) item { OfflineHint() }
+                    item {
+                        Group(stringResource(R.string.section_physical), { EditButton(ProfileSection.PHYSICAL, online, onEdit) }) {
+                            PhysicalStats(profile)
+                        }
+                    }
+                    item {
+                        Group(stringResource(R.string.section_goal)) {
+                            AppCard(Modifier.fillMaxWidth(), highlighted = true) {
+                                Row(
+                                    Modifier.padding(Spacing.m),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+                                ) {
+                                    IconTile(R.drawable.lc_target, Spacing.xxl)
+                                    Text(stringResource(profile.goal.labelRes()), Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
+                                    EditButton(ProfileSection.GOAL, online, onEdit)
                                 }
-                                SectionSummary(section, profile)
                             }
                         }
                     }
-                    if (!online) item { OfflineHint() }
                     item {
-                        Column(Modifier.padding(top = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                            TonalActionButton(
-                                text = stringResource(R.string.action_logout),
-                                onClick = { confirmLogout = true },
-                                modifier = Modifier.fillMaxWidth(),
-                            )
-                            OutlinedButton(
-                                onClick = onDeleteAccount,
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = MaterialTheme.shapes.small,
-                                border = BorderStroke(Spacing.hairline, MaterialTheme.colorScheme.error),
-                                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
-                            ) { Text(stringResource(R.string.action_delete_account)) }
+                        Group(stringResource(R.string.section_training), { EditButton(ProfileSection.TRAINING, online, onEdit) }) {
+                            PreferenceCard(trainingPrefs(profile))
+                        }
+                    }
+                    item {
+                        Group(stringResource(R.string.section_nutrition), { EditButton(ProfileSection.NUTRITION, online, onEdit) }) {
+                            PreferenceCard(nutritionPrefs(profile))
+                        }
+                    }
+                    item {
+                        Group(stringResource(R.string.profile_section_account)) {
+                            AppCard(Modifier.fillMaxWidth()) {
+                                AccountRow(R.drawable.lc_shield, stringResource(R.string.register_read_privacy)) { uriHandler.openUri(BuildConfig.PRIVACY_URL) }
+                                HorizontalDivider(thickness = Spacing.hairline, color = MaterialTheme.colorScheme.outlineVariant)
+                                AccountRow(R.drawable.lc_log_out, stringResource(R.string.action_logout)) { confirmLogout = true }
+                                HorizontalDivider(thickness = Spacing.hairline, color = MaterialTheme.colorScheme.outlineVariant)
+                                AccountRow(R.drawable.lc_trash_2, stringResource(R.string.action_delete_account), MaterialTheme.colorScheme.error, onDeleteAccount)
+                            }
                         }
                     }
                 }
@@ -223,74 +244,142 @@ fun ProfileScreen(
     }
 }
 
-/** Inicial en un círculo Señal, nombre y correo (el correo no se edita aquí). */
+/** Avatar con la inicial, nombre y correo (Figma `profile-block`); el correo no se edita aquí. */
 @Composable
 private fun ProfileHeader(name: String, email: String) {
-    val colors = AppTheme.colors
-    Row(Modifier.padding(bottom = Spacing.s), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-        Box(
-            Modifier.size(Spacing.avatar).background(colors.signal, CircleShape).border(Spacing.hairline, colors.signalOutline, CircleShape).clearAndSetSemantics {},
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(initialOf(name), style = MaterialTheme.typography.titleLarge, color = colors.onSignal)
-        }
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-            Text(name, style = MaterialTheme.typography.headlineSmall)
-            Text(email, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(
-                stringResource(R.string.profile_email_readonly),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+        Avatar(name, Spacing.avatarLarge, Modifier.padding(bottom = Spacing.sm))
+        Text(name, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
+        Text(email, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
+        Text(
+            stringResource(R.string.profile_email_readonly),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
-/** Cifras en una DataStrip y datos de texto como etiqueta/valor; mismos datos que antes, sin "Etiqueta: valor". */
+/** Rótulo verde de sección (Figma `section-header`) con [trailing] a la derecha y el contenido debajo. */
 @Composable
-private fun SectionSummary(section: ProfileSection, profile: Profile) {
-    @Composable
-    fun Enum<*>.text() = stringResource(labelRes())
-    @Composable
-    fun label(@StringRes id: Int) = stringResource(id)
-    val (numbers, facts) = when (section) {
-        ProfileSection.PHYSICAL -> listOfNotNull(
-            DataCell(label(R.string.label_age), profile.age.toString(), label(R.string.unit_years)),
-            DataCell(label(R.string.label_height), profile.heightCm.toString(), label(R.string.unit_cm)),
-            profile.currentWeightKg?.let { DataCell(label(R.string.label_weight), formatNumber(it), label(R.string.unit_kg)) },
-        ) to listOf(label(R.string.label_sex) to profile.sex.text())
-        // El título de la tarjeta ya dice "Objetivo".
-        ProfileSection.GOAL -> emptyList<DataCell>() to listOf(null to profile.goal.text())
-        ProfileSection.TRAINING -> listOf(
-            DataCell(label(R.string.label_days), profile.daysPerWeek.toString()),
-            DataCell(label(R.string.label_session), profile.sessionMinutes.toString(), label(R.string.unit_minutes)),
-        ) to listOf(
-            label(R.string.label_level) to profile.level.text(),
-            label(R.string.label_location) to profile.location.text(),
-            label(R.string.label_equipment) to profile.equipment.map { it.text() }.joinToString(", "),
-            label(R.string.label_injuries) to profile.injuries?.takeIf { it.isNotBlank() },
-        )
-        ProfileSection.NUTRITION -> listOf(
-            DataCell(label(R.string.label_meals), profile.mealsPerDay.toString()),
-        ) to listOf(
-            label(R.string.label_diet) to profile.dietType.text(),
-            label(R.string.label_allergies) to profile.allergies.filter { it != Allergy.OTHER }.map { it.text() }
-                .plus(listOfNotNull(profile.otherAllergy?.takeIf { it.isNotBlank() }))
-                .takeIf { it.isNotEmpty() }?.joinToString(", "),
-            label(R.string.label_disliked) to profile.dislikedFoods?.takeIf { it.isNotBlank() },
-        )
-    }
+private fun Group(title: String, trailing: @Composable () -> Unit = {}, content: @Composable () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-        if (numbers.isNotEmpty()) DataStrip(numbers)
-        facts.forEach { (label, value) -> if (value != null) Fact(label, value) }
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            Text(
+                title,
+                Modifier.weight(1f).semantics { heading() },
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            trailing()
+        }
+        content()
     }
 }
 
 @Composable
-private fun Fact(label: String?, value: String) {
-    Column(Modifier.semantics(mergeDescendants = true) {}) {
-        if (label != null) Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(value, style = MaterialTheme.typography.bodyLarge)
+private fun EditButton(section: ProfileSection, online: Boolean, onEdit: (ProfileSection) -> Unit) {
+    // Cuatro botones "Editar": cada uno dice qué sección abre.
+    val editLabel = stringResource(R.string.action_edit_section, stringResource(section.titleRes()))
+    TonalActionButton(
+        text = stringResource(R.string.action_edit),
+        onClick = { onEdit(section) },
+        modifier = Modifier.semantics { contentDescription = editLabel },
+        enabled = online,
+        icon = R.drawable.lc_pencil,
+    )
+}
+
+/** Edad, peso, estatura y sexo en `StatCard`: 2 por fila, o 1 si con fuente grande una cifra no cabe entera. */
+@Composable
+private fun PhysicalStats(profile: Profile) {
+    val cells = listOfNotNull(
+        DataCell(stringResource(R.string.label_age), profile.age.toString(), stringResource(R.string.unit_years)),
+        profile.currentWeightKg?.let { DataCell(stringResource(R.string.label_weight), formatNumber(it), stringResource(R.string.unit_kg)) },
+        DataCell(stringResource(R.string.label_height), profile.heightCm.toString(), stringResource(R.string.unit_cm)),
+        DataCell(stringResource(R.string.label_sex), stringResource(profile.sex.labelRes())),
+    )
+    val measurer = rememberTextMeasurer()
+    val typography = MaterialTheme.typography
+    val density = LocalDensity.current
+    val widest = remember(cells, typography, density) {
+        // Margen de la tarjeta a cada lado más el hueco entre tarjetas.
+        val padding = with(density) { (Spacing.m * 2 + Spacing.sm).toPx() }
+        cells.maxOf { cell ->
+            val unit = cell.unit?.let { measurer.measure(it, typography.bodyMedium).size.width + with(density) { Spacing.xs.toPx() } } ?: 0f
+            maxOf(measurer.measure(cell.label, typography.labelMedium).size.width.toFloat(), measurer.measure(cell.value, typography.titleLarge).size.width + unit)
+        } + padding
+    }
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        val columns = minOf(2, stripColumns(cells.size, constraints.maxWidth.toFloat(), widest))
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+            cells.chunked(columns).forEach { row ->
+                Row(Modifier.height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                    row.forEach { StatCard(it.label, it.value, Modifier.weight(1f).fillMaxHeight(), unit = it.unit) }
+                    repeat(columns - row.size) { Spacer(Modifier.weight(1f)) }
+                }
+            }
+        }
+    }
+}
+
+private data class Pref(@DrawableRes val icon: Int, val label: String, val value: String)
+
+@Composable
+private fun Enum<*>.text() = stringResource(labelRes())
+
+/** Los campos de la sección Entrenamiento; los opcionales vacíos no salen. */
+@Composable
+private fun trainingPrefs(profile: Profile) = listOfNotNull(
+    Pref(R.drawable.lc_activity, stringResource(R.string.label_level), profile.level.text()),
+    Pref(R.drawable.lc_calendar_check, stringResource(R.string.label_days), profile.daysPerWeek.toString()),
+    Pref(R.drawable.lc_clock, stringResource(R.string.label_session), "${profile.sessionMinutes} ${stringResource(R.string.unit_minutes)}"),
+    Pref(R.drawable.lc_house, stringResource(R.string.label_location), profile.location.text()),
+    profile.equipment.takeIf { it.isNotEmpty() }
+        ?.let { set -> Pref(R.drawable.lc_dumbbell, stringResource(R.string.label_equipment), set.map { it.text() }.joinToString(", ")) },
+    profile.injuries?.takeIf { it.isNotBlank() }?.let { Pref(R.drawable.lc_heart, stringResource(R.string.label_injuries), it) },
+)
+
+/** Los campos de la sección Alimentación; "Otra" alergia se muestra con su texto. */
+@Composable
+private fun nutritionPrefs(profile: Profile): List<Pref> {
+    val allergies = profile.allergies.filter { it != Allergy.OTHER }.map { it.text() }
+        .plus(listOfNotNull(profile.otherAllergy?.takeIf { it.isNotBlank() }))
+    return listOfNotNull(
+        Pref(R.drawable.lc_salad, stringResource(R.string.label_diet), profile.dietType.text()),
+        Pref(R.drawable.lc_utensils, stringResource(R.string.label_meals), profile.mealsPerDay.toString()),
+        allergies.takeIf { it.isNotEmpty() }?.let { Pref(R.drawable.lc_triangle_alert, stringResource(R.string.label_allergies), it.joinToString(", ")) },
+        profile.dislikedFoods?.takeIf { it.isNotBlank() }?.let { Pref(R.drawable.lc_x, stringResource(R.string.label_disliked), it) },
+    )
+}
+
+/** Filas `PreferenceRow` en una tarjeta, separadas por hilos (Figma `workout-card`, `nutrition-card`). */
+@Composable
+private fun PreferenceCard(rows: List<Pref>) {
+    AppCard(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(horizontal = Spacing.m, vertical = Spacing.xs)) {
+            rows.forEachIndexed { index, row ->
+                if (index > 0) HorizontalDivider(thickness = Spacing.hairline, color = MaterialTheme.colorScheme.outlineVariant)
+                PreferenceRow(row.icon, row.label, row.value)
+            }
+        }
+    }
+}
+
+/** Fila tocable de "Cuenta" (Figma `setting-list-item`), de 48 dp como mínimo. */
+@Composable
+private fun AccountRow(@DrawableRes icon: Int, text: String, color: Color = MaterialTheme.colorScheme.onSurface, onClick: () -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .heightIn(min = Spacing.xxl)
+            .clickable(role = Role.Button, onClick = onClick)
+            .padding(horizontal = Spacing.m, vertical = Spacing.sm),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
+    ) {
+        Icon(painterResource(icon), contentDescription = null, Modifier.size(Spacing.l), tint = color)
+        Text(text, Modifier.weight(1f), style = MaterialTheme.typography.titleSmall, color = color)
     }
 }
 
@@ -424,9 +513,12 @@ fun ProfileEditScreen(onDone: () -> Unit, viewModel: ProfileEditViewModel = hilt
             ) {
                 ProfileSectionForm(viewModel.section, state.form, state.errors, viewModel::update)
                 if (!online) OfflineHint()
-                Button(onClick = viewModel::save, enabled = online && !state.saving, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.small) {
-                    Text(stringResource(if (state.saving) R.string.loading else R.string.action_save))
-                }
+                PrimaryButton(
+                    text = stringResource(if (state.saving) R.string.loading else R.string.action_save),
+                    onClick = viewModel::save,
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = online && !state.saving,
+                )
             }
         }
     }
@@ -520,7 +612,7 @@ fun DeleteAccountScreen(onBack: () -> Unit, viewModel: DeleteAccountViewModel = 
             Button(
                 onClick = viewModel::delete,
                 enabled = online && !state.deleting && state.text == DELETE_CONFIRMATION,
-                shape = MaterialTheme.shapes.small,
+                shape = PillShape,
                 // Deshabilitado sigue en rojo (al 38 %): se ve qué tipo de acción es antes de escribir la palabra.
                 colors = ButtonDefaults.buttonColors(
                     containerColor = error,
@@ -528,8 +620,8 @@ fun DeleteAccountScreen(onBack: () -> Unit, viewModel: DeleteAccountViewModel = 
                     disabledContainerColor = error.copy(alpha = 0.12f),
                     disabledContentColor = error.copy(alpha = 0.38f),
                 ),
-                modifier = Modifier.fillMaxWidth(),
-            ) { Text(stringResource(if (state.deleting) R.string.loading else R.string.action_delete_my_account)) }
+                modifier = Modifier.fillMaxWidth().heightIn(min = Spacing.buttonHeight),
+            ) { Text(stringResource(if (state.deleting) R.string.loading else R.string.action_delete_my_account), style = MaterialTheme.typography.titleMedium) }
         }
     }
 }
