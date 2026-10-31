@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.dp
 import com.allfitness.app.core.ui.theme.Spacing
 
 /** [color]: marca de la serie junto a la etiqueta (leyenda de una barra); el texto nunca va en ese color. */
@@ -94,7 +93,7 @@ private fun StripRow(cells: List<DataCell>, weights: List<Float>) {
 
 @Composable
 private fun DataCellView(cell: DataCell, first: Boolean, modifier: Modifier) {
-    Column(modifier.padding(start = if (first) 0.dp else Spacing.sm, end = Spacing.s).semantics(mergeDescendants = true) {}) {
+    Column(modifier.then(if (first) Modifier else Modifier.padding(start = Spacing.sm)).padding(end = Spacing.s).semantics(mergeDescendants = true) {}) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             if (cell.color != null) Box(Modifier.size(Spacing.s).background(cell.color, CircleShape))
             Text(cell.label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
