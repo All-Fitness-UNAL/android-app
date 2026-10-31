@@ -223,6 +223,11 @@
     <string name="kcal_value" tools:ignore="PluralsCandidate">%1$d kcal</string>
     <string name="recipe_title">Receta</string>
     <string name="recipe_ingredients">Ingredientes</string>
+    <plurals name="recipe_ingredients_count">
+        <item quantity="one">%d ingrediente</item>
+        <item quantity="many">%d ingredientes</item>
+        <item quantity="other">%d ingredientes</item>
+    </plurals>
     <string name="recipe_steps">Preparación</string>
     <string name="recipe_per_serving">Valores nutricionales por porción.</string>
 
@@ -308,7 +313,6 @@
     <string name="label_carbs">CARBOHIDRATOS</string>
     <string name="label_fat">GRASAS</string>
     <string name="label_kcal">KCAL</string>
-    <string name="label_time">TIEMPO</string>
     <string name="label_streak">RACHA</string>
     <string name="label_sessions">SESIONES</string>
     <string name="value_fraction">%1$d/%2$d</string>
