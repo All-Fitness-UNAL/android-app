@@ -276,6 +276,7 @@
     <string name="profile_title">Tu perfil</string>
     <string name="profile_empty">No pudimos cargar tu perfil.</string>
     <string name="profile_email_readonly">El correo no se puede cambiar desde la app.</string>
+    <string name="profile_section_account">Cuenta</string>
     <string name="logout_confirm_title">¿Cerrar sesión?</string>
     <string name="logout_confirm_message">Se borrarán los datos guardados en este dispositivo.</string>
     <string name="discard_title">¿Descartar los cambios?</string>
