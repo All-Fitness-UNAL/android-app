@@ -210,7 +210,8 @@ private fun Greeting(name: String, modifier: Modifier) {
         Text(
             stringResource(R.string.home_greeting, name),
             Modifier.semantics { heading() },
-            style = MaterialTheme.typography.headlineMedium,
+            // Figma: saludo discreto junto al avatar; el título más grande es el del entreno.
+            style = MaterialTheme.typography.titleLarge,
         )
     }
 }
@@ -251,7 +252,8 @@ private fun Indicators(today: WeekDayRow?, summary: TrainingSummary?, kcal: Int?
     AppCard(modifier.fillMaxWidth()) {
         Row(Modifier.padding(vertical = Spacing.m, horizontal = Spacing.s)) {
             val cell = Modifier.weight(1f)
-            RingIndicator(stringResource(R.string.today), today?.doneCount, today?.day?.exercises?.size, R.drawable.lc_dumbbell, cell)
+            val ring = today?.todayRing()
+            RingIndicator(stringResource(R.string.today), ring?.first, ring?.second, R.drawable.lc_dumbbell, cell)
             RingIndicator(
                 stringResource(R.string.stat_week_sessions),
                 summary?.completedSessions,
@@ -274,6 +276,10 @@ private fun Indicators(today: WeekDayRow?, summary: TrainingSummary?, kcal: Int?
         }
     }
 }
+
+/** Anillo "Hoy": hechos de total; en descanso (o sin ejercicios) no hay nada que contar y se ve "–", no "0/0". */
+internal fun WeekDayRow.todayRing(): Pair<Int, Int>? =
+    if (day.type != DayType.TRAINING || day.exercises.isEmpty()) null else doneCount to day.exercises.size
 
 /** Anillo N de M; TalkBack lee "Hoy, 2 de 5" en vez de un porcentaje. */
 @Composable

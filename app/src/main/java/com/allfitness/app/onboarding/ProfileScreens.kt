@@ -3,8 +3,10 @@ package com.allfitness.app.onboarding
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -33,6 +35,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,6 +44,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
@@ -85,7 +90,6 @@ import com.allfitness.app.core.ui.Refresher
 import com.allfitness.app.core.ui.ScreenHeader
 import com.allfitness.app.core.ui.StatCard
 import com.allfitness.app.core.ui.StateContent
-import com.allfitness.app.core.ui.TonalActionButton
 import com.allfitness.app.core.ui.UiState
 import com.allfitness.app.core.ui.UserMessage
 import com.allfitness.app.core.ui.formatNumber
@@ -282,13 +286,21 @@ private fun Group(title: String, trailing: @Composable () -> Unit = {}, content:
 private fun EditButton(section: ProfileSection, online: Boolean, onEdit: (ProfileSection) -> Unit) {
     // Cuatro botones "Editar": cada uno dice qué sección abre.
     val editLabel = stringResource(R.string.action_edit_section, stringResource(section.titleRes()))
-    TonalActionButton(
-        text = stringResource(R.string.action_edit),
-        onClick = { onEdit(section) },
-        modifier = Modifier.semantics { contentDescription = editLabel },
-        enabled = online,
-        icon = R.drawable.lc_pencil,
-    )
+    // Figma: chip pequeño (47×32) que no pesa más que el rótulo de la sección; el área táctil sigue en 48 dp.
+    Box(
+        Modifier
+            .minimumInteractiveComponentSize()
+            .heightIn(min = Spacing.chipSmall)
+            .alpha(if (online) 1f else 0.38f)
+            .clip(MaterialTheme.shapes.small)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .clickable(enabled = online, role = Role.Button) { onEdit(section) }
+            .semantics { contentDescription = editLabel }
+            .padding(horizontal = Spacing.sm),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(stringResource(R.string.action_edit), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+    }
 }
 
 /** Edad, peso, estatura y sexo en `StatCard`: 2 por fila, o 1 si con fuente grande una cifra no cabe entera. */
