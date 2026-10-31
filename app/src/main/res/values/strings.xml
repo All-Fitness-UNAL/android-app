@@ -316,11 +316,6 @@
     <string name="label_streak">RACHA</string>
     <string name="label_sessions">SESIONES</string>
     <string name="value_fraction">%1$d/%2$d</string>
-    <plurals name="unit_weeks">
-        <item quantity="one">semana</item>
-        <item quantity="many">semanas</item>
-        <item quantity="other">semanas</item>
-    </plurals>
     <string name="value_grams">%1$s g</string>
     <string name="value_ml">%1$s ml</string>
     <string name="generating_stage_profile">Leyendo tu perfil</string>
