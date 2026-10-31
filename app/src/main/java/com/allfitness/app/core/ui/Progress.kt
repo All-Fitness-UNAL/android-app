@@ -22,7 +22,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.Motion
 import com.allfitness.app.core.ui.theme.PillShape
@@ -36,9 +35,6 @@ fun sessionFraction(done: Int, total: Int): Float =
 
 /** Avance entre 0 y 1; NaN (p. ej. 0f/0f) cuenta como 0, porque ProgressBarRangeInfo lo rechaza. */
 internal fun progressFraction(fraction: Float): Float = if (fraction.isNaN()) 0f else fraction.coerceIn(0f, 1f)
-
-/** Figma `progress-bar-container` del onboarding: segmentos separados 6 dp. */
-private val SegmentGap = 6.dp
 
 /** Avance animado 450 ms; con movimiento reducido salta al valor. */
 @Composable
@@ -94,7 +90,7 @@ fun SegmentedProgress(total: Int, reached: Int, modifier: Modifier = Modifier) {
     val scheme = MaterialTheme.colorScheme
     Row(
         modifier.fillMaxWidth().progressSemantics(done.toFloat(), 0f..total.toFloat(), steps = total - 1),
-        horizontalArrangement = Arrangement.spacedBy(SegmentGap),
+        horizontalArrangement = Arrangement.spacedBy(Spacing.segmentGap),
     ) {
         repeat(total) { index ->
             Box(

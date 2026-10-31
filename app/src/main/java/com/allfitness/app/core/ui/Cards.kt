@@ -26,14 +26,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.allfitness.app.R
 import com.allfitness.app.core.ui.theme.AppTheme
 import com.allfitness.app.core.ui.theme.PillShape
 import com.allfitness.app.core.ui.theme.Spacing
-
-/** Figma `pill-*`: 33 dp de alto visual; el área táctil llega a 48 con minimumInteractiveComponentSize. */
-private val ChipHeight = 33.dp
 
 /**
  * Rótulo, cifra y unidad en una tarjeta (Figma `stat-card` del perfil). Alto según el contenido.
@@ -131,7 +127,7 @@ fun PillChip(text: String, selected: Boolean, onClick: () -> Unit, enabled: Bool
     Row(
         Modifier
             .minimumInteractiveComponentSize()
-            .heightIn(min = ChipHeight)
+            .heightIn(min = Spacing.chip)
             .alpha(if (enabled) 1f else 0.38f)
             .clip(PillShape)
             .background(if (selected) scheme.primaryContainer else AppTheme.colors.surfaceInput)

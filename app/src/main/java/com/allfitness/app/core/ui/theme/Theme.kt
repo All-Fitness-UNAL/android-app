@@ -44,6 +44,12 @@ object Spacing {
     val logoMark = 28.dp
     val logoMarkLarge = 48.dp
     val progressHeight = 6.dp
+    /** Figma `progress-bar-container` del onboarding: separación entre segmentos. */
+    val segmentGap = 6.dp
+    /** Figma `pill-*`: alto visual; el área táctil llega a 48 con minimumInteractiveComponentSize. */
+    val chip = 33.dp
+    /** Figma "Editar" de Perfil (47×32): chip compacto; el área táctil llega a 48 igual que [chip]. */
+    val chipSmall = 32.dp
 
     /** Figma `diff-meters` de Inicio: los 3 segmentos del nivel. */
     val levelMeter = 54.dp
