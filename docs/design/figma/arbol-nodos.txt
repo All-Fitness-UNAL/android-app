@@ -1,0 +1,930 @@
+  FRAME 'all-fitness-onboarding' 402x919 @-175,-438 fill=#090E17
+    FRAME 'status-bar' 402x44 @0,0
+      TEXT '9:41' 30x17 @24,14 fill=#FFFFFF [Inter Semi Bold 14] "9:41"
+      FRAME 'Frame' 80x20 @298,12
+    FRAME 'header-section' 402x84 @0,44
+      FRAME 'top-header' 354x28 @24,16
+        FRAME 'branding' 124x28 @0,0
+          FRAME 'logo-mark' 28x28 @0,0 fill=#2ECC71 r=8
+            FRAME 'icon-bolt' 16x16 @6,6
+              FRAME 'bolt' 16x16 @0,0
+          TEXT 'All Fitness' 88x23 @36,2 fill=#FFFFFF [Outfit ExtraBold 18] "All Fitness"
+        TEXT 'Step 2 of 4' 69x17 @285,6 fill=#94A3B8 [Geist SemiBold 13] "Step 2 of 4"
+      FRAME 'progress-bar-container' 354x4 @24,60
+        ROUNDED_RECTANGLE 'bar-1' 84x4 @0,0 fill=#2ECC71 r=2
+        ROUNDED_RECTANGLE 'bar-2' 84x4 @90,0 fill=#2ECC71 r=2
+        ROUNDED_RECTANGLE 'bar-3' 84x4 @180,0 fill=#1E2B3E r=2
+        ROUNDED_RECTANGLE 'bar-4' 84x4 @270,0 fill=#1E2B3E r=2
+    FRAME 'title-block' 402x105 @0,128
+      TEXT 'Set up your profile' 354x35 @24,0 fill=#FFFFFF [Outfit ExtraBold 28] "Set up your profile"
+      TEXT 'Let's tailor the AI model to match your biometrics and equipment.' 354x42 @24,39 fill=#94A3B8 [Geist Regular 15] "Let's tailor the AI model to match your biometrics and equipment."
+    FRAME 'onboarding-form' 402x686 @0,233
+      FRAME 'personal-details-section' 354x164 @24,0
+        FRAME 'input-row-Age' 354x74 @0,0
+          TEXT 'Age' 29x18 @0,0 fill=#94A3B8 [Outfit SemiBold 14] "Age"
+          FRAME 'input-wrapper' 354x48 @0,26 fill=#121B2A stroke=#1E2B3E/1 r=12
+            FRAME 'Frame' 21x21 @16,14
+              TEXT '26' 21x21 @0,0 fill=#FFFFFF [Geist Medium 16] "26"
+        FRAME 'biometrics-row' 354x74 @0,90
+          FRAME 'input-row-Weight' 169x74 @0,0
+            TEXT 'Weight' 57x18 @0,0 fill=#94A3B8 [Outfit SemiBold 14] "Weight"
+            FRAME 'input-wrapper' 169x48 @0,26 fill=#121B2A stroke=#1E2B3E/1 r=12
+              FRAME 'Frame' 19x21 @16,14
+                TEXT '78' 19x21 @0,0 fill=#FFFFFF [Geist Medium 16] "78"
+              FRAME 'unit-toggle' 69x32 @84,8 fill=#090E17 r=8
+                FRAME 'opt-1' 31x24 @2,4 fill=#1E2B3E r=6
+                  TEXT 'kg' 15x16 @8,4 fill=#FFFFFF [Geist SemiBold 12] "kg"
+                FRAME 'opt-2' 34x24 @33,4 r=6
+                  TEXT 'lbs' 18x16 @8,4 fill=#94A3B8 [Geist SemiBold 12] "lbs"
+          FRAME 'input-row-Height' 169x74 @185,0
+            TEXT 'Height' 53x18 @0,0 fill=#94A3B8 [Outfit SemiBold 14] "Height"
+            FRAME 'input-wrapper' 169x48 @0,26 fill=#121B2A stroke=#1E2B3E/1 r=12
+              FRAME 'Frame' 27x21 @16,14
+                TEXT '182' 27x21 @0,0 fill=#FFFFFF [Geist Medium 16] "182"
+              FRAME 'unit-toggle' 64x32 @89,8 fill=#090E17 r=8
+                FRAME 'opt-1' 34x24 @2,4 fill=#1E2B3E r=6
+                  TEXT 'cm' 18x16 @8,4 fill=#FFFFFF [Geist SemiBold 12] "cm"
+                FRAME 'opt-2' 26x24 @36,4 r=6
+                  TEXT 'ft' 10x16 @8,4 fill=#94A3B8 [Geist SemiBold 12] "ft"
+      FRAME 'goals-section' 354x242 @24,192
+        TEXT 'Choose Your Primary Goal' 205x18 @0,0 fill=#94A3B8 [Outfit SemiBold 14] "Choose Your Primary Goal"
+        FRAME 'goals-grid' 354x212 @0,30
+          FRAME 'grid-row-1' 354x100 @0,0
+            FRAME 'goal-Build-Muscle' 171x100 @0,0 fill=#2ECC71@0.10 stroke=#2ECC71/1 r=16
+              FRAME 'icon-circle' 36x36 @16,16 fill=#2ECC71 r=18
+                FRAME 'icon-trophy' 18x18 @9,9
+                  FRAME 'trophy' 18x18 @0,0
+              TEXT 'Build Muscle' 139x20 @16,64 fill=#FFFFFF [Outfit Bold 16] "Build Muscle"
+            FRAME 'goal-Weight-Loss' 171x100 @183,0 fill=#121B2A stroke=#1E2B3E/1 r=16
+              FRAME 'icon-circle' 36x36 @16,16 fill=#1E2B3E r=18
+                FRAME 'icon-trending-down' 18x18 @9,9
+                  FRAME 'trending-down' 18x18 @0,0
+              TEXT 'Weight Loss' 139x20 @16,64 fill=#FFFFFF [Outfit Bold 16] "Weight Loss"
+          FRAME 'grid-row-2' 354x100 @0,112
+            FRAME 'goal-Stay-Fit' 171x100 @0,0 fill=#121B2A stroke=#1E2B3E/1 r=16
+              FRAME 'icon-circle' 36x36 @16,16 fill=#1E2B3E r=18
+                FRAME 'icon-heart' 18x18 @9,9
+                  FRAME 'heart' 18x18 @0,0
+              TEXT 'Stay Fit' 139x20 @16,64 fill=#FFFFFF [Outfit Bold 16] "Stay Fit"
+            FRAME 'goal-Gain-Strength' 171x100 @183,0 fill=#121B2A stroke=#1E2B3E/1 r=16
+              FRAME 'icon-circle' 36x36 @16,16 fill=#1E2B3E r=18
+                FRAME 'icon-activity' 18x18 @9,9
+                  FRAME 'activity' 18x18 @0,0
+              TEXT 'Gain Strength' 139x20 @16,64 fill=#FFFFFF [Outfit Bold 16] "Gain Strength"
+      FRAME 'equipment-section' 354x104 @24,462
+        TEXT 'Available Equipment' 158x18 @0,0 fill=#94A3B8 [Outfit SemiBold 14] "Available Equipment"
+        FRAME 'pills-wrap' 354x74 @0,30
+          FRAME 'pill-Dumbbells' 119x33 @0,0 fill=#2ECC71@0.10 stroke=#2ECC71/1 r=20
+            FRAME 'icon-check' 14x14 @16,10
+              FRAME 'check' 14x14 @0,0
+            TEXT 'Dumbbells' 67x17 @36,8 fill=#2ECC71 [Geist SemiBold 13] "Dumbbells"
+          FRAME 'pill-Bodyweight' 127x33 @127,0 fill=#2ECC71@0.10 stroke=#2ECC71/1 r=20
+            FRAME 'icon-check' 14x14 @16,10
+              FRAME 'check' 14x14 @0,0
+            TEXT 'Bodyweight' 75x17 @36,8 fill=#2ECC71 [Geist SemiBold 13] "Bodyweight"
+          FRAME 'pill-Barbell' 77x33 @262,0 fill=#121B2A stroke=#1E2B3E/1 r=20
+            TEXT 'Barbell' 45x17 @16,8 fill=#94A3B8 [Geist SemiBold 13] "Barbell"
+          FRAME 'pill-Resistance-Bands' 164x33 @0,41 fill=#2ECC71@0.10 stroke=#2ECC71/1 r=20
+            FRAME 'icon-check' 14x14 @16,10
+              FRAME 'check' 14x14 @0,0
+            TEXT 'Resistance Bands' 112x17 @36,8 fill=#2ECC71 [Geist SemiBold 13] "Resistance Bands"
+          FRAME 'pill-Kettlebell' 92x33 @172,41 fill=#121B2A stroke=#1E2B3E/1 r=20
+            TEXT 'Kettlebell' 60x17 @16,8 fill=#94A3B8 [Geist SemiBold 13] "Kettlebell"
+    FRAME 'bottom-sticky-cta' 402x112 @0,807 fill=#090E17 stroke=#1E2B3E/1
+      FRAME 'continue-button' 354x56 @24,20 fill=#2ECC71 r=16 fx=DROP_SHADOW
+        TEXT 'Continue' 67x20 @132,18 fill=#090E17 [Outfit Bold 16] "Continue"
+        FRAME 'icon-arrow-right' 16x16 @206,20
+          FRAME 'arrow-right' 16x16 @0,0
+  FRAME 'all-fitness-home-dashboard' 402x1046 @240,-438 fill=#11111E stroke=#1E1E2C/1 r=24
+    FRAME 'top-sticky-deck' 402x105 @0,0
+      FRAME 'status-bar' 402x44 @0,0
+        TEXT 'time-label' 28x19 @24,12 fill=#FFFFFF [Manrope SemiBold 14] "9:41"
+        FRAME 'status-icons' 74x18 @304,13
+      FRAME 'top-greeting-row' 402x61 @0,44
+        FRAME 'left-profile-group' 142x45 @16,8
+          FRAME 'avatar-container' 40x40 @0,2 stroke=#00C853/1.5 r=20
+            ROUNDED_RECTANGLE 'avatar-photo' 40x40 @0,0 fill=IMG:9eb1cce0 stroke=#0B0B14/3 r=49
+          FRAME 'greeting-labels' 90x45 @52,0
+            TEXT 'greet' 90x18 @0,0 fill=#9FA2B4 [Manrope Medium 13] "Good morning,"
+            TEXT 'name' 49x25 @0,20 fill=#FFFFFF [Manrope Bold 18] "Jorge"
+        FRAME 'bell-icon-button' 40x40 @346,10 fill=#1C1C2C r=20
+          FRAME 'icon-container' 20x20 @10,10
+            FRAME 'bell' 18x18 @1,1
+          ELLIPSE 'notif-dot' 8x8 @20,12 fill=#00C853 stroke=#1C1C2C/1
+    FRAME 'dashboard-body' 402x853 @0,105
+      FRAME 'progress-row' 370x132 @16,0 fill=#1C1C2C r=16
+        FRAME 'stat-kcal' 86x104 @14,14
+          FRAME 'ring-container' 60x60 @13,0
+            ELLIPSE 'track' 60x60 @0,0 fill=#25253A
+            ELLIPSE 'fill' 60x60 @0,0 fill=#00C853
+            FRAME 'center-icon' 48x48 @6,6
+              FRAME 'icon-container' 20x20 @14,14
+                FRAME 'flame' 18x18 @1,1
+          FRAME 'text-labels' 86x34 @0,70
+            TEXT 'val' 86x18 @0,0 fill=#FFFFFF [Manrope Bold 13] "1.2k"
+            TEXT 'lbl' 86x14 @0,20 fill=#9FA2B4 [Manrope SemiBold 10] "Kcal"
+        FRAME 'stat-prot' 86x104 @100,14
+          FRAME 'ring-container' 60x60 @13,0
+            ELLIPSE 'track' 60x60 @0,0 fill=#25253A
+            ELLIPSE 'fill' 60x60 @0,0 fill=#00C853
+            FRAME 'center-icon' 48x48 @6,6
+              FRAME 'icon-container' 20x20 @14,14
+                FRAME 'dumbbell' 18x18 @1,1
+          FRAME 'text-labels' 86x34 @0,70
+            TEXT 'val' 86x18 @0,0 fill=#FFFFFF [Manrope Bold 13] "65g"
+            TEXT 'lbl' 86x14 @0,20 fill=#9FA2B4 [Manrope SemiBold 10] "Prot"
+        FRAME 'stat-water' 86x104 @185,14
+          FRAME 'ring-container' 60x60 @13,0
+            ELLIPSE 'track' 60x60 @0,0 fill=#25253A
+            ELLIPSE 'fill' 60x60 @0,0 fill=#00C853
+            FRAME 'center-icon' 48x48 @6,6
+              FRAME 'icon-container' 20x20 @14,14
+                FRAME 'droplets' 18x18 @1,1
+          FRAME 'text-labels' 86x34 @0,70
+            TEXT 'val' 86x18 @0,0 fill=#FFFFFF [Manrope Bold 13] "4/8"
+            TEXT 'lbl' 86x14 @0,20 fill=#9FA2B4 [Manrope SemiBold 10] "Water"
+        FRAME 'stat-work' 86x104 @270,14
+          FRAME 'ring-container' 60x60 @13,0
+            ELLIPSE 'track' 60x60 @0,0 fill=#25253A
+            ELLIPSE 'fill' 60x60 @0,0 fill=#00C853
+            FRAME 'center-icon' 48x48 @6,6
+              FRAME 'icon-container' 20x20 @14,14
+                FRAME 'calendar-check' 18x18 @1,1
+          FRAME 'text-labels' 86x34 @0,70
+            TEXT 'val' 86x18 @0,0 fill=#FFFFFF [Manrope Bold 13] "1/2"
+            TEXT 'lbl' 86x14 @0,20 fill=#9FA2B4 [Manrope SemiBold 10] "Work"
+      FRAME 'workout-card' 370x207 @16,152 fill=#1C1C2C r=16
+        FRAME 'workout-upper' 370x143 @0,0
+          FRAME 'workout-details' 258x111 @16,16
+            FRAME 'workout-ai-tag' 114x22 @0,0 fill=#25253A r=6
+              FRAME 'icon-container' 14x14 @8,4
+                FRAME 'sparkles' 13x13 @0,0
+              TEXT 'ai-tag-label' 78x14 @28,4 fill=#00C853 [Manrope Bold 10] "AI Target Plan"
+            FRAME 'workout-title-group' 258x49 @0,34
+              TEXT 'workout-headline' 258x27 @0,0 fill=#FFFFFF [Manrope ExtraBold 20] "Upper Body Strength"
+              FRAME 'workout-metadata' 258x18 @0,31
+                TEXT 'duration' 47x18 @0,0 fill=#9FA2B4 [Manrope Medium 13] "35 mins"
+                ELLIPSE 'bullet' 4x4 @55,7 fill=#5F6175
+                TEXT 'exercises' 70x18 @67,0 fill=#9FA2B4 [Manrope Medium 13] "6 exercises"
+            FRAME 'difficulty-row' 114x16 @0,95
+              TEXT 'diff-label' 56x16 @0,0 fill=#9FA2B4 [Manrope SemiBold 12] "Difficulty:"
+              FRAME 'diff-meters' 54x6 @60,5
+                ROUNDED_RECTANGLE 'meter-1' 16x6 @0,0 fill=#00C853 r=3
+                ROUNDED_RECTANGLE 'meter-2' 16x6 @19,0 fill=#00C853 r=3
+                ROUNDED_RECTANGLE 'meter-3' 16x6 @38,0 fill=#2D2D44 r=3
+          FRAME 'illustration-wrap' 80x100 @274,22 r=12
+            ROUNDED_RECTANGLE 'gym-thumbnail' 80x100 @0,0 fill=IMG:dc09c0ae
+        FRAME 'start-btn-row' 370x64 @0,143
+          FRAME 'start-workout-cta' 338x48 @16,0 fill=#00C853 r=24
+            FRAME 'icon-container' 18x18 @104,15
+              FRAME 'play-circle' 16x16 @1,1
+            TEXT 'btn-label' 105x20 @130,14 fill=#11111E [Manrope ExtraBold 15] "Start Workout"
+      FRAME 'nutrition-section' 370x317 @16,379
+        FRAME 'nutri-header' 370x22 @0,0
+          TEXT 'sec-title' 132x22 @0,0 fill=#FFFFFF [Manrope Bold 16] "Today's Nutrition"
+          TEXT 'cal-ratio' 103x18 @267,2 fill=#9FA2B4 [Manrope SemiBold 13] "1,240 / 2,100 kcal"
+        FRAME 'calorie-progress-track' 370x8 @0,34 fill=#1C1C2C r=4
+          ROUNDED_RECTANGLE 'calorie-fill' 237x8 @0,0 fill=#00C853
+        FRAME 'meals-stack' 370x196 @0,54
+          FRAME 'meal-greek-yogurt-bowl' 370x60 @0,0 fill=#25253A r=12
+            FRAME 'meal-left' 157x36 @12,12
+              FRAME 'status-indicator' 24x24 @0,6 fill=#00C853@0.12 stroke=#00C853/1.5 r=12
+                FRAME 'icon-container' 14x14 @5,5
+                  FRAME 'check' 13x13 @0,0
+              FRAME 'meal-text' 121x36 @36,0
+                TEXT 'meal-title' 121x19 @0,0 fill=#FFFFFF [Manrope SemiBold 14] "Greek Yogurt Bowl"
+                TEXT 'meal-status' 58x15 @0,21 fill=#00C853 [Manrope Medium 11] "Completed"
+            TEXT 'meal-calories' 57x19 @301,20 fill=#FFFFFF [Manrope Bold 14] "420 kcal"
+          FRAME 'meal-grilled-chicken-salad' 370x60 @0,68 fill=#25253A r=12
+            FRAME 'meal-left' 177x36 @12,12
+              FRAME 'status-indicator' 24x24 @0,6 fill=#00C853@0.12 stroke=#00C853/1.5 r=12
+                FRAME 'icon-container' 14x14 @5,5
+                  FRAME 'check' 13x13 @0,0
+              FRAME 'meal-text' 141x36 @36,0
+                TEXT 'meal-title' 141x19 @0,0 fill=#FFFFFF [Manrope SemiBold 14] "Grilled Chicken Salad"
+                TEXT 'meal-status' 58x15 @0,21 fill=#00C853 [Manrope Medium 11] "Completed"
+            TEXT 'meal-calories' 56x19 @302,20 fill=#FFFFFF [Manrope Bold 14] "520 kcal"
+          FRAME 'meal-salmon-&-quinoa' 370x60 @0,136 fill=#25253A r=12
+            FRAME 'meal-left' 149x36 @12,12
+              FRAME 'status-indicator' 24x24 @0,6 fill=#000000@0.00 stroke=#5F6175/1.5 r=12
+              FRAME 'meal-text' 113x36 @36,0
+                TEXT 'meal-title' 113x19 @0,0 fill=#FFFFFF [Manrope SemiBold 14] "Salmon & Quinoa"
+                TEXT 'meal-status' 53x15 @0,21 fill=#9FA2B4 [Manrope Medium 11] "Upcoming"
+            TEXT 'meal-calories' 57x19 @301,20 fill=#FFFFFF [Manrope Bold 14] "650 kcal"
+        FRAME 'macro-card' 370x55 @0,262 fill=#1C1C2C r=12
+          FRAME 'macro-split-bar' 346x6 @12,12 r=3
+            ROUNDED_RECTANGLE 'prot' 115x6 @0,0 fill=#00C853
+            ROUNDED_RECTANGLE 'carbs' 115x6 @115,0 fill=#FFB300
+            ROUNDED_RECTANGLE 'fat' 115x6 @231,0 fill=#9FA2B4
+          FRAME 'macro-legend' 346x15 @12,28
+            FRAME 'legend-prot' 64x15 @0,0
+              ELLIPSE 'Ellipse' 6x6 @0,4 fill=#00C853
+              TEXT 'prot-text' 52x15 @12,0 fill=#9FA2B4 [Manrope SemiBold 11] "Prot: 110g"
+            FRAME 'legend-carbs' 74x15 @141,0
+              ELLIPSE 'Ellipse' 6x6 @0,4 fill=#FFB300
+              TEXT 'carbs-text' 62x15 @12,0 fill=#9FA2B4 [Manrope SemiBold 11] "Carbs: 145g"
+            FRAME 'legend-fat' 54x15 @292,0
+              ELLIPSE 'Ellipse' 6x6 @0,4 fill=#9FA2B4
+              TEXT 'fat-text' 42x15 @12,0 fill=#9FA2B4 [Manrope SemiBold 11] "Fat: 55g"
+      FRAME 'progress-section' 370x113 @16,716
+        FRAME 'prog-header' 370x24 @0,0
+          TEXT 'sec-title' 108x22 @0,1 fill=#FFFFFF [Manrope Bold 16] "Your Progress"
+          FRAME 'streak-badge' 108x24 @262,0 fill=#FFB300@0.12 r=12
+            FRAME 'icon-container' 14x14 @10,5
+              FRAME 'flame' 13x13 @0,0
+            TEXT 'streak-label' 70x16 @28,4 fill=#FFB300 [Manrope Bold 12] "4 day streak"
+        FRAME 'weekly-activity' 370x77 @0,36 fill=#1C1C2C r=16
+          FRAME 'day-column-0' 28x49 @14,14
+            TEXT 'day-name' 10x15 @9,0 fill=#9FA2B4 [Manrope SemiBold 11] "M"
+            FRAME 'activity-point' 28x28 @0,21 fill=#00C853 stroke=#000000@0.00/2 r=14
+              FRAME 'icon-container' 14x14 @7,7
+                FRAME 'check' 13x13 @0,0
+          FRAME 'day-column-1' 28x49 @66,14
+            TEXT 'day-name' 7x15 @10,0 fill=#9FA2B4 [Manrope SemiBold 11] "T"
+            FRAME 'activity-point' 28x28 @0,21 fill=#00C853 stroke=#000000@0.00/2 r=14
+              FRAME 'icon-container' 14x14 @7,7
+                FRAME 'check' 13x13 @0,0
+          FRAME 'day-column-2' 28x49 @119,14
+            TEXT 'day-name' 11x15 @8,0 fill=#9FA2B4 [Manrope SemiBold 11] "W"
+            FRAME 'activity-point' 28x28 @0,21 fill=#00C853 stroke=#000000@0.00/2 r=14
+              FRAME 'icon-container' 14x14 @7,7
+                FRAME 'check' 13x13 @0,0
+          FRAME 'day-column-3' 28x49 @171,14
+            TEXT 'day-name' 7x15 @10,0 fill=#9FA2B4 [Manrope SemiBold 11] "T"
+            FRAME 'activity-point' 28x28 @0,21 fill=#00C853 stroke=#000000@0.00/2 r=14
+              FRAME 'icon-container' 14x14 @7,7
+                FRAME 'check' 13x13 @0,0
+          FRAME 'day-column-4' 28x49 @223,14
+            TEXT 'day-name' 6x15 @11,0 fill=#9FA2B4 [Manrope SemiBold 11] "F"
+            FRAME 'activity-point' 28x28 @0,21 fill=#000000@0.00 stroke=#2A2A3E/2 r=14
+              ELLIPSE 'Ellipse' 6x6 @11,11 fill=#5F6175
+          FRAME 'day-column-5' 28x49 @276,14
+            TEXT 'day-name' 8x15 @10,0 fill=#9FA2B4 [Manrope SemiBold 11] "S"
+            FRAME 'activity-point' 28x28 @0,21 fill=#000000@0.00 stroke=#2A2A3E/2 r=14
+              ELLIPSE 'Ellipse' 6x6 @11,11 fill=#5F6175
+          FRAME 'day-column-6' 28x49 @328,14
+            TEXT 'day-name' 8x15 @10,0 fill=#9FA2B4 [Manrope SemiBold 11] "S"
+            FRAME 'activity-point' 28x28 @0,21 fill=#000000@0.00 stroke=#2A2A3E/2 r=14
+              ELLIPSE 'Ellipse' 6x6 @11,11 fill=#5F6175
+    FRAME 'bottom-nav' 402x88 @0,958
+      FRAME 'nav-deck' 402x64 @0,0 fill=#1C1C2C stroke=#2A2A3E/1
+        FRAME 'tab-home' 64x40 @16,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'house' 20x20 @1,1
+          TEXT 'tab-label' 29x14 @18,26 fill=#00C853 [Manrope Bold 10] "Home"
+        FRAME 'tab-workouts' 64x40 @92,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'dumbbell' 20x20 @1,1
+          TEXT 'tab-label' 46x14 @9,26 fill=#9FA2B4 [Manrope Medium 10] "Workouts"
+        FRAME 'tab-nutrition' 64x40 @169,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'apple' 20x20 @1,1
+          TEXT 'tab-label' 42x14 @11,26 fill=#9FA2B4 [Manrope Medium 10] "Nutrition"
+        FRAME 'tab-progress' 64x40 @246,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'chart-line' 20x20 @1,1
+          TEXT 'tab-label' 42x14 @11,26 fill=#9FA2B4 [Manrope Medium 10] "Progress"
+        FRAME 'tab-profile' 64x40 @322,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'user' 20x20 @1,1
+          TEXT 'tab-label' 31x14 @16,26 fill=#9FA2B4 [Manrope Medium 10] "Profile"
+      FRAME 'android-navigation-bar' 402x24 @0,64 fill=#1C1C2C
+        ROUNDED_RECTANGLE 'system-handle' 140x5 @131,10 fill=#5F6175 r=3
+  FRAME 'all-fitness-workout' 402x874 @642,-438 fill=#080C0A
+    FRAME 'status-bar' 402x44 @0,0
+      TEXT 'time' 38x18 @24,13 fill=#FFFFFF [Geist SemiBold 14] "09:41"
+      FRAME 'status-icons' 74x18 @304,13
+    FRAME 'progress-bar-container' 402x44 @0,44
+      FRAME 'progress-labels' 354x16 @24,8
+        TEXT 'progress-pct' 102x16 @0,0 fill=#10B981 [Geist SemiBold 12] "60% COMPLETED"
+        TEXT 'progress-sets' 90x16 @264,0 fill=#94A3B8 [Geist Medium 12] "3 of 5 Exercises"
+      FRAME 'progress-track' 354x6 @24,30 fill=#141E1A r=3
+        ROUNDED_RECTANGLE 'progress-fill' 212x6 @0,0 fill=#10B981 fx=DROP_SHADOW
+    FRAME 'header-area' 402x93 @0,88
+      FRAME 'header-text' 272x57 @24,16
+        TEXT 'today-workout-title' 272x35 @0,0 fill=#FFFFFF [Outfit ExtraBold 28] "Today's Workout"
+        FRAME 'subtitle-badge' 159x18 @0,39
+          FRAME 'icon-wrapper-sparkles' 14x14 @0,2
+            FRAME 'sparkles' 14x14 @0,0
+          TEXT 'ai-plan-subtitle' 137x18 @22,0 fill=#94A3B8 [Geist Medium 14] "AI-Personalized Plan"
+      FRAME 'duration-badge' 82x33 @296,28 fill=#1F2937@0.50 stroke=#1A221E/1 r=12
+        TEXT 'duration-label' 58x17 @12,8 fill=#FFFFFF [Geist Bold 13] "~35 mins"
+    FRAME 'exercise-list' 402x623 @0,181
+      FRAME 'exercise-card-1' 370x100 @16,0 fill=#121815 stroke=#1A221E/1 r=16
+        FRAME 'thumbnail-container' 76x76 @12,12 fill=IMG:e80a3969|#000000@0.15 r=12
+        FRAME 'info-stack' 226x64 @100,18
+          FRAME 'badge-row' 143x17 @0,0
+            FRAME 'muscle-badge' 49x17 @0,0 fill=#10B981@0.08 r=6
+              TEXT 'Chest' 33x13 @8,2 fill=#10B981 [Geist SemiBold 10] "Chest"
+            FRAME 'difficulty-badge' 88x17 @55,0 fill=#FFFFFF@0.03 r=6
+              TEXT 'Intermediate' 72x13 @8,2 fill=#94A3B8 [Geist SemiBold 10] "Intermediate"
+          TEXT 'exercise-name' 226x19 @0,23 fill=#FFFFFF [Outfit Bold 15] "Dumbbell Chest Press"
+          FRAME 'details-row' 226x16 @0,48
+            FRAME 'reps' 76x16 @0,0
+              FRAME 'icon-wrapper-repeat' 12x12 @0,2
+                FRAME 'repeat' 12x12 @0,0
+              TEXT '4 × 12 reps' 60x16 @16,0 fill=#94A3B8 [Geist Medium 12] "4 × 12 reps"
+            FRAME 'divider' 1x10 @88,3 fill=#1A221E
+            FRAME 'rest' 71x16 @101,0
+              FRAME 'icon-wrapper-clock' 12x12 @0,2
+                FRAME 'clock' 12x12 @0,0
+              TEXT 'Rest: 60s' 55x16 @16,0 fill=#94A3B8 [Geist Medium 12] "Rest: 60s"
+        FRAME 'icon-wrapper-menu' 20x20 @338,40
+          FRAME 'menu' 20x20 @0,0
+      FRAME 'exercise-card-2' 370x100 @16,112 fill=#121815 stroke=#1A221E/1 r=16
+        FRAME 'thumbnail-container' 76x76 @12,12 fill=IMG:7e1fc824|#000000@0.15 r=12
+        FRAME 'info-stack' 226x64 @100,18
+          FRAME 'badge-row' 125x17 @0,0
+            FRAME 'muscle-badge' 52x17 @0,0 fill=#10B981@0.08 r=6
+              TEXT 'Quads' 36x13 @8,2 fill=#10B981 [Geist SemiBold 10] "Quads"
+            FRAME 'difficulty-badge' 67x17 @58,0 fill=#FFFFFF@0.03 r=6
+              TEXT 'Beginner' 51x13 @8,2 fill=#94A3B8 [Geist SemiBold 10] "Beginner"
+          TEXT 'exercise-name' 226x19 @0,23 fill=#FFFFFF [Outfit Bold 15] "Goblet Squats"
+          FRAME 'details-row' 226x16 @0,48
+            FRAME 'reps' 76x16 @0,0
+              FRAME 'icon-wrapper-repeat' 12x12 @0,2
+                FRAME 'repeat' 12x12 @0,0
+              TEXT '3 × 15 reps' 60x16 @16,0 fill=#94A3B8 [Geist Medium 12] "3 × 15 reps"
+            FRAME 'divider' 1x10 @88,3 fill=#1A221E
+            FRAME 'rest' 71x16 @101,0
+              FRAME 'icon-wrapper-clock' 12x12 @0,2
+                FRAME 'clock' 12x12 @0,0
+              TEXT 'Rest: 45s' 55x16 @16,0 fill=#94A3B8 [Geist Medium 12] "Rest: 45s"
+        FRAME 'icon-wrapper-menu' 20x20 @338,40
+          FRAME 'menu' 20x20 @0,0
+      FRAME 'exercise-card-3' 370x100 @16,224 fill=#121815 stroke=#1A221E/1 r=16
+        FRAME 'thumbnail-container' 76x76 @12,12 fill=IMG:78de72b3|#000000@0.15 r=12
+        FRAME 'info-stack' 226x64 @100,18
+          FRAME 'badge-row' 138x17 @0,0
+            FRAME 'muscle-badge' 44x17 @0,0 fill=#10B981@0.08 r=6
+              TEXT 'Back' 28x13 @8,2 fill=#10B981 [Geist SemiBold 10] "Back"
+            FRAME 'difficulty-badge' 88x17 @50,0 fill=#FFFFFF@0.03 r=6
+              TEXT 'Intermediate' 72x13 @8,2 fill=#94A3B8 [Geist SemiBold 10] "Intermediate"
+          TEXT 'exercise-name' 226x19 @0,23 fill=#FFFFFF [Outfit Bold 15] "Lat Pulldown"
+          FRAME 'details-row' 226x16 @0,48
+            FRAME 'reps' 77x16 @0,0
+              FRAME 'icon-wrapper-repeat' 12x12 @0,2
+                FRAME 'repeat' 12x12 @0,0
+              TEXT '4 × 10 reps' 61x16 @16,0 fill=#94A3B8 [Geist Medium 12] "4 × 10 reps"
+            FRAME 'divider' 1x10 @89,3 fill=#1A221E
+            FRAME 'rest' 71x16 @102,0
+              FRAME 'icon-wrapper-clock' 12x12 @0,2
+                FRAME 'clock' 12x12 @0,0
+              TEXT 'Rest: 60s' 55x16 @16,0 fill=#94A3B8 [Geist Medium 12] "Rest: 60s"
+        FRAME 'icon-wrapper-menu' 20x20 @338,40
+          FRAME 'menu' 20x20 @0,0
+      FRAME 'exercise-card-4' 370x100 @16,336 fill=#121815 stroke=#1A221E/1 r=16
+        FRAME 'thumbnail-container' 76x76 @12,12 fill=IMG:85d0d114|#000000@0.15 r=12
+        FRAME 'info-stack' 226x64 @100,18
+          FRAME 'badge-row' 117x17 @0,0
+            FRAME 'muscle-badge' 44x17 @0,0 fill=#10B981@0.08 r=6
+              TEXT 'Core' 28x13 @8,2 fill=#10B981 [Geist SemiBold 10] "Core"
+            FRAME 'difficulty-badge' 67x17 @50,0 fill=#FFFFFF@0.03 r=6
+              TEXT 'Beginner' 51x13 @8,2 fill=#94A3B8 [Geist SemiBold 10] "Beginner"
+          TEXT 'exercise-name' 226x19 @0,23 fill=#FFFFFF [Outfit Bold 15] "Plank Hold"
+          FRAME 'details-row' 226x16 @0,48
+            FRAME 'reps' 86x16 @0,0
+              FRAME 'icon-wrapper-repeat' 12x12 @0,2
+                FRAME 'repeat' 12x12 @0,0
+              TEXT '3 × 60s hold' 70x16 @16,0 fill=#94A3B8 [Geist Medium 12] "3 × 60s hold"
+            FRAME 'divider' 1x10 @98,3 fill=#1A221E
+            FRAME 'rest' 71x16 @111,0
+              FRAME 'icon-wrapper-clock' 12x12 @0,2
+                FRAME 'clock' 12x12 @0,0
+              TEXT 'Rest: 30s' 55x16 @16,0 fill=#94A3B8 [Geist Medium 12] "Rest: 30s"
+        FRAME 'icon-wrapper-menu' 20x20 @338,40
+          FRAME 'menu' 20x20 @0,0
+    FRAME 'nav-deck' 402x64 @0,804 fill=#1C1C2C stroke=#2A2A3E/1
+      FRAME 'tab-home' 64x40 @16,18
+        FRAME 'icon-container' 22x22 @21,0
+          FRAME 'house' 20x20 @1,1
+        TEXT 'tab-label' 29x14 @18,26 fill=#9FA2B4 [Manrope Bold 10] "Home"
+      FRAME 'tab-workouts' 64x40 @92,18
+        FRAME 'icon-container' 22x22 @21,0
+          FRAME 'dumbbell' 20x20 @1,1
+        TEXT 'tab-label' 46x14 @9,26 fill=#00C853 [Manrope Medium 10] "Workouts"
+      FRAME 'tab-nutrition' 64x40 @169,18
+        FRAME 'icon-container' 22x22 @21,0
+          FRAME 'apple' 20x20 @1,1
+        TEXT 'tab-label' 42x14 @11,26 fill=#9FA2B4 [Manrope Medium 10] "Nutrition"
+      FRAME 'tab-progress' 64x40 @246,18
+        FRAME 'icon-container' 22x22 @21,0
+          FRAME 'chart-line' 20x20 @1,1
+        TEXT 'tab-label' 42x14 @11,26 fill=#9FA2B4 [Manrope Medium 10] "Progress"
+      FRAME 'tab-profile' 64x40 @322,18
+        FRAME 'icon-container' 22x22 @21,0
+          FRAME 'user' 20x20 @1,1
+        TEXT 'tab-label' 31x14 @16,26 fill=#9FA2B4 [Manrope Medium 10] "Profile"
+    FRAME 'bottom-sticky-container' 402x78 @0,686
+      FRAME 'start-btn-wrapper' 402x78 @0,0 fill=linear(#080C0A@0.00,#080C0A)
+        FRAME 'start-workout-btn' 354x54 @24,12 fill=#10B981 r=27 fx=DROP_SHADOW
+          FRAME 'icon-wrapper-play' 18x18 @111,18
+            FRAME 'play' 18x18 @0,0
+          TEXT 'btn-label' 106x20 @137,17 fill=#080C0A [Outfit Bold 16] "Start Workout"
+  FRAME 'active-workout-screen' 402x1076 @1052,-438 fill=#090E17 stroke=#1E2B3E/1 r=24
+    FRAME 'status-bar' 402x44 @0,0
+      TEXT '9:41' 30x17 @24,14 fill=#FFFFFF [Inter Semi Bold 14] "9:41"
+      FRAME 'Frame' 80x20 @298,12
+    FRAME 'header-section' 402x93 @0,44
+      FRAME 'header-text-row' 354x47 @24,12
+        FRAME 'title-group' 157x47 @0,0
+          TEXT 'Chest & Triceps' 157x28 @0,0 fill=#FFFFFF [Outfit ExtraBold 22] "Chest & Triceps"
+          TEXT 'Exercise 2 of 5' 93x17 @0,30 fill=#94A3B8 [Geist SemiBold 13] "Exercise 2 of 5"
+        FRAME 'badge-ai' 114x22 @240,12 fill=#2ECC71@0.12 r=100
+          TEXT 'AI Coach Active' 94x14 @10,4 fill=#2ECC71 [Outfit Bold 11] "AI Coach Active"
+      FRAME 'progress-bar-container' 354x6 @24,71
+        FRAME 'progress-track' 354x6 @0,0 fill=#1E2B3E r=3
+          ROUNDED_RECTANGLE 'progress-fill' 160x6 @0,0 fill=#2ECC71
+    FRAME 'main-exercise-card' 402x360 @0,137
+      FRAME 'exercise-illustration-frame' 362x180 @20,0 fill=IMG:0f99a3ac|#000000@0.30 r=16
+        FRAME 'stats-tag-row' 114x24 @16,140
+          FRAME 'tag' 114x24 @0,0 fill=#000000@0.70 r=6
+            TEXT 'Target: Pectorals' 98x16 @8,4 fill=#FFFFFF [Geist SemiBold 12] "Target: Pectorals"
+      FRAME 'exercise-meta' 362x54 @20,196
+        TEXT 'Dumbbell Chest Press' 362x30 @0,0 fill=#FFFFFF [Outfit ExtraBold 24] "Dumbbell Chest Press"
+        FRAME 'meta-row' 362x18 @0,36
+          TEXT 'Set 2 of 3' 65x18 @0,0 fill=#94A3B8 [Geist Medium 14] "Set 2 of 3"
+          ELLIPSE 'Ellipse' 4x4 @77,7 fill=#64748B
+          TEXT 'Goal: 12 reps' 85x18 @93,0 fill=#94A3B8 [Geist Medium 14] "Goal: 12 reps"
+          ELLIPSE 'Ellipse' 4x4 @190,7 fill=#64748B
+          TEXT 'Rec: 24 kg' 70x18 @206,0 fill=#94A3B8 [Geist Medium 14] "Rec: 24 kg"
+      FRAME 'stepper-controls' 362x78 @20,266
+        FRAME 'weight-stepper' 175x78 @0,0 fill=#121B2A stroke=#1E2B3E/1 r=14
+          TEXT 'Weight' 45x14 @12,12 fill=#94A3B8 [Outfit Bold 11] "Weight"
+          FRAME 'stepper-row' 151x32 @12,34
+            FRAME 'minus' 32x32 @0,0 fill=#1E2B3E r=8
+              FRAME 'minus' 14x14 @9,9
+            TEXT '24 kg' 38x23 @56,4 fill=#FFFFFF [Outfit Bold 18] "24 kg"
+            FRAME 'plus' 32x32 @119,0 fill=#1E2B3E r=8
+              FRAME 'plus' 14x14 @9,9
+        FRAME 'reps-stepper' 175x78 @187,0 fill=#121B2A stroke=#1E2B3E/1 r=14
+          TEXT 'Reps' 28x14 @12,12 fill=#94A3B8 [Outfit Bold 11] "Reps"
+          FRAME 'stepper-row' 151x32 @12,34
+            FRAME 'minus' 32x32 @0,0 fill=#1E2B3E r=8
+              FRAME 'minus' 14x14 @9,9
+            TEXT '12' 17x23 @67,4 fill=#FFFFFF [Outfit Bold 18] "12"
+            FRAME 'plus' 32x32 @119,0 fill=#1E2B3E r=8
+              FRAME 'plus' 14x14 @9,9
+    FRAME 'timer-and-cta' 402x222 @0,497
+      FRAME 'timer-ring-container' 130x130 @136,0
+        ELLIPSE 'ring-track' 130x130 @0,0 fill=#1E2B3E
+        ELLIPSE 'ring-fill' 130x130 @0,0 fill=#2ECC71
+        FRAME 'timer-text' 64x51 @33,40
+          TEXT '0:45' 60x35 @2,0 fill=#FFFFFF [Outfit ExtraBold 28] "0:45"
+          TEXT 'Rest Timer' 64x14 @0,37 fill=#94A3B8 [Geist SemiBold 11] "Rest Timer"
+      FRAME 'complete-set-cta' 354x56 @24,146 fill=#2ECC71 r=28 fx=DROP_SHADOW
+        FRAME 'check-circle' 18x18 @108,19
+        TEXT 'Complete Set 2' 111x20 @136,18 fill=#090E17 [Outfit Bold 16] "Complete Set 2"
+    FRAME 'next-exercise-section' 402x126 @0,719
+      TEXT 'Next Up' 55x16 @24,0 fill=#94A3B8 [Outfit Bold 13] "Next Up"
+      FRAME 'next-exercise-card' 354x80 @24,26 fill=#121B2A stroke=#1E2B3E/1 r=16
+        FRAME 'next-thumb' 56x56 @12,12 fill=IMG:df2862b1 r=10
+        FRAME 'next-details' 204x36 @80,22
+          TEXT 'Goblet Squat' 85x18 @0,0 fill=#FFFFFF [Outfit Bold 14] "Goblet Squat"
+          TEXT '3 sets × 15 reps' 85x16 @0,20 fill=#94A3B8 [Geist Regular 12] "3 sets × 15 reps"
+        FRAME 'skip-button' 46x28 @296,26 fill=#1E2B3E r=8
+          TEXT 'Skip' 26x16 @10,6 fill=#FFFFFF [Geist SemiBold 12] "Skip"
+    FRAME 'secondary-controls' 402x66 @0,845
+      FRAME 'pause-btn' 354x46 @24,0 fill=#1E2B3E r=23
+        FRAME 'pause' 14x14 @118,16
+        TEXT 'Pause Workout' 97x18 @140,14 fill=#FFFFFF [Outfit Bold 14] "Pause Workout"
+    FRAME 'footer-stats-section' 402x77 @0,911 fill=#121B2A stroke=#1E2B3E/1
+      FRAME 'stat-item' 41x38 @24,12
+        TEXT '14:25' 40x20 @0,0 fill=#FFFFFF [Outfit ExtraBold 16] "14:25"
+        TEXT 'Elapsed' 41x14 @0,24 fill=#94A3B8 [Geist Regular 11] "Elapsed"
+      FRAME 'stat-item' 28x38 @178,12
+        TEXT '1 / 5' 28x20 @0,0 fill=#FFFFFF [Outfit ExtraBold 16] "1 / 5"
+        TEXT 'Done' 27x14 @0,24 fill=#94A3B8 [Geist Regular 11] "Done"
+      FRAME 'stat-item' 60x38 @318,12
+        TEXT '180 kcal' 60x20 @0,0 fill=#2ECC71 [Outfit ExtraBold 16] "180 kcal"
+        TEXT 'Burned' 37x14 @12,24 fill=#94A3B8 [Geist Regular 11] "Burned"
+    FRAME 'bottom-nav' 402x88 @0,988
+      FRAME 'nav-deck' 402x64 @0,0 fill=#1C1C2C stroke=#2A2A3E/1
+        FRAME 'tab-home' 64x40 @16,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'house' 20x20 @1,1
+          TEXT 'tab-label' 29x14 @18,26 fill=#9FA2B4 [Manrope Bold 10] "Home"
+        FRAME 'tab-workouts' 64x40 @92,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'dumbbell' 20x20 @1,1
+          TEXT 'tab-label' 46x14 @9,26 fill=#00C853 [Manrope Medium 10] "Workouts"
+        FRAME 'tab-nutrition' 64x40 @169,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'apple' 20x20 @1,1
+          TEXT 'tab-label' 42x14 @11,26 fill=#9FA2B4 [Manrope Medium 10] "Nutrition"
+        FRAME 'tab-progress' 64x40 @246,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'chart-line' 20x20 @1,1
+          TEXT 'tab-label' 42x14 @11,26 fill=#9FA2B4 [Manrope Medium 10] "Progress"
+        FRAME 'tab-profile' 64x40 @322,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'user' 20x20 @1,1
+          TEXT 'tab-label' 31x14 @16,26 fill=#9FA2B4 [Manrope Medium 10] "Profile"
+      FRAME 'android-navigation-bar' 402x24 @0,64 fill=#1C1C2C
+        ROUNDED_RECTANGLE 'system-handle' 140x5 @131,10 fill=#5F6175 r=3
+  FRAME 'nutrition-dashboard-screen' 402x1017 @1467,-438 fill=#11111E stroke=#2A2A3E/1 r=24
+    FRAME 'status-bar' 402x38 @0,0
+      TEXT 'time' 28x19 @24,12 fill=#FFFFFF [Manrope SemiBold 14] "9:41"
+      FRAME 'status-icons' 74x18 @304,12
+    FRAME 'scrollable-content' 402x897 @0,38
+      FRAME 'header-section' 370x82 @16,0
+        FRAME 'header-title-row' 322x58 @24,8
+          FRAME 'title-and-date' 225x58 @0,0
+            TEXT 'Today's Nutrition' 225x35 @0,0 fill=#FFFFFF [Outfit ExtraBold 28] "Today's Nutrition"
+            TEXT 'Tuesday, Sept 17' 108x19 @0,39 fill=#9FA2B4 [Manrope Medium 14] "Tuesday, Sept 17"
+          FRAME 'ai-sparkle-badge' 70x22 @252,18 fill=#2ECC71@0.12 r=6
+            FRAME 'sparkle-icon-frame' 12x12 @8,5
+            TEXT 'AI Plan' 38x14 @24,4 fill=#2ECC71 [Manrope Bold 10] "AI Plan"
+      FRAME 'nutrition-summary-card' 370x269 @16,102 fill=#1C1C2C stroke=#2A2A3E/1 r=16
+        FRAME 'calories-row' 334x84 @18,18
+          FRAME 'calories-text-block' 178x84 @0,0
+            TEXT 'Calories Consumed' 130x16 @0,0 fill=#9FA2B4 [Manrope Bold 12] "Calories Consumed"
+            TEXT '1,850 / 2,000 kcal' 178x40 @0,22 fill=#FFFFFF [Outfit ExtraBold 32] "1,850 / 2,000 kcal"
+            TEXT '150 kcal remaining today' 135x16 @0,68 fill=#4ADE80 [Manrope Regular 12] "150 kcal remaining today"
+          FRAME 'ring-container' 72x72 @262,6
+            ELLIPSE 'track' 72x72 @0,0 fill=#25253A
+            ELLIPSE 'fill' 72x72 @0,0 fill=#2ECC71
+            FRAME 'center-icon' 48x48 @12,12
+        ROUNDED_RECTANGLE 'divider' 334x1 @18,122 fill=#2A2A3E
+        FRAME 'macros-section' 334x108 @18,143
+          FRAME 'macro-protein' 334x28 @0,0
+            FRAME 'macro-labels' 334x16 @0,0
+              TEXT 'Protein' 42x16 @0,0 fill=#9FA2B4 [Manrope SemiBold 12] "Protein"
+              TEXT '120g / 150g' 66x16 @268,0 fill=#FFFFFF [Geist Bold 12] "120g / 150g"
+            FRAME 'macro-track' 334x6 @0,22 fill=#25253A r=3
+              ROUNDED_RECTANGLE 'macro-fill' 112x6 @0,0 fill=#2ECC71 r=3
+          FRAME 'macro-carbs' 334x28 @0,40
+            FRAME 'macro-labels' 334x16 @0,0
+              TEXT 'Carbs' 34x16 @0,0 fill=#9FA2B4 [Manrope SemiBold 12] "Carbs"
+              TEXT '180g / 220g' 69x16 @265,0 fill=#FFFFFF [Geist Bold 12] "180g / 220g"
+            FRAME 'macro-track' 334x6 @0,22 fill=#25253A r=3
+              ROUNDED_RECTANGLE 'macro-fill' 115x6 @0,0 fill=#FFB300 r=3
+          FRAME 'macro-fats' 334x28 @0,80
+            FRAME 'macro-labels' 334x16 @0,0
+              TEXT 'Fats' 25x16 @0,0 fill=#9FA2B4 [Manrope SemiBold 12] "Fats"
+              TEXT '55g / 65g' 56x16 @278,0 fill=#FFFFFF [Geist Bold 12] "55g / 65g"
+            FRAME 'macro-track' 334x6 @0,22 fill=#25253A r=3
+              ROUNDED_RECTANGLE 'macro-fill' 118x6 @0,0 fill=#FF5F57 r=3
+      FRAME 'meals-section' 370x411 @16,391
+        TEXT 'AI Personalized Meal Plan' 370x23 @0,0 fill=#FFFFFF [Outfit ExtraBold 18] "AI Personalized Meal Plan"
+        FRAME 'meals-list' 370x376 @0,35
+          FRAME 'meal-card-breakfast' 370x88 @0,0 fill=#1C1C2C stroke=#2A2A3E/1 r=16
+            FRAME 'thumbnail-container' 64x64 @12,12 r=12
+              ROUNDED_RECTANGLE 'food-photo' 64x64 @0,0 fill=IMG:d5df50a8
+            FRAME 'info-stack' 226x61 @88,14
+              FRAME 'tag-and-kcal' 226x18 @0,0
+                TEXT 'Breakfast' 62x15 @0,2 fill=#2ECC71 [Manrope Bold 11] "Breakfast"
+                TEXT '420 kcal' 55x18 @171,0 fill=#FFFFFF [Outfit Bold 14] "420 kcal"
+              TEXT 'meal-name' 226x19 @0,22 fill=#FFFFFF [Outfit Bold 15] "Greek Yogurt & Berries"
+              FRAME 'metadata-row' 226x16 @0,45
+                FRAME 'prep-time' 80x16 @0,0
+                  FRAME 'clock-icon-frame' 12x12 @0,2
+                  TEXT '10 min prep' 64x16 @16,0 fill=#9FA2B4 [Manrope Medium 12] "10 min prep"
+                FRAME 'divider' 1x10 @92,3 fill=#2A2A3E
+                FRAME 'status' 64x16 @105,0
+                  TEXT 'Completed' 64x16 @0,0 fill=#2ECC71 [Manrope SemiBold 12] "Completed"
+            FRAME 'indicator-button' 32x32 @326,28 fill=#2ECC71@0.12 stroke=#2ECC71/1.5 r=16
+          FRAME 'meal-card-lunch' 370x88 @0,96 fill=#1C1C2C stroke=#2A2A3E/1 r=16
+            FRAME 'thumbnail-container' 64x64 @12,12 r=12
+              ROUNDED_RECTANGLE 'food-photo' 64x64 @0,0 fill=IMG:efb27856
+            FRAME 'info-stack' 226x61 @88,14
+              FRAME 'tag-and-kcal' 226x18 @0,0
+                TEXT 'Lunch' 38x15 @0,2 fill=#9FA2B4 [Manrope Bold 11] "Lunch"
+                TEXT '650 kcal' 54x18 @172,0 fill=#FFFFFF [Outfit Bold 14] "650 kcal"
+              TEXT 'meal-name' 226x19 @0,22 fill=#FFFFFF [Outfit Bold 15] "Grilled Chicken Quinoa Bowl"
+              FRAME 'metadata-row' 226x16 @0,45
+                FRAME 'prep-time' 81x16 @0,0
+                  FRAME 'clock-icon-frame' 12x12 @0,2
+                  TEXT '25 min prep' 65x16 @16,0 fill=#9FA2B4 [Manrope Medium 12] "25 min prep"
+                FRAME 'divider' 1x10 @93,3 fill=#2A2A3E
+                FRAME 'status' 58x16 @106,0
+                  TEXT 'Upcoming' 58x16 @0,0 fill=#5F6175 [Manrope Medium 12] "Upcoming"
+            FRAME 'indicator-button' 32x32 @326,28 fill=#000000@0.00 stroke=#5F6175/1.5 r=16
+              FRAME 'plus-icon-frame' 14x14 @9,9
+                FRAME 'plus' 14x14 @0,0
+          FRAME 'meal-card-snack' 370x88 @0,192 fill=#1C1C2C stroke=#2A2A3E/1 r=16
+            FRAME 'thumbnail-container' 64x64 @12,12 r=12
+              ROUNDED_RECTANGLE 'food-photo' 64x64 @0,0 fill=IMG:40740505
+            FRAME 'info-stack' 226x61 @88,14
+              FRAME 'tag-and-kcal' 226x18 @0,0
+                TEXT 'Snack' 38x15 @0,2 fill=#9FA2B4 [Manrope Bold 11] "Snack"
+                TEXT '200 kcal' 56x18 @170,0 fill=#FFFFFF [Outfit Bold 14] "200 kcal"
+              TEXT 'meal-name' 226x19 @0,22 fill=#FFFFFF [Outfit Bold 15] "Protein Smoothie"
+              FRAME 'metadata-row' 226x16 @0,45
+                FRAME 'prep-time' 75x16 @0,0
+                  FRAME 'clock-icon-frame' 12x12 @0,2
+                  TEXT '5 min prep' 59x16 @16,0 fill=#9FA2B4 [Manrope Medium 12] "5 min prep"
+                FRAME 'divider' 1x10 @87,3 fill=#2A2A3E
+                FRAME 'status' 58x16 @100,0
+                  TEXT 'Upcoming' 58x16 @0,0 fill=#5F6175 [Manrope Medium 12] "Upcoming"
+            FRAME 'indicator-button' 32x32 @326,28 fill=#000000@0.00 stroke=#5F6175/1.5 r=16
+              FRAME 'plus-icon-frame' 14x14 @9,9
+                FRAME 'plus' 14x14 @0,0
+          FRAME 'meal-card-dinner' 370x88 @0,288 fill=#1C1C2C stroke=#2A2A3E/1 r=16
+            FRAME 'thumbnail-container' 64x64 @12,12 r=12
+              ROUNDED_RECTANGLE 'food-photo' 64x64 @0,0 fill=IMG:72dc6eb6
+            FRAME 'info-stack' 226x61 @88,14
+              FRAME 'tag-and-kcal' 226x18 @0,0
+                TEXT 'Dinner' 41x15 @0,2 fill=#9FA2B4 [Manrope Bold 11] "Dinner"
+                TEXT '580 kcal' 54x18 @172,0 fill=#FFFFFF [Outfit Bold 14] "580 kcal"
+              TEXT 'meal-name' 226x19 @0,22 fill=#FFFFFF [Outfit Bold 15] "Salmon with Roasted Veggies"
+              FRAME 'metadata-row' 226x16 @0,45
+                FRAME 'prep-time' 82x16 @0,0
+                  FRAME 'clock-icon-frame' 12x12 @0,2
+                  TEXT '30 min prep' 66x16 @16,0 fill=#9FA2B4 [Manrope Medium 12] "30 min prep"
+                FRAME 'divider' 1x10 @94,3 fill=#2A2A3E
+                FRAME 'status' 58x16 @107,0
+                  TEXT 'Upcoming' 58x16 @0,0 fill=#5F6175 [Manrope Medium 12] "Upcoming"
+            FRAME 'indicator-button' 32x32 @326,28 fill=#000000@0.00 stroke=#5F6175/1.5 r=16
+              FRAME 'plus-icon-frame' 14x14 @9,9
+                FRAME 'plus' 14x14 @0,0
+      FRAME 'cta-action-row' 370x62 @16,822
+        FRAME 'generate-meal-button' 370x54 @0,4 fill=#2ECC71 r=27 fx=DROP_SHADOW
+          FRAME 'refresh-icon-frame' 18x18 @85,18
+            FRAME 'refresh-cw' 18x18 @0,0
+          TEXT 'Generate Another Meal' 174x20 @111,17 fill=#11111E [Outfit Bold 16] "Generate Another Meal"
+    FRAME 'bottom-navigation' 402x82 @0,935 fill=#1C1C2C stroke=#2A2A3E/1
+      FRAME 'nav-deck' 402x64 @0,0
+        FRAME 'tab-home' 64x40 @16,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'nav-icon-frame' 20x20 @1,1
+          TEXT 'Home' 28x14 @18,26 fill=#9FA2B4 [Manrope Medium 10] "Home"
+        FRAME 'tab-workouts' 64x40 @92,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'nav-icon-frame' 20x20 @1,1
+          TEXT 'Workouts' 46x14 @9,26 fill=#9FA2B4 [Manrope Medium 10] "Workouts"
+        FRAME 'tab-nutrition' 64x40 @169,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'nav-icon-frame' 20x20 @1,1
+          TEXT 'Nutrition' 45x14 @10,26 fill=#2ECC71 [Manrope Bold 10] "Nutrition"
+        FRAME 'tab-progress' 64x40 @246,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'nav-icon-frame' 20x20 @1,1
+          TEXT 'Progress' 42x14 @11,26 fill=#9FA2B4 [Manrope Medium 10] "Progress"
+        FRAME 'tab-profile' 64x40 @322,18
+          FRAME 'icon-container' 22x22 @21,0
+            FRAME 'user' 20x20 @1,1
+          TEXT 'tab-label' 31x14 @16,26 fill=#9FA2B4 [Manrope Medium 10] "Profile"
+      FRAME 'android-navigation-bar' 402x24 @0,64
+        ROUNDED_RECTANGLE 'system-handle' 140x5 @131,10 fill=#5F6175 r=3
+  FRAME 'lunch-recipe-screen' 402x1476 @1882,-438 fill=#11111E
+    FRAME 'status-bar' 402x44 @0,0
+      TEXT '9:41' 30x17 @24,14 fill=#FFFFFF [Inter Semi Bold 14] "9:41"
+      FRAME 'Frame' 80x20 @298,12
+    FRAME 'hero-section' 402x320 @0,44
+      ROUNDED_RECTANGLE 'hero-image' 402x320 @0,0 fill=IMG:2a695dda
+      ROUNDED_RECTANGLE 'top-scrim' 402x96 @0,0 fill=linear(#11111E@0.60,#11111E@0.00)
+      FRAME 'hero-nav-bar' 402x52 @0,0
+        FRAME 'back-btn' 40x40 @20,12 fill=#11111E@0.40 r=20 fx=BACKGROUND_BLUR
+          FRAME 'icon' 18x18 @11,11
+            FRAME 'arrow-left' 18x18 @0,0
+        FRAME 'fav-btn' 40x40 @342,12 fill=#11111E@0.40 r=20 fx=BACKGROUND_BLUR
+          FRAME 'icon' 18x18 @11,11
+            FRAME 'heart' 18x18 @0,0
+      ROUNDED_RECTANGLE 'bottom-scrim' 402x140 @0,180 fill=linear(#11111E,#11111E@0.00)
+      FRAME 'hero-title-box' 402x128 @0,192
+        FRAME 'prep-pill' 87x28 @24,0 fill=#252542 r=100
+          FRAME 'icon' 14x14 @12,7
+            FRAME 'clock' 14x14 @0,0
+          TEXT '20 min' 43x16 @32,6 fill=#4ADE80 [Inter Semi Bold 13] "20 min"
+        TEXT 'Grilled Chicken Quinoa Bowl' 354x68 @24,40 fill=#FFFFFF [Outfit ExtraBold 28] "Grilled Chicken Quinoa Bowl"
+    FRAME 'scroll-content' 402x1112 @0,364
+      FRAME 'macros-row' 354x104 @24,8
+        FRAME 'macro-calories' 81x104 @0,0 fill=#1A1A2E stroke=#292942/1 r=16
+          FRAME 'ring-wrapper' 36x36 @22,12
+            ELLIPSE 'ring-track' 36x36 @0,0 fill=#FFFFFF@0.10
+            ELLIPSE 'ring-value' 36x36 @0,0 fill=#4ADE80
+          FRAME 'Frame' 57x34 @12,58
+            TEXT '480' 57x19 @0,0 fill=#FFFFFF [Outfit Bold 15] "480"
+            TEXT 'Calories' 57x13 @0,21 fill=#A3A3C2 [Inter Medium 11] "Calories"
+        FRAME 'macro-protein' 81x104 @91,0 fill=#1A1A2E stroke=#292942/1 r=16
+          FRAME 'ring-wrapper' 36x36 @22,12
+            ELLIPSE 'ring-track' 36x36 @0,0 fill=#FFFFFF@0.10
+            ELLIPSE 'ring-value' 36x36 @0,0 fill=#FB923C
+          FRAME 'Frame' 57x34 @12,58
+            TEXT '42g' 57x19 @0,0 fill=#FFFFFF [Outfit Bold 15] "42g"
+            TEXT 'Protein' 57x13 @0,21 fill=#A3A3C2 [Inter Medium 11] "Protein"
+        FRAME 'macro-carbs' 81x104 @182,0 fill=#1A1A2E stroke=#292942/1 r=16
+          FRAME 'ring-wrapper' 36x36 @22,12
+            ELLIPSE 'ring-track' 36x36 @0,0 fill=#FFFFFF@0.10
+            ELLIPSE 'ring-value' 36x36 @0,0 fill=#38BDF8
+          FRAME 'Frame' 57x34 @12,58
+            TEXT '38g' 57x19 @0,0 fill=#FFFFFF [Outfit Bold 15] "38g"
+            TEXT 'Carbs' 57x13 @0,21 fill=#A3A3C2 [Inter Medium 11] "Carbs"
+        FRAME 'macro-fats' 81x104 @273,0 fill=#1A1A2E stroke=#292942/1 r=16
+          FRAME 'ring-wrapper' 36x36 @22,12
+            ELLIPSE 'ring-track' 36x36 @0,0 fill=#FFFFFF@0.10
+            ELLIPSE 'ring-value' 36x36 @0,0 fill=#F87171
+          FRAME 'Frame' 57x34 @12,58
+            TEXT '18g' 57x19 @0,0 fill=#FFFFFF [Outfit Bold 15] "18g"
+            TEXT 'Fats' 57x13 @0,21 fill=#A3A3C2 [Inter Medium 11] "Fats"
+      FRAME 'ingredients-section' 354x425 @24,140
+        FRAME 'Frame' 354x25 @0,0
+          TEXT 'Ingredients' 105x25 @0,0 fill=#FFFFFF [Outfit Bold 20] "Ingredients"
+          TEXT '6 items' 47x16 @307,4 fill=#4ADE80 [Inter Semi Bold 13] "6 items"
+        FRAME 'ingredients-list' 354x384 @0,41
+          FRAME 'ingredient-chicken-breast' 354x64 @0,0 stroke=#292942/1
+            ROUNDED_RECTANGLE 'food-thumbnail' 44x44 @0,10 fill=IMG:5a465652 r=22
+            FRAME 'Frame' 258x36 @60,14
+              TEXT 'Chicken Breast' 258x18 @0,0 fill=#FFFFFF [Inter Semi Bold 15] "Chicken Breast"
+              TEXT '150g, grilled & sliced' 258x16 @0,20 fill=#A3A3C2 [Inter Regular 13] "150g, grilled & sliced"
+            FRAME 'icon' 20x20 @334,22
+              FRAME 'check-circle' 20x20 @0,0
+          FRAME 'ingredient-quinoa' 354x64 @0,64 stroke=#292942/1
+            ROUNDED_RECTANGLE 'food-thumbnail' 44x44 @0,10 fill=IMG:e9554c83 r=22
+            FRAME 'Frame' 258x36 @60,14
+              TEXT 'Quinoa' 258x18 @0,0 fill=#FFFFFF [Inter Semi Bold 15] "Quinoa"
+              TEXT '1/2 cup, cooked' 258x16 @0,20 fill=#A3A3C2 [Inter Regular 13] "1/2 cup, cooked"
+            FRAME 'icon' 20x20 @334,22
+              FRAME 'check-circle' 20x20 @0,0
+          FRAME 'ingredient-avocado' 354x64 @0,128 stroke=#292942/1
+            ROUNDED_RECTANGLE 'food-thumbnail' 44x44 @0,10 fill=IMG:437eb06a r=22
+            FRAME 'Frame' 258x36 @60,14
+              TEXT 'Avocado' 258x18 @0,0 fill=#FFFFFF [Inter Semi Bold 15] "Avocado"
+              TEXT '1/2 medium, sliced' 258x16 @0,20 fill=#A3A3C2 [Inter Regular 13] "1/2 medium, sliced"
+            FRAME 'icon' 20x20 @334,22
+              FRAME 'check-circle' 20x20 @0,0
+          FRAME 'ingredient-cherry-tomatoes' 354x64 @0,192 stroke=#292942/1
+            ROUNDED_RECTANGLE 'food-thumbnail' 44x44 @0,10 fill=IMG:73a05b03 r=22
+            FRAME 'Frame' 258x36 @60,14
+              TEXT 'Cherry Tomatoes' 258x18 @0,0 fill=#FFFFFF [Inter Semi Bold 15] "Cherry Tomatoes"
+              TEXT '1/2 cup, halved' 258x16 @0,20 fill=#A3A3C2 [Inter Regular 13] "1/2 cup, halved"
+            FRAME 'icon' 20x20 @334,22
+              FRAME 'check-circle' 20x20 @0,0
+          FRAME 'ingredient-roasted-bell peppers' 354x64 @0,256 stroke=#292942/1
+            ROUNDED_RECTANGLE 'food-thumbnail' 44x44 @0,10 fill=IMG:4a076b94 r=22
+            FRAME 'Frame' 258x36 @60,14
+              TEXT 'Roasted Bell Peppers' 258x18 @0,0 fill=#FFFFFF [Inter Semi Bold 15] "Roasted Bell Peppers"
+              TEXT '1/3 cup, diced' 258x16 @0,20 fill=#A3A3C2 [Inter Regular 13] "1/3 cup, diced"
+            FRAME 'icon' 20x20 @334,22
+              FRAME 'check-circle' 20x20 @0,0
+          FRAME 'ingredient-mixed-greens' 354x64 @0,320 stroke=#292942/1
+            ROUNDED_RECTANGLE 'food-thumbnail' 44x44 @0,10 fill=IMG:705efff4 r=22
+            FRAME 'Frame' 258x36 @60,14
+              TEXT 'Mixed Greens' 258x18 @0,0 fill=#FFFFFF [Inter Semi Bold 15] "Mixed Greens"
+              TEXT '1 cup, fresh spinach & arugula' 258x16 @0,20 fill=#A3A3C2 [Inter Regular 13] "1 cup, fresh spinach & arugula"
+            FRAME 'icon' 20x20 @334,22
+              FRAME 'check-circle' 20x20 @0,0
+      FRAME 'instructions-section' 354x399 @24,593
+        TEXT 'How to Cook' 354x25 @0,0 fill=#FFFFFF [Outfit Bold 20] "How to Cook"
+        FRAME 'instructions-list' 354x358 @0,41
+          FRAME 'step-1' 354x63 @0,0
+            FRAME 'step-badge' 28x28 @0,0 fill=#252542 r=14
+              TEXT '1' 6x18 @11,5 fill=#4ADE80 [Outfit Bold 14] "1"
+            TEXT 'Rinse quinoa thoroughly and cook according to package instructions, then set aside to cool slightly.' 310x63 @44,0 fill=#A3A3C2 [Inter Regular 14] "Rinse quinoa thoroughly and cook according to package instructions, then set aside to cool slightly."
+          FRAME 'step-2' 354x63 @0,79
+            FRAME 'step-badge' 28x28 @0,0 fill=#252542 r=14
+              TEXT '2' 8x18 @10,5 fill=#4ADE80 [Outfit Bold 14] "2"
+            TEXT 'Season chicken breast with olive oil, salt, and pepper, then grill for 6-8 minutes per side until fully cooked.' 310x63 @44,0 fill=#A3A3C2 [Inter Regular 14] "Season chicken breast with olive oil, salt, and pepper, then grill for 6-8 minutes per side until fully cooked."
+          FRAME 'step-3' 354x63 @0,158
+            FRAME 'step-badge' 28x28 @0,0 fill=#252542 r=14
+              TEXT '3' 8x18 @10,5 fill=#4ADE80 [Outfit Bold 14] "3"
+            TEXT 'Slice the grilled chicken and arrange cleanly in a wide serving bowl alongside the cooked quinoa.' 310x63 @44,0 fill=#A3A3C2 [Inter Regular 14] "Slice the grilled chicken and arrange cleanly in a wide serving bowl alongside the cooked quinoa."
+          FRAME 'step-4' 354x63 @0,237
+            FRAME 'step-badge' 28x28 @0,0 fill=#252542 r=14
+              TEXT '4' 9x18 @10,5 fill=#4ADE80 [Outfit Bold 14] "4"
+            TEXT 'Place fresh sliced avocado, halved cherry tomatoes, and warm roasted bell peppers in dedicated sections.' 310x63 @44,0 fill=#A3A3C2 [Inter Regular 14] "Place fresh sliced avocado, halved cherry tomatoes, and warm roasted bell peppers in dedicated sections."
+          FRAME 'step-5' 354x42 @0,316
+            FRAME 'step-badge' 28x28 @0,0 fill=#252542 r=14
+              TEXT '5' 8x18 @10,5 fill=#4ADE80 [Outfit Bold 14] "5"
+            TEXT 'Drizzle with fresh lemon juice and olive oil before tossing gently. Serve immediately.' 310x42 @44,0 fill=#A3A3C2 [Inter Regular 14] "Drizzle with fresh lemon juice and olive oil before tossing gently. Serve immediately."
+    FRAME 'sticky-footer' 402x110 @0,1366 fill=#11111E stroke=#292942/1 fx=DROP_SHADOW
+      FRAME 'cta-button' 354x56 @24,20 fill=#4ADE80 r=28
+        FRAME 'icon' 18x18 @113,19
+          FRAME 'play-circle' 18x18 @0,0
+        TEXT 'Start Cooking' 102x20 @139,18 fill=#11111E [Outfit Bold 16] "Start Cooking"
+  FRAME 'all-fitness-profile' 402x1812 @2297,-438 fill=#0B0B14 stroke=#27273F/8 r=40
+    FRAME 'status-bar' 402x44 @0,0
+      TEXT '9:41' 29x19 @24,12 fill=#FFFFFF [Manrope Bold 14] "9:41"
+      FRAME 'Frame' 76x18 @302,13
+    FRAME 'nav-header' 402x64 @0,44
+      FRAME 'Frame' 40x40 @24,12 fill=#161626 r=20
+        FRAME 'arrow-left' 20x20 @10,10
+      TEXT 'Personalization' 137x25 @132,20 fill=#FFFFFF [Manrope Bold 18] "Personalization"
+      FRAME 'Frame' 40x40 @338,12 fill=#161626 r=20
+        FRAME 'cog' 20x20 @10,10
+    FRAME 'scrollable-content' 402x1680 @0,108
+      FRAME 'profile-block' 354x200 @24,12
+        FRAME 'avatar-glow-ring' 104x104 @125,12 fill=#10B981 r=52
+          ROUNDED_RECTANGLE 'avatar-photo' 98x98 @3,3 fill=IMG:9eb1cce0 stroke=#0B0B14/3 r=49
+        FRAME 'Frame' 354x56 @0,132
+          FRAME 'Frame' 99x33 @128,0
+            TEXT 'Jorge' 67x33 @0,0 fill=#FFFFFF [Manrope ExtraBold 24] "Jorge"
+            FRAME 'Frame' 24x24 @75,4 fill=#10B981@0.10 r=12
+              FRAME 'pencil' 12x12 @6,6
+          TEXT 'Your personalized fitness profile' 354x19 @0,37 fill=#94A3B8 [Manrope Regular 14] "Your personalized fitness profile"
+      FRAME 'personal-info-section' 354x220 @24,236
+        FRAME 'section-header' 354x24 @0,0
+          TEXT 'Personal Information' 354x16 @0,0 fill=#10B981 [Manrope Bold 12] "Personal Information"
+        FRAME 'Frame' 354x184 @0,36
+          FRAME 'Frame' 354x86 @0,0
+            FRAME 'stat-card' 171x86 @0,0 fill=#161626 stroke=#212136/1 r=16
+              TEXT 'Age' 139x18 @16,16 fill=#94A3B8 [Manrope Regular 13] "Age"
+              FRAME 'Frame' 51x30 @16,40
+                TEXT '23' 27x30 @0,0 fill=#FFFFFF [Manrope ExtraBold 22] "23"
+                TEXT 'yrs' 20x19 @31,8 fill=#64748B [Manrope Medium 14] "yrs"
+            FRAME 'stat-card' 171x86 @183,0 fill=#161626 stroke=#212136/1 r=16
+              TEXT 'Weight' 139x18 @16,16 fill=#94A3B8 [Manrope Regular 13] "Weight"
+              FRAME 'Frame' 46x30 @16,40
+                TEXT '78' 26x30 @0,0 fill=#FFFFFF [Manrope ExtraBold 22] "78"
+                TEXT 'kg' 16x19 @30,8 fill=#64748B [Manrope Medium 14] "kg"
+          FRAME 'Frame' 354x86 @0,98
+            FRAME 'stat-card' 171x86 @0,0 fill=#161626 stroke=#212136/1 r=16
+              TEXT 'Height' 139x18 @16,16 fill=#94A3B8 [Manrope Regular 13] "Height"
+              FRAME 'Frame' 60x30 @16,40
+                TEXT '178' 36x30 @0,0 fill=#FFFFFF [Manrope ExtraBold 22] "178"
+                TEXT 'cm' 20x19 @40,8 fill=#64748B [Manrope Medium 14] "cm"
+            FRAME 'stat-card' 171x86 @183,0 fill=#161626 stroke=#212136/1 r=16
+              TEXT 'Fitness Level' 139x18 @16,16 fill=#94A3B8 [Manrope Regular 13] "Fitness Level"
+              FRAME 'Frame' 142x30 @16,40
+                TEXT 'Intermediate' 142x30 @0,0 fill=#FFFFFF [Manrope ExtraBold 22] "Intermediate"
+      FRAME 'goal-section' 354x124 @24,480
+        FRAME 'section-header' 354x24 @0,0
+          TEXT 'Primary Goal' 354x16 @0,0 fill=#10B981 [Manrope Bold 12] "Primary Goal"
+        FRAME 'goal-card' 354x88 @0,36 fill=#161626 stroke=#10B981/1 r=20 fx=DROP_SHADOW
+          FRAME 'Frame' 48x48 @20,20 fill=#10B981@0.10 r=14
+            FRAME 'dumbbell' 24x24 @12,12
+          FRAME 'Frame' 187x45 @84,22
+            TEXT 'Current Goal Focus' 187x16 @0,0 fill=#94A3B8 [Manrope Regular 12] "Current Goal Focus"
+            TEXT 'Build Muscle' 187x25 @0,20 fill=#FFFFFF [Manrope ExtraBold 18] "Build Muscle"
+          FRAME 'Frame' 47x32 @287,28 fill=#212136 r=10
+            TEXT 'Edit' 23x16 @12,8 fill=#10B981 [Manrope Bold 12] "Edit"
+      FRAME 'workout-preferences' 354x262 @24,628
+        FRAME 'section-header' 354x24 @0,0
+          TEXT 'Workout Preferences' 354x16 @0,0 fill=#10B981 [Manrope Bold 12] "Workout Preferences"
+        FRAME 'workout-card' 354x226 @0,36 fill=#161626 stroke=#212136/1 r=20
+          FRAME 'pref-row' 314x62 @20,20 stroke=#212136/1
+            FRAME 'Frame' 36x36 @0,13 fill=#212136 r=10
+              FRAME 'calendar' 18x18 @9,9
+            FRAME 'Frame' 266x38 @48,12
+              TEXT 'Training days' 266x16 @0,0 fill=#94A3B8 [Manrope Regular 12] "Training days"
+              TEXT '5 days / week' 266x20 @0,18 fill=#FFFFFF [Manrope SemiBold 15] "5 days / week"
+          FRAME 'pref-row' 314x62 @20,82 stroke=#212136/1
+            FRAME 'Frame' 36x36 @0,13 fill=#212136 r=10
+              FRAME 'clock' 18x18 @9,9
+            FRAME 'Frame' 266x38 @48,12
+              TEXT 'Workout duration' 266x16 @0,0 fill=#94A3B8 [Manrope Regular 12] "Workout duration"
+              TEXT '35 min sessions' 266x20 @0,18 fill=#FFFFFF [Manrope SemiBold 15] "35 min sessions"
+          FRAME 'pref-row' 314x62 @20,144 stroke=#212136/1
+            FRAME 'Frame' 36x36 @0,13 fill=#212136 r=10
+              FRAME 'briefcase' 18x18 @9,9
+            FRAME 'Frame' 266x38 @48,12
+              TEXT 'Available equipment' 266x16 @0,0 fill=#94A3B8 [Manrope Regular 12] "Available equipment"
+              TEXT 'Dumbbells, Bodyweight' 266x20 @0,18 fill=#FFFFFF [Manrope SemiBold 15] "Dumbbells, Bodyweight"
+      FRAME 'nutrition-preferences' 354x324 @24,914
+        FRAME 'section-header' 354x24 @0,0
+          TEXT 'Nutrition & Diet' 354x16 @0,0 fill=#10B981 [Manrope Bold 12] "Nutrition & Diet"
+        FRAME 'nutrition-card' 354x288 @0,36 fill=#161626 stroke=#212136/1 r=20
+          FRAME 'pref-row' 314x62 @20,20 stroke=#212136/1
+            FRAME 'Frame' 36x36 @0,13 fill=#212136 r=10
+              FRAME 'heart' 18x18 @9,9
+            FRAME 'Frame' 266x38 @48,12
+              TEXT 'Diet Protocol' 266x16 @0,0 fill=#94A3B8 [Manrope Regular 12] "Diet Protocol"
+              TEXT 'Balanced' 266x20 @0,18 fill=#FFFFFF [Manrope SemiBold 15] "Balanced"
+          FRAME 'pref-row' 314x62 @20,82 stroke=#212136/1
+            FRAME 'Frame' 36x36 @0,13 fill=#212136 r=10
+              FRAME 'fire-extinguisher' 18x18 @9,9
+            FRAME 'Frame' 266x38 @48,12
+              TEXT 'Daily calorie target' 266x16 @0,0 fill=#94A3B8 [Manrope Regular 12] "Daily calorie target"
+              TEXT '2,000 kcal' 266x20 @0,18 fill=#FFFFFF [Manrope SemiBold 15] "2,000 kcal"
+          FRAME 'pref-row' 314x62 @20,144 stroke=#212136/1
+            FRAME 'Frame' 36x36 @0,13 fill=#212136 r=10
+              FRAME 'sparkles' 18x18 @9,9
+            FRAME 'Frame' 266x38 @48,12
+              TEXT 'Food preferences' 266x16 @0,0 fill=#94A3B8 [Manrope Regular 12] "Food preferences"
+              TEXT 'High Protein' 266x20 @0,18 fill=#FFFFFF [Manrope SemiBold 15] "High Protein"
+          FRAME 'pref-row' 314x62 @20,206 stroke=#212136/1
+            FRAME 'Frame' 36x36 @0,13 fill=#212136 r=10
+              FRAME 'shield-check' 18x18 @9,9
+            FRAME 'Frame' 266x38 @48,12
+              TEXT 'Dietary restrictions' 266x16 @0,0 fill=#94A3B8 [Manrope Regular 12] "Dietary restrictions"
+              TEXT 'None' 266x20 @0,18 fill=#FFFFFF [Manrope SemiBold 15] "None"
+      FRAME 'ai-update-section' 354x96 @24,1262
+        FRAME 'update-cta' 354x56 @0,8 fill=#10B981 r=28 fx=DROP_SHADOW
+          FRAME 'sparkles' 20x20 @102,18
+          TEXT 'Update My Plan' 122x22 @130,17 fill=#0B0B14 [Manrope ExtraBold 16] "Update My Plan"
+        TEXT 'Regenerate AI recommendations based on my changes' 354x16 @0,72 fill=#64748B [Manrope Regular 12] "Regenerate AI recommendations based on my changes"
+      FRAME 'system-settings-section' 354x258 @24,1382
+        FRAME 'section-header' 354x24 @0,0
+          TEXT 'System & App Settings' 354x16 @0,0 fill=#10B981 [Manrope Bold 12] "System & App Settings"
+        FRAME 'Frame' 354x222 @0,36
+          FRAME 'setting-list-item' 354x48 @0,0 fill=#161626 stroke=#212136/1 r=12
+            FRAME 'bell' 20x20 @16,14
+            TEXT 'Notifications' 232x19 @48,14 fill=#FFFFFF [Manrope SemiBold 14] "Notifications"
+            TEXT 'On' 18x18 @292,15 fill=#64748B [Manrope Regular 13] "On"
+            FRAME 'chevron-right' 16x16 @322,16
+          FRAME 'setting-list-item' 354x48 @0,58 fill=#161626 stroke=#212136/1 r=12
+            FRAME 'sliders-horizontal' 20x20 @16,14
+            TEXT 'Units' 211x19 @48,14 fill=#FFFFFF [Manrope SemiBold 14] "Units"
+            TEXT 'Metric' 39x18 @271,15 fill=#64748B [Manrope Regular 13] "Metric"
+            FRAME 'chevron-right' 16x16 @322,16
+          FRAME 'setting-list-item' 354x48 @0,116 fill=#161626 stroke=#212136/1 r=12
+            FRAME 'lock' 20x20 @16,14
+            TEXT 'Privacy & Data' 262x19 @48,14 fill=#FFFFFF [Manrope SemiBold 14] "Privacy & Data"
+            FRAME 'chevron-right' 16x16 @322,16
+          FRAME 'setting-list-item' 354x48 @0,174 fill=#161626 stroke=#212136/1 r=12
+            FRAME 'help-circle' 20x20 @16,14
+            TEXT 'Help & Support' 262x19 @48,14 fill=#FFFFFF [Manrope SemiBold 14] "Help & Support"
+            FRAME 'chevron-right' 16x16 @322,16
+    FRAME 'nav-bar-spacer' 402x24 @0,1788
+      ROUNDED_RECTANGLE 'navigation-handle' 116x4 @143,10 fill=#64748B r=2

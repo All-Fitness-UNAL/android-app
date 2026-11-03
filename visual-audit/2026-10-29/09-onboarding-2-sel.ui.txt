@@ -1,0 +1,8 @@
+Paso 2 de 4||click=false|[42,184][233,237]
+Objetivo||click=false|[42,332][271,416]
+Objetivo||click=false|[42,458][177,511]
+Perder grasa||click=false|[84,559][293,612]
+Ganar masa muscular||click=false|[398,559][756,612]
+Mejorar mi condición física||click=false|[84,685][527,738]
+Volver||click=false|[234,2230][338,2283]
+Siguiente||click=false|[717,2230][871,2283]
