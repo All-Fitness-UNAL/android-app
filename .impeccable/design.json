@@ -1,0 +1,632 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-30T16:00:00Z",
+  "title": "Design System: AllFitness",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Verde AllFitness",
+        "canonical": "#2ECC71",
+        "tonalRamp": [
+          "#0C1D13",
+          "#163C26",
+          "#20643D",
+          "#2A9858",
+          "#38D179",
+          "#79D8A1",
+          "#B4E4C8",
+          "#E6F5EC"
+        ]
+      },
+      "on-primary": {
+        "role": "primary",
+        "displayName": "Tinta sobre verde",
+        "canonical": "#11111E",
+        "tonalRamp": [
+          "#111118",
+          "#212131",
+          "#333351",
+          "#494979",
+          "#6363A6",
+          "#9393BD",
+          "#C1C1D7",
+          "#EAEAF0"
+        ]
+      },
+      "primary-container": {
+        "role": "primary",
+        "displayName": "Verde al 12 %",
+        "canonical": "#142728",
+        "tonalRamp": [
+          "#101819",
+          "#1F3233",
+          "#305254",
+          "#447B7E",
+          "#5CA9AD",
+          "#8FBFC2",
+          "#BFD8D9",
+          "#E9F1F1"
+        ]
+      },
+      "on-primary-container": {
+        "role": "primary",
+        "displayName": "Verde sobre su contenedor",
+        "canonical": "#2ECC71",
+        "tonalRamp": [
+          "#0C1D13",
+          "#163C26",
+          "#20643D",
+          "#2A9858",
+          "#38D179",
+          "#79D8A1",
+          "#B4E4C8",
+          "#E6F5EC"
+        ]
+      },
+      "secondary-container": {
+        "role": "secondary",
+        "displayName": "Pizarra tonal",
+        "canonical": "#3A3B52",
+        "tonalRamp": [
+          "#121217",
+          "#24242E",
+          "#393A4B",
+          "#525370",
+          "#707299",
+          "#9B9CB5",
+          "#C5C6D3",
+          "#EBEBEF"
+        ]
+      },
+      "on-secondary-container": {
+        "role": "secondary",
+        "displayName": "Blanco tonal",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#141414",
+          "#292929",
+          "#424242",
+          "#616161",
+          "#858585",
+          "#A8A8A8",
+          "#CCCCCC",
+          "#EDEDED"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Azul noche",
+        "canonical": "#11111E",
+        "tonalRamp": [
+          "#111118",
+          "#212131",
+          "#333351",
+          "#494979",
+          "#6363A6",
+          "#9393BD",
+          "#C1C1D7",
+          "#EAEAF0"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Tarjeta",
+        "canonical": "#1C1C2C",
+        "tonalRamp": [
+          "#111117",
+          "#22222F",
+          "#36364E",
+          "#4D4D74",
+          "#6A6A9F",
+          "#9797B9",
+          "#C3C3D5",
+          "#EBEBF0"
+        ]
+      },
+      "surface-container-low": {
+        "role": "neutral",
+        "displayName": "Superficie baja",
+        "canonical": "#161626",
+        "tonalRamp": [
+          "#111118",
+          "#212131",
+          "#343451",
+          "#4A4A78",
+          "#6464A5",
+          "#9494BC",
+          "#C2C2D6",
+          "#EAEAF0"
+        ]
+      },
+      "surface-container-high": {
+        "role": "neutral",
+        "displayName": "Hoja y placa",
+        "canonical": "#25253A",
+        "tonalRamp": [
+          "#111117",
+          "#22222F",
+          "#36364E",
+          "#4E4E74",
+          "#6A6A9F",
+          "#9898B9",
+          "#C3C3D5",
+          "#EBEBF0"
+        ]
+      },
+      "surface-container-highest": {
+        "role": "neutral",
+        "displayName": "Superficie más alta",
+        "canonical": "#2A2A3E",
+        "tonalRamp": [
+          "#121217",
+          "#23232F",
+          "#38384D",
+          "#505072",
+          "#6D6D9C",
+          "#9A9AB7",
+          "#C5C5D3",
+          "#EBEBEF"
+        ]
+      },
+      "surface-input": {
+        "role": "neutral",
+        "displayName": "Campo",
+        "canonical": "#121B2A",
+        "tonalRamp": [
+          "#0F131A",
+          "#1D2635",
+          "#2D3D58",
+          "#3E5884",
+          "#5479B5",
+          "#8AA1C7",
+          "#BCC8DC",
+          "#E8ECF2"
+        ]
+      },
+      "on-surface": {
+        "role": "neutral",
+        "displayName": "Blanco",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#141414",
+          "#292929",
+          "#424242",
+          "#616161",
+          "#858585",
+          "#A8A8A8",
+          "#CCCCCC",
+          "#EDEDED"
+        ]
+      },
+      "on-surface-variant": {
+        "role": "neutral",
+        "displayName": "Gris de lectura",
+        "canonical": "#9FA2B4",
+        "tonalRamp": [
+          "#131316",
+          "#25262C",
+          "#3C3E49",
+          "#56596C",
+          "#767A93",
+          "#9FA2B2",
+          "#C7C9D1",
+          "#ECECEF"
+        ]
+      },
+      "outline": {
+        "role": "neutral",
+        "displayName": "Contorno de control",
+        "canonical": "#6B6F86",
+        "tonalRamp": [
+          "#131316",
+          "#25262C",
+          "#3C3E48",
+          "#575A6B",
+          "#777B92",
+          "#A0A2B1",
+          "#C8C9D0",
+          "#ECECEE"
+        ]
+      },
+      "outline-variant": {
+        "role": "neutral",
+        "displayName": "Hilo",
+        "canonical": "#2A2A3E",
+        "tonalRamp": [
+          "#121217",
+          "#23232F",
+          "#38384D",
+          "#505072",
+          "#6D6D9C",
+          "#9A9AB7",
+          "#C5C5D3",
+          "#EBEBEF"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Decorativo",
+        "canonical": "#5F6175",
+        "tonalRamp": [
+          "#131316",
+          "#26262C",
+          "#3D3E48",
+          "#58596A",
+          "#787A91",
+          "#A0A2B0",
+          "#C8C9D0",
+          "#ECECEE"
+        ]
+      },
+      "error": {
+        "role": "error",
+        "displayName": "Rojo",
+        "canonical": "#FF5F57",
+        "tonalRamp": [
+          "#220807",
+          "#470E0B",
+          "#78120D",
+          "#B81209",
+          "#FD180C",
+          "#F4645D",
+          "#F3A9A5",
+          "#F9E3E1"
+        ]
+      },
+      "error-container": {
+        "role": "error",
+        "displayName": "Rojo al 12 %",
+        "canonical": "#2E1A25",
+        "tonalRamp": [
+          "#181115",
+          "#31212A",
+          "#513344",
+          "#794963",
+          "#A66388",
+          "#BD93AA",
+          "#D7C1CD",
+          "#F0EAED"
+        ]
+      },
+      "accent": {
+        "role": "tertiary",
+        "displayName": "Ámbar racha",
+        "canonical": "#FFB300",
+        "tonalRamp": [
+          "#221A07",
+          "#47350B",
+          "#78580D",
+          "#B88409",
+          "#FDB50C",
+          "#F4C75D",
+          "#F3DCA5",
+          "#F9F2E1"
+        ]
+      },
+      "accent-container": {
+        "role": "tertiary",
+        "displayName": "Ámbar al 12 %",
+        "canonical": "#2E241A",
+        "tonalRamp": [
+          "#181411",
+          "#312921",
+          "#514233",
+          "#796149",
+          "#A68563",
+          "#BDA893",
+          "#D7CCC1",
+          "#F0EDEA"
+        ]
+      },
+      "macro-protein": {
+        "role": "tertiary",
+        "displayName": "Proteína",
+        "canonical": "#22A85E",
+        "tonalRamp": [
+          "#0B1D13",
+          "#153D27",
+          "#1F663F",
+          "#279B5B",
+          "#35D47C",
+          "#76DAA3",
+          "#B2E6C9",
+          "#E5F5EC"
+        ]
+      },
+      "macro-carbs": {
+        "role": "tertiary",
+        "displayName": "Carbohidratos",
+        "canonical": "#5B8DEF",
+        "tonalRamp": [
+          "#091120",
+          "#102141",
+          "#16346E",
+          "#194AA9",
+          "#2264E8",
+          "#6A94E6",
+          "#ACC2EC",
+          "#E4EAF7"
+        ]
+      },
+      "macro-fat": {
+        "role": "tertiary",
+        "displayName": "Grasas",
+        "canonical": "#E8607A",
+        "tonalRamp": [
+          "#1F0A0E",
+          "#3F131B",
+          "#6A1A2A",
+          "#A21F38",
+          "#DF2B4D",
+          "#E17085",
+          "#E9AFBA",
+          "#F6E4E8"
+        ]
+      },
+      "inverse-surface": {
+        "role": "neutral",
+        "displayName": "Snackbar",
+        "canonical": "#E6E7F0",
+        "tonalRamp": [
+          "#111218",
+          "#212330",
+          "#353850",
+          "#4B4F77",
+          "#666DA3",
+          "#9599BB",
+          "#C2C4D6",
+          "#EAEBF0"
+        ]
+      },
+      "inverse-primary": {
+        "role": "primary",
+        "displayName": "Verde de snackbar",
+        "canonical": "#11703C",
+        "tonalRamp": [
+          "#0A1E13",
+          "#133F27",
+          "#1B6A3F",
+          "#20A15B",
+          "#2CDD7C",
+          "#71E0A3",
+          "#AFE9C9",
+          "#E5F6EC"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display-small": {
+        "displayName": "Display small",
+        "purpose": "La cifra protagonista: kcal del día, peso actual."
+      },
+      "headline-medium": {
+        "displayName": "Headline medium",
+        "purpose": "Título de pantalla."
+      },
+      "headline-small": {
+        "displayName": "Headline small",
+        "purpose": "Nombre del ejercicio en sesión y título de paso."
+      },
+      "title-large": {
+        "displayName": "Title large",
+        "purpose": "Títulos de sección y el nombre en LogoMark."
+      },
+      "title-medium": {
+        "displayName": "Title medium",
+        "purpose": "Botón principal, nombre de comida, cifras de tarjeta."
+      },
+      "title-small": {
+        "displayName": "Title small",
+        "purpose": "Rótulo de campo y cifras pequeñas."
+      },
+      "body-large": {
+        "displayName": "Body large",
+        "purpose": "Lectura principal."
+      },
+      "body-medium": {
+        "displayName": "Body medium",
+        "purpose": "Lectura secundaria."
+      },
+      "body-small": {
+        "displayName": "Body small",
+        "purpose": "Aviso de IA, ayudas y aviso sin conexión."
+      },
+      "label-large": {
+        "displayName": "Label large",
+        "purpose": "Botones secundarios y chips."
+      },
+      "label-medium": {
+        "displayName": "Label medium",
+        "purpose": "Rótulos de tira de datos."
+      },
+      "label-small": {
+        "displayName": "Label small",
+        "purpose": "Rótulos en mayúsculas y barra inferior."
+      }
+    },
+    "shadows": [
+      {
+        "name": "primary-glow",
+        "value": "0 0 12dp primary",
+        "purpose": "Brillo del botón principal habilitado; única sombra de la app."
+      }
+    ],
+    "motion": [
+      {
+        "name": "duration-short",
+        "value": "150ms",
+        "purpose": "Fundidos de estado y transiciones con movimiento reducido."
+      },
+      {
+        "name": "duration-medium",
+        "value": "300ms",
+        "purpose": "Lista → detalle (desplazamiento del 10 % con fundido)."
+      },
+      {
+        "name": "duration-long",
+        "value": "450ms",
+        "purpose": "Llenado de anillos y barras de progreso."
+      },
+      {
+        "name": "fade-through",
+        "value": "210ms tras 90ms",
+        "purpose": "Cambio de pestaña con escala desde 0,96."
+      },
+      {
+        "name": "loader-cycle",
+        "value": "1200ms",
+        "purpose": "Una vuelta del indicador de carga."
+      },
+      {
+        "name": "ease-emphasized",
+        "value": "cubic-bezier(0.2, 0, 0, 1)",
+        "purpose": "Easing por defecto."
+      },
+      {
+        "name": "spring-gentle",
+        "value": "spring(dampingRatio 0.9, stiffness MediumLow)",
+        "purpose": "pressScale: la píldora encoge a 0,97 al pulsar."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "< 600dp (barra inferior)"
+      },
+      {
+        "name": "wide",
+        "value": "rail según currentWindowAdaptiveInfo (NavigationSuiteScaffold)"
+      },
+      {
+        "name": "content-max",
+        "value": "640dp"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón primario",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Una por pantalla: píldora verde de 56 dp con brillo verde; deshabilitada con hilo outline.",
+      "html": "<button class=\"ds-btn-primary\">Empezar entreno</button>",
+      "css": ".ds-btn-primary { background:#2ECC71; color:#11111E; font-family:Outfit,sans-serif; font-weight:700; font-size:16px; line-height:20px; min-height:56px; padding:0 24px; border:none; border-radius:9999px; box-shadow:0 0 12px rgba(46,204,113,.45); transition:transform .15s cubic-bezier(0.2,0,0,1); } .ds-btn-primary:active { transform:scale(.97); } .ds-btn-primary:disabled { background:#25253A; color:#9FA2B4; border:1px solid #6B6F86; box-shadow:none; }"
+    },
+    {
+      "name": "Botón secundario",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "La misma píldora en surface-container-high (Anterior, Saltar).",
+      "html": "<button class=\"ds-btn-secondary\">Saltar</button>",
+      "css": ".ds-btn-secondary { background:#25253A; color:#FFFFFF; font-family:Manrope,sans-serif; font-weight:700; font-size:14px; min-height:56px; padding:0 24px; border:none; border-radius:9999px; } .ds-btn-secondary:disabled { color:#9FA2B4; border:1px solid #6B6F86; }"
+    },
+    {
+      "name": "Botón tonal",
+      "kind": "button",
+      "refersTo": "button-tonal",
+      "description": "Acción secundaria con ícono delante (Regenerar, Mantener la actual).",
+      "html": "<button class=\"ds-btn-tonal\">Regenerar rutina</button>",
+      "css": ".ds-btn-tonal { background:#3A3B52; color:#FFFFFF; font-family:Manrope,sans-serif; font-weight:700; font-size:14px; min-height:48px; padding:0 24px; border:none; border-radius:9999px; }"
+    },
+    {
+      "name": "Tarjeta",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "AppCard: surface, radio 16, hilo outline-variant; destacada con radio 20 e hilo verde.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-label\">Desayuno</div><div class=\"ds-card-title\">Yogur con granola y fresas</div></div>",
+      "css": ".ds-card { background:#1C1C2C; border:1px solid #2A2A3E; border-radius:16px; padding:16px; color:#FFFFFF; } .ds-card-label { color:#2ECC71; font-family:Manrope,sans-serif; font-size:14px; } .ds-card-title { font-family:Outfit,sans-serif; font-weight:700; font-size:16px; }"
+    },
+    {
+      "name": "Campo con unidad",
+      "kind": "input",
+      "refersTo": "text-field",
+      "description": "Rótulo arriba, campo surface-input de radio 12, unidad a la derecha, borde verde con foco.",
+      "html": "<label class=\"ds-field\"><span>Peso actual</span><div><input value=\"77,5\"><em>kg</em></div></label>",
+      "css": ".ds-field span { display:block; color:#9FA2B4; font-family:Outfit,sans-serif; font-weight:700; font-size:15px; margin-bottom:8px; } .ds-field div { display:flex; align-items:center; background:#121B2A; border:1px solid #6B6F86; border-radius:12px; min-height:56px; padding:0 16px; } .ds-field div:focus-within { border:2px solid #2ECC71; } .ds-field input { flex:1; background:none; border:none; color:#FFFFFF; font-family:Manrope,sans-serif; font-size:15px; } .ds-field em { color:#9FA2B4; font-style:normal; }"
+    },
+    {
+      "name": "Chip de opción",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Píldora de 33 dp visuales; seleccionada en primary-container con borde y texto verdes.",
+      "html": "<button class=\"ds-chip\">Casa</button><button class=\"ds-chip is-on\">Gimnasio</button>",
+      "css": ".ds-chip { background:#121B2A; color:#9FA2B4; border:1px solid #6B6F86; border-radius:9999px; min-height:33px; padding:0 16px; font-family:Manrope,sans-serif; font-weight:700; font-size:14px; margin-right:8px; } .ds-chip.is-on { background:#142728; color:#2ECC71; border-color:#2ECC71; }"
+    },
+    {
+      "name": "Anillo de progreso",
+      "kind": "progress",
+      "refersTo": "card",
+      "description": "Trazo de 6 dp, pista surface-container-high, arco verde desde las 12, cifra Outfit dentro.",
+      "html": "<div class=\"ds-ring\"><span>0/3</span></div>",
+      "css": ".ds-ring { width:60px; height:60px; border-radius:50%; background:conic-gradient(#2ECC71 0 33%, #25253A 33% 100%); display:grid; place-items:center; } .ds-ring span { width:48px; height:48px; border-radius:50%; background:#1C1C2C; display:grid; place-items:center; color:#FFFFFF; font-family:Outfit,sans-serif; font-weight:700; font-size:15px; }"
+    },
+    {
+      "name": "Barra inferior",
+      "kind": "navigation",
+      "refersTo": "nav-bar",
+      "description": "Cinco destinos en surface con hilo superior; activo en verde, sin píldora indicadora.",
+      "html": "<nav class=\"ds-nav\"><a class=\"is-on\">Inicio</a><a>Rutina</a><a>Dieta</a><a>Progreso</a><a>Perfil</a></nav>",
+      "css": ".ds-nav { display:flex; background:#1C1C2C; border-top:1px solid #2A2A3E; } .ds-nav a { flex:1; text-align:center; padding:16px 0; color:#9FA2B4; font-family:Manrope,sans-serif; font-weight:700; font-size:10px; } .ds-nav a.is-on { color:#2ECC71; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "El plan de hoy, en verde sobre noche",
+    "overview": "AllFitness traduce a Material 3 el prototipo de Figma: un solo tema oscuro (#11111E), tarjetas un paso más claras con hilo de 1 dp, un único verde (#2ECC71) para lo que se hace o está hecho y cifras en Outfit tabular. Inicio responde qué toca hoy; la sesión muestra un ejercicio por página; la dieta y la receta son tipográficas, sin fotos inventadas. Lo que el Figma muestra y el producto no tiene (kcal consumidas, temporizador, notificaciones, unidades, favoritos) no se construye.",
+    "keyCharacteristics": [
+      "Tema oscuro único (FR-035c) con los 48 roles M3 definidos.",
+      "Un verde de acción; ámbar solo para la racha; macros solo como gráfico.",
+      "Outfit 700/800 tabular para títulos y cifras; Manrope para leer.",
+      "Profundidad tonal; la única sombra es el brillo del botón principal.",
+      "Píldoras para botones y chips; tarjetas de 16 dp.",
+      "Anillos y barras de 6 dp para el progreso."
+    ],
+    "rules": [
+      {
+        "name": "One Green Rule",
+        "body": "El verde es la única señal de acción o de hecho. No hay color por sección.",
+        "section": "colors"
+      },
+      {
+        "name": "Streak Amber Rule",
+        "body": "El ámbar solo aparece en la racha.",
+        "section": "colors"
+      },
+      {
+        "name": "Macro Graphics Rule",
+        "body": "Los colores de macro solo dibujan (barra, punto de leyenda); el texto va en on-surface u on-surface-variant.",
+        "section": "colors"
+      },
+      {
+        "name": "Tabular Figure Rule",
+        "body": "Toda cifra que se compara va en Outfit con tnum (numberStyle).",
+        "section": "typography"
+      },
+      {
+        "name": "One Primary Rule",
+        "body": "Un PrimaryButton por pantalla; el resto es secundario o tonal.",
+        "section": "components"
+      },
+      {
+        "name": "Hint Under Control Rule",
+        "body": "OfflineHint va siempre debajo del control que se deshabilita sin conexión.",
+        "section": "components"
+      },
+      {
+        "name": "Grow Never Clip Rule",
+        "body": "Alto mínimo, nunca fijo: al 200 % las tarjetas, los botones y las tiras crecen o cambian de columnas.",
+        "section": "layout"
+      }
+    ],
+    "dos": [
+      "Sacar color, medida, tipo y duración de core/ui/theme.",
+      "Mostrar el dato real o una placa con ícono.",
+      "Fijar cada par de contraste nuevo en ContrastTest."
+    ],
+    "donts": [
+      "Escribir Color(0x…), N.dp o N.sp en una pantalla.",
+      "Usar ámbar o macros para texto.",
+      "Reintroducir la Señal, las estaciones o los colores por sección del rediseño Línea."
+    ]
+  }
+}

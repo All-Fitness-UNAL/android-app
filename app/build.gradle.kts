@@ -64,6 +64,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material3)
     implementation(libs.compose.ui)
+    implementation(libs.compose.material3.adaptive.navigation.suite)
     implementation(libs.activity.compose)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.lifecycle.viewmodel.compose)
@@ -81,4 +82,7 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.vico.compose.m3)
+    implementation(libs.core.splashscreen)
+    testImplementation(libs.junit)
 }

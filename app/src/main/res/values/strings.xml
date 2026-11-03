@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es">
     <string name="app_name">All Fitness</string>
+    <string name="app_wordmark" translatable="false">AllFitness</string>
 
     <!-- Acciones -->
     <string name="action_retry">Reintentar</string>
@@ -16,6 +17,7 @@
     <string name="action_save">Guardar</string>
     <string name="action_update">Actualizar</string>
     <string name="action_edit">Editar</string>
+    <string name="action_edit_section">Editar %1$s</string>
     <string name="action_discard">Descartar</string>
     <string name="action_keep_editing">Seguir editando</string>
     <string name="action_keep_current">Mantener la actual</string>
@@ -38,6 +40,7 @@
     <string name="requires_connection">Necesitas conexión a internet para hacer esto.</string>
     <string name="empty_offline">No hay datos guardados. Conéctate a internet para cargarlos.</string>
     <string name="ai_disclaimer">Este contenido lo genera una IA y es orientativo. No reemplaza la valoración de un profesional de la salud.</string>
+    <string name="ai_badge">Plan de IA</string>
     <string name="char_counter">%1$d/%2$d</string>
 
     <!-- Errores -->
@@ -105,6 +108,8 @@
     <string name="unit_cm">cm</string>
     <string name="unit_kg">kg</string>
     <string name="unit_minutes">min</string>
+    <string name="unit_seconds">s</string>
+    <string name="unit_grams">g</string>
     <string name="unit_years">años</string>
 
     <!-- Secciones del perfil -->
@@ -146,6 +151,7 @@
 
     <!-- Onboarding -->
     <string name="onboarding_step">Paso %1$d de %2$d</string>
+    <string name="onboarding_subtitle">Con estos datos la IA arma tu rutina y tu dieta.</string>
     <string name="onboarding_generating">Estamos creando tu rutina y tu dieta. Esto puede tardar hasta un minuto.</string>
     <string name="onboarding_generation_failed">No pudimos terminar de preparar tu plan. Inténtalo de nuevo.</string>
     <string name="generating_plan">Generando tu plan…</string>
@@ -153,10 +159,40 @@
     <string name="generating_diet">Generando tu dieta…</string>
 
     <!-- Navegación -->
+    <string name="tab_home">Inicio</string>
     <string name="tab_routine">Rutina</string>
     <string name="tab_diet">Dieta</string>
     <string name="tab_progress">Progreso</string>
     <string name="tab_profile">Perfil</string>
+
+    <!-- Inicio -->
+    <string name="home_greeting">Hola, %1$s</string>
+    <string name="home_today_workout">Entreno de hoy</string>
+    <string name="home_today_diet">Tu dieta de hoy</string>
+    <string name="workout_meta">%1$d min · %2$s</string>
+    <string name="stat_week_sessions">Semana</string>
+    <string name="stat_plan_kcal">Kcal plan</string>
+    <!-- Cifra de un indicador que aún no ha cargado: no es un 0. -->
+    <string name="value_missing" translatable="false">–</string>
+    <plurals name="streak_weeks">
+        <item quantity="one">%d semana de racha</item>
+        <item quantity="many">%d semanas de racha</item>
+        <item quantity="other">%d semanas de racha</item>
+    </plurals>
+    <string name="action_start_workout">Empezar entrenamiento</string>
+    <string name="action_continue_workout">Continuar entrenamiento</string>
+    <string name="meal_prep_minutes">%1$d min de preparación</string>
+    <string name="workout_percent">%1$d %% completado</string>
+    <string name="exercise_rest">Descanso: %1$d s</string>
+    <string name="exercise_sets_reps">%1$d × %2$d reps</string>
+    <string name="exercise_sets_seconds">%1$d × %2$d s</string>
+    <string name="action_open_exercise">Ver el ejercicio</string>
+    <string name="session_exercise_of">Ejercicio %1$d de %2$d</string>
+    <string name="session_up_next">A continuación</string>
+    <string name="action_mark_done">Marcar como hecho</string>
+    <string name="action_unmark_done">Desmarcar</string>
+    <string name="action_skip">Saltar</string>
+    <string name="action_previous_exercise">Anterior</string>
 
     <!-- Rutina -->
     <string name="routine_title">Tu rutina</string>
@@ -170,10 +206,6 @@
     <string name="only_today_message">Solo puedes marcar ejercicios y terminar la sesión del día de hoy.</string>
     <string name="session_finished">Terminada</string>
     <string name="session_finished_message">¡Sesión terminada! Buen trabajo.</string>
-    <string name="exercise_sets_reps">Series: %1$d · Repeticiones: %2$d</string>
-    <string name="exercise_sets_duration">Series: %1$d · Duración: %2$d s</string>
-    <string name="exercise_rest">Descanso: %1$d s</string>
-    <string name="exercise_weight">Peso sugerido: %1$s kg</string>
 
     <!-- Dieta -->
     <string name="diet_title">Tu dieta</string>
@@ -185,15 +217,15 @@
     <string name="meal_dinner">Cena</string>
     <string name="meal_snack">Snack</string>
     <string name="kcal_value" tools:ignore="PluralsCandidate">%1$d kcal</string>
-    <string name="macros_value">Proteína %1$s g · Carbohidratos %2$s g · Grasas %3$s g</string>
     <string name="recipe_title">Receta</string>
     <string name="recipe_ingredients">Ingredientes</string>
+    <plurals name="recipe_ingredients_count">
+        <item quantity="one">%d ingrediente</item>
+        <item quantity="many">%d ingredientes</item>
+        <item quantity="other">%d ingredientes</item>
+    </plurals>
     <string name="recipe_steps">Preparación</string>
-    <string name="recipe_prep_time">Tiempo aproximado: %1$d min</string>
-    <string name="recipe_per_serving">Por porción</string>
-    <string name="recipe_step">%1$d. %2$s</string>
-    <string name="ingredient_grams">%1$s g de %2$s</string>
-    <string name="ingredient_ml">%1$s ml de %2$s</string>
+    <string name="recipe_per_serving">Valores nutricionales por porción.</string>
 
     <!-- Alternativas -->
     <string name="reason_dislike">No me gusta</string>
@@ -209,6 +241,7 @@
     <string name="alt_pain_warning">Si sientes dolor, consulta a un profesional de la salud antes de seguir entrenando.</string>
     <string name="alt_whole_plan_hint">Se generará un plan completo nuevo. El actual se mantiene hasta que el nuevo esté listo.</string>
     <string name="alt_loading">La IA está preparando una alternativa. Puede tardar hasta un minuto.</string>
+    <string name="alt_loading_plan">La IA está preparando tu nuevo plan. Puede tardar hasta un minuto.</string>
     <string name="alt_proposal_title">Propuesta</string>
     <string name="alt_confirm_title">¿Reemplazar el plan actual?</string>
     <string name="alt_confirm_message">El plan nuevo reemplazará al actual. Tus sesiones ya terminadas se conservan.</string>
@@ -221,16 +254,13 @@
     <string name="progress_empty">Aún no hay datos. Registra tu primer peso o termina tu primera sesión.</string>
     <string name="summary_title">Esta semana</string>
     <string name="summary_sessions">Sesiones completadas: %1$d de %2$d</string>
-    <string name="summary_streak">Semanas cumplidas seguidas: %1$d</string>
     <string name="summary_empty">Termina tu primera sesión para ver tu resumen.</string>
     <string name="summary_unavailable">El resumen no está disponible en este momento.</string>
-    <string name="summary_age">Edad: %1$d</string>
-    <string name="summary_height">%1$d cm</string>
-    <string name="summary_days">Días por semana: %1$d</string>
-    <string name="summary_minutes">Minutos por sesión: %1$d</string>
-    <string name="summary_meals">Comidas al día: %1$d</string>
     <string name="chart_description">Gráfica de peso: de %1$s kg el %3$s a %2$s kg el %4$s</string>
+    <string name="chart_need_more">Registra otro peso para ver tu tendencia.</string>
+    <string name="weight_trend_title">Evolución del peso</string>
     <string name="chart_range">Entre %1$s y %2$s kg</string>
+    <string name="chart_marker">%1$s · %2$s kg</string>
     <string name="weight_history">Historial de peso</string>
     <string name="weight_empty">Aún no has registrado tu peso.</string>
     <string name="weight_value">%1$s kg</string>
@@ -243,6 +273,7 @@
     <string name="profile_title">Tu perfil</string>
     <string name="profile_empty">No pudimos cargar tu perfil.</string>
     <string name="profile_email_readonly">El correo no se puede cambiar desde la app.</string>
+    <string name="profile_section_account">Cuenta</string>
     <string name="logout_confirm_title">¿Cerrar sesión?</string>
     <string name="logout_confirm_message">Se borrarán los datos guardados en este dispositivo.</string>
     <string name="discard_title">¿Descartar los cambios?</string>
@@ -256,4 +287,48 @@
     <string name="delete_title">Eliminar cuenta</string>
     <string name="delete_message">Se eliminarán tu cuenta y todos tus datos de forma permanente. Esta acción no se puede deshacer.</string>
     <string name="delete_field">Escribe %1$s para confirmar</string>
+
+    <!-- Etiquetas de dato (DataStrip) y etapas de generación -->
+    <string name="label_sets">SERIES</string>
+    <string name="label_reps">REPS</string>
+    <string name="label_duration">DURACIÓN</string>
+    <string name="label_rest">DESCANSO</string>
+    <string name="label_weight">PESO</string>
+    <string name="label_age">EDAD</string>
+    <string name="label_height">ESTATURA</string>
+    <string name="label_sex">SEXO</string>
+    <string name="label_level">NIVEL</string>
+    <string name="label_days">DÍAS POR SEMANA</string>
+    <string name="label_session">SESIÓN</string>
+    <string name="label_location">LUGAR</string>
+    <string name="label_equipment">EQUIPO</string>
+    <string name="label_injuries">LESIONES O LIMITACIONES</string>
+    <string name="label_diet">DIETA</string>
+    <string name="label_meals">COMIDAS AL DÍA</string>
+    <string name="label_allergies">ALERGIAS</string>
+    <string name="label_disliked">NO TE GUSTAN</string>
+    <string name="label_protein">PROTEÍNA</string>
+    <string name="label_carbs">CARBOHIDRATOS</string>
+    <string name="label_fat">GRASAS</string>
+    <string name="label_kcal">KCAL</string>
+    <string name="label_streak">RACHA</string>
+    <string name="label_sessions">SESIONES</string>
+    <string name="value_fraction">%1$d/%2$d</string>
+    <string name="value_grams">%1$s g</string>
+    <string name="value_ml">%1$s ml</string>
+    <string name="generating_stage_profile">Leyendo tu perfil</string>
+    <string name="generating_stage_routine">Armando tu rutina</string>
+    <string name="generating_stage_diet">Armando tu dieta</string>
+    <string name="hint_age">Entre 16 y 100 años</string>
+    <string name="hint_height">Entre 100 y 250 cm</string>
+    <string name="hint_weight">Entre 30 y 300 kg</string>
+    <string name="hint_minutes">Entre 15 y 120 minutos</string>
+    <string name="status_pair">%1$s · %2$s</string>
+    <string name="session_progress">%1$d de %2$d</string>
+    <string name="exercise_done">Hecho</string>
+    <plurals name="exercises_count">
+        <item quantity="one">%d ejercicio</item>
+        <item quantity="many">%d ejercicios</item>
+        <item quantity="other">%d ejercicios</item>
+    </plurals>
 </resources>

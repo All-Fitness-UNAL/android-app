@@ -18,6 +18,12 @@
 - Q: Al regenerar la rutina a mitad de semana, ¿cuándo aplica el nuevo plan y qué pasa con lo registrado? → A: Aplica desde hoy; las sesiones ya terminadas esa semana se conservan en el Progreso; las marcas de ejercicios de hoy se reinician si el contenido del día cambió.
 - Q: ¿El plan semanal se repite igual o el servidor puede actualizarlo por su cuenta? → A: El servidor puede actualizar el plan activo sin acción del usuario (ej. progresión semanal de cargas); la app muestra siempre la última versión recibida y usa la guardada solo sin conexión.
 
+### Session 2026-10-30
+
+- Q: ¿Se añaden pantallas que la spec no pedía (panel del día y modo sesión)? → A: Sí, la pestaña Inicio (panel del día) y el modo sesión (un ejercicio a la vez); por eso se enmienda esta spec a mano (FR-035, FR-035a, FR-035b), porque el principio V de la constitución prohíbe pantallas que la spec no pida.
+- Q: ¿La app sigue el modo claro/oscuro del sistema? → A: No, usa solo el tema oscuro de los mockups (FR-035c); no hay selector de tema, que sigue fuera de alcance.
+- Q: ¿En qué rama se trabaja el rediseño? → A: `redesign/figma-ui`, nueva desde `redesign/premium-ui`.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Registro, inicio de sesión y onboarding (Priority: P1)
@@ -241,7 +247,10 @@ El usuario revisa y modifica sus datos y preferencias desde la pestaña Perfil, 
 
 **Comportamiento transversal**
 
-- **FR-035**: La navegación principal MUST ser una barra inferior con Rutina, Dieta, Progreso y Perfil.
+- **FR-035**: La navegación principal MUST ser una barra inferior con Inicio, Rutina, Dieta, Progreso y Perfil; tras iniciar sesión u onboarding se abre Inicio.
+- **FR-035a**: Inicio MUST mostrar, con datos existentes, el entreno de hoy con acceso al modo sesión, el plan de comidas de hoy con sus kcal y macros, y la actividad y racha de la semana; MUST NOT mostrar consumo, agua ni otros datos que el backend no envía.
+- **FR-035b**: El modo sesión MUST mostrar un ejercicio a la vez del día elegido, con avance y retroceso, marcar o desmarcar el ejercicio y terminar la sesión bajo las mismas reglas de FR-013, FR-014 y FR-039; MUST NOT incluir temporizadores ni registro por serie.
+- **FR-035c**: La interfaz MUST usar un único tema oscuro; no hay selector de tema.
 - **FR-036**: Toda pantalla que carga datos MUST manejar los estados cargando, contenido, vacío y error (con reintentar).
 - **FR-037**: Toda pantalla que muestre contenido generado por IA (rutina, ejercicio, dieta, receta) y el Perfil MUST mostrar el aviso de que es orientativo y no reemplaza a un profesional de salud.
 - **FR-038**: Sin conexión, la app MUST permitir consultar la última rutina, dieta y progreso cargados, con un indicador de que pueden no estar actualizados.

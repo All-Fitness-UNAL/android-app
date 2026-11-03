@@ -3,23 +3,28 @@ package com.allfitness.app.onboarding
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -29,15 +34,20 @@ import com.allfitness.app.core.network.AppResult
 import com.allfitness.app.core.network.ConnectivityObserver
 import com.allfitness.app.core.session.SessionManager
 import com.allfitness.app.core.time.Today
+import com.allfitness.app.core.ui.AiGeneratingState
 import com.allfitness.app.core.ui.EmptyState
 import com.allfitness.app.core.ui.LoadingState
+import com.allfitness.app.core.ui.LogoMark
 import com.allfitness.app.core.ui.OfflineHint
+import com.allfitness.app.core.ui.PrimaryButton
+import com.allfitness.app.core.ui.SegmentedProgress
 import com.allfitness.app.core.ui.messageRes
 import com.allfitness.app.core.ui.theme.Spacing
 import com.allfitness.app.nutrition.DietRepository
 import com.allfitness.app.progress.ProgressRepository
 import com.allfitness.app.routines.RoutineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +55,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 data class OnboardingUiState(
     val loaded: Boolean = false,
@@ -160,7 +169,21 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
         val modifier = Modifier.padding(padding)
         when {
             !state.loaded -> LoadingState(modifier)
-            state.submitting -> LoadingState(modifier, stringResource(R.string.onboarding_generating))
+            state.submitting -> AiGeneratingState(
+                message = stringResource(R.string.onboarding_generating),
+                stages = listOf(
+                    stringResource(R.string.generating_stage_profile),
+                    stringResource(R.string.generating_stage_routine),
+                    stringResource(R.string.generating_stage_diet),
+                ),
+                summary = listOfNotNull(
+                    state.form.goal?.let { null to stringResource(it.labelRes()) },
+                    state.form.daysPerWeek?.let { stringResource(R.string.label_days) to it.toString() },
+                    state.form.equipment.takeIf { it.isNotEmpty() }
+                        ?.let { set -> stringResource(R.string.label_equipment) to set.map { stringResource(it.labelRes()) }.joinToString(", ") },
+                ),
+                modifier = modifier,
+            )
             state.submitError != null -> EmptyState(
                 message = stringResource(state.submitError!!),
                 modifier = modifier,
@@ -178,30 +201,58 @@ private fun OnboardingForm(state: OnboardingUiState, online: Boolean, viewModel:
     val steps = ProfileSection.entries.size
     Column(modifier.fillMaxSize().imePadding()) {
         Column(
-            Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(Spacing.m),
-            verticalArrangement = Arrangement.spacedBy(Spacing.m),
+            Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = Spacing.screenEdge, vertical = Spacing.m),
+            verticalArrangement = Arrangement.spacedBy(Spacing.l),
         ) {
-            Text(stringResource(R.string.onboarding_step, state.step + 1, steps), style = MaterialTheme.typography.labelLarge)
-            LinearProgressIndicator(progress = { (state.step + 1f) / steps }, modifier = Modifier.fillMaxWidth())
-            Text(stringResource(state.section.titleRes()), style = MaterialTheme.typography.headlineSmall)
-            ProfileSectionForm(state.section, state.form, state.errors, viewModel::update)
-        }
-        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-            if (state.isLastStep && !online) OfflineHint()
-            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                if (state.step > 0) {
-                    OutlinedButton(onClick = viewModel::back, modifier = Modifier.weight(1f)) {
-                        Text(stringResource(R.string.action_back))
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    // Volver va arriba, como en las demás pantallas: abajo queda una sola acción (Figma `bottom-sticky-cta`).
+                    if (state.step > 0) {
+                        // El 48 dp táctil deja la flecha 12 dp dentro del margen: se desplaza para alinearla con él.
+                        IconButton(onClick = viewModel::back, Modifier.offset(x = -Spacing.sm)) {
+                            Icon(painterResource(R.drawable.lc_arrow_left), contentDescription = stringResource(R.string.action_back))
+                        }
+                    }
+                    // Con fuente grande el paso baja a otra línea en vez de apretar la marca.
+                    FlowRow(Modifier.weight(1f), horizontalArrangement = Arrangement.SpaceBetween) {
+                        LogoMark(Modifier.align(Alignment.CenterVertically))
+                        // El texto "Paso N de M" ya lo lee TalkBack; los segmentos lo dibujan.
+                        Text(
+                            stringResource(R.string.onboarding_step, state.step + 1, steps),
+                            Modifier.align(Alignment.CenterVertically),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
                     }
                 }
-                Button(
-                    onClick = viewModel::next,
-                    enabled = !state.isLastStep || online,
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Text(stringResource(if (state.isLastStep) R.string.action_finish else R.string.action_next))
-                }
+                SegmentedProgress(total = steps, reached = state.step + 1)
             }
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                Text(
+                    stringResource(state.section.titleRes()),
+                    Modifier.semantics { heading() },
+                    style = MaterialTheme.typography.headlineMedium,
+                )
+                Text(
+                    stringResource(R.string.onboarding_subtitle),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            ProfileSectionForm(state.section, state.form, state.errors, viewModel::update)
+        }
+        Column(
+            Modifier.padding(horizontal = Spacing.screenEdge, vertical = Spacing.sm),
+            verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+        ) {
+            PrimaryButton(
+                text = stringResource(if (state.isLastStep) R.string.action_finish else R.string.action_next),
+                onClick = viewModel::next,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !state.isLastStep || online,
+                trailingIcon = R.drawable.lc_arrow_right,
+            )
+            if (state.isLastStep && !online) OfflineHint()
         }
     }
 }
